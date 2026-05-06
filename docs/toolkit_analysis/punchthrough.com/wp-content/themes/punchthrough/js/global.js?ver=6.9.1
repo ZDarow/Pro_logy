@@ -1,0 +1,54 @@
+jQuery(document).ready(function ($) {
+
+	/*============================================================================
+	* Scroll to Tab Content on Click
+	*===========================================================================*/
+	function initTabsScroll() {
+		if ($(window).width() >= 768) return;
+		$('.tabs-module-scroll-js').each(function () {
+			const $container = $(this);
+			$container.on('click', '.tab-title', function () {
+				const targetId = $(this).attr('id');
+				const $targetPane = $container.find(`.tab-pane[aria-labelledby="${targetId}"]`);
+				if ($targetPane.length) {
+					const offset = $targetPane.offset().top - 100;
+					// $('html, body').animate({ scrollTop: offset }, 300);
+					$('html, body').animate({ scrollTop: offset });
+				}
+			});
+		});
+	}
+	initTabsScroll();
+	$(window).on('resize', function () {
+		if ($(window).width() >= 768) {
+			$('.tabs-module-scroll-js').off('click', '.tab-title');
+		} else {
+			initTabsScroll();
+		}
+	});
+
+
+	/*============================================================================
+	* Take the focus off the form on click (for popup)
+	*===========================================================================*/
+	function removeInputFocus() {
+		setTimeout(() => {
+			document.activeElement.blur();
+			document.trigger('click');
+		}, 50);
+	}
+
+	$('.close').on('click', function () {
+		removeInputFocus();
+	});
+
+	document.querySelectorAll('a').forEach(link => {
+		link.addEventListener('click', (e) => {
+	
+			setTimeout(() => {
+				link.blur();
+			}, 100);
+		});
+	});
+
+});

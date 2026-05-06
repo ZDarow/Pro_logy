@@ -1,0 +1,3013 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/" >
+
+<channel>
+	<title>Cloud &amp; Backend &#8211; Punch Through</title>
+	<atom:link href="https://punchthrough.com/resources/cloud-and-backend-development/feed/" rel="self" type="application/rss+xml" />
+	<link>https://punchthrough.com</link>
+	<description></description>
+	<lastBuildDate>Fri, 22 Aug 2025 20:17:39 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.4</generator>
+
+<image>
+	<url>https://punchthrough.com/wp-content/uploads/2025/02/favicon-punchthrough-logo.png</url>
+	<title>Cloud &amp; Backend &#8211; Punch Through</title>
+	<link>https://punchthrough.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Cloud Communication Architecture for Connected Medical Devices</title>
+		<link>https://punchthrough.com/cloud-communication-architecture/</link>
+		
+		<dc:creator><![CDATA[Kurt Wiersma]]></dc:creator>
+		<pubDate>Fri, 22 Aug 2025 20:17:37 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Cloud Data Integration]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Technical Strategy]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=11411</guid>
+
+					<description><![CDATA[A practical guide to cloud communication architecture in connected medical devices—covering design trade-offs, protocol choices, and how to build for real-world reliability and security across the device-app-cloud path.]]></description>
+										<content:encoded><![CDATA[
+<p>Cloud communication plays a critical role in many connected medical devices, supporting telemetry uploads, remote configuration, and firmware updates. This data might include device performance metrics, patient measurements, commands to update device settings, or OTA firmware notifications. Because many devices operate intermittently or rely on low-power wireless protocols, they often use a mobile app or gateway as an intermediary to the cloud.</p>
+
+
+
+<p>These systems must account for intermittent connectivity, latency, and the need for secure, authenticated data transfer. This article offers a practical overview of cloud communication architectures used in connected device ecosystems, with a focus on reliability, security, and architectural trade-offs. Whether you’re planning a new system or refining an existing one, our aim is to help technical leaders make informed design decisions.</p>
+
+
+
+<p>To understand the architectural decisions that follow, it’s important to start with how data actually moves between device, app, and cloud.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Understanding the Communication Path</h2>
+
+
+
+<p>In connected medical devices, data often flows from a low-power peripheral such as an implanted or wearable sensor through a mobile app to the cloud. Whether it’s telemetry, commands, or firmware updates, this communication path must function securely and reliably, even when devices are intermittently online.</p>
+
+
+
+<p>This architecture introduces unique constraints. Implanted and wearable devices rely on Bluetooth for short-range transfer and delegate cloud connectivity to a mobile intermediary with Wi-Fi or cellular access. While common, this indirect and asynchronous flow introduces reliability and security challenges that cloud architecture must account for directly.</p>
+
+
+
+<p>Because the data involved is often sensitive, protecting its confidentiality, integrity, and access is not optional. It is a regulatory and clinical requirement. Design decisions at this communication layer must address delivery guarantees, failure recovery, and secure authentication across the entire path: from device to app to cloud.</p>
+
+
+
+<figure class="wp-block-image size-large"><img fetchpriority="high" decoding="async" width="1024" height="689" src="https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-1024x689.png" alt="Diagram of an implanted device sending data to a smartphone via BLE, then to a cloud service via HTTPS or MQTT, with push messages back to the phone." class="wp-image-11792" srcset="https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-1024x689.png 1024w, https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-300x202.png 300w, https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-150x101.png 150w, https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-768x517.png 768w, https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-1536x1034.png 1536w, https://punchthrough.com/wp-content/uploads/2025/07/Inline_final-2048x1378.png 2048w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Choosing the Right Communication Method</h2>
+
+
+
+<p>Once the mobile app receives data from the device, it needs a way to send that data to the cloud or retrieve updates and commands intended for the device. The communication method you choose will affect performance, latency, security, and how resilient your system is to connectivity issues.</p>
+
+
+
+<p>The next few sections break down three common approaches to app-to-cloud communication in connected medical devices: web APIs, MQTT-based messaging, and push notifications. Each comes with trade-offs and is better suited to specific use cases and system constraints.</p>
+
+
+
+<h3 class="wp-block-heading">Web APIs</h3>
+
+
+
+<p>Calling a web API is often one of the simplest and most familiar ways for a mobile app to exchange data with the cloud. It’s straightforward to implement, widely supported, and flexible enough for a variety of use cases, especially when paired with JSON message formats and HTTPS for secure communication.</p>
+
+
+
+<p>To build this kind of interface responsibly, though, you’ll want to think beyond just sending and receiving data. The security and reliability of every request matters, especially in connected health environments where data integrity is critical.</p>
+
+
+
+<p>On the client side, all requests should use HTTPS with the latest TLS version to ensure data in transit is encrypted. On the server side, make sure each request goes through strong authentication and authorization checks, and that you’re validating incoming data early before it’s processed further.</p>
+
+
+
+<p>Most modern web frameworks support schema validation and can help enforce strict data formats, which reduces error-handling downstream. These same schemas can often be used to generate OpenAPI docs, making it easier for your mobile team to understand and work with your endpoints using tools like Swagger or Redoc.</p>
+
+
+
+<p>When it comes to token management, follow the same standards you’d use for passwords: store tokens as hashed values (not plain text), and implement expiration and revocation mechanisms to minimize risk. Tokens should be short-lived and easily renewable.</p>
+
+
+
+<p>A reliable, off-the-shelf approach is to use OAuth 2.0 with Authorization Code Flow and PKCE. This gives you token-based authentication without having to roll your own solution and helps mitigate risks like cross-site request forgery. With this flow, the mobile app obtains a short-lived access token (often valid for around an hour), and uses a refresh token to extend the session without requiring the user to log in again.</p>
+
+
+
+<h3 class="wp-block-heading">IoT Services (MQTT)</h3>
+
+
+
+<p>If your mobile app needs to handle a near real-time stream of data or manage messages that may arrive while the app is offline, an IoT service using MQTT, like Azure IoT Hub, can be a strong fit.</p>
+
+
+
+<p>MQTT is designed for scenarios where devices aren&#8217;t always connected. It allows messages to be queued on either side (client or server) and then delivered when the receiver is back online. That flexibility makes it especially useful in medical device workflows where connectivity can be spotty or unpredictable.</p>
+
+
+
+<p>When a connection is available, MQTT delivers messages quickly and reliably. And if you’re using a cloud provider’s IoT platform, you’ll usually get access to mobile SDKs that abstract away much of the protocol’s complexity. That means your mobile team can work with MQTT without needing to learn the ins and outs of the spec itself.</p>
+
+
+
+<p>Like with web APIs, MQTT messages often use JSON payloads, so your app’s data-handling logic can stay consistent across communication methods. The key benefit here is resilience. MQTT gives you a built-in way to handle temporary disconnections without losing critical data in transit.</p>
+
+
+
+<h3 class="wp-block-heading">Push Notifications</h3>
+
+
+
+<p>Both iOS and Android support push notifications from cloud-based systems, useful when the mobile device is online but the app isn’t currently active. While push notifications don’t typically carry much data, they’re a handy way to prompt the app to launch and take further action, like fetching new information or initiating a background task.</p>
+
+
+
+<p>Services like Firebase, Azure Notification Hubs, or AWS SNS help deliver these notifications using platform-specific protocols under the hood. They take care of the heavy lifting, so you don’t have to manually manage the complexities of mobile OS messaging systems.</p>
+
+
+
+<p>In connected medical devices, push notifications are often used to alert patients when new settings are available, or when it’s time to install a firmware update. That said, they’re not foolproof. Notifications depend on a stable internet connection and can sometimes be delayed or lost entirely.</p>
+
+
+
+<p>For anything critical, don’t rely on push alone. Instead, treat notifications as a nudge and back them up with fallback logic. Your mobile app should check in with the server at the right moments (like app launch or resume) to make sure it hasn’t missed any important messages or commands.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Building in Security from the Start</h2>
+
+
+
+<p>Security should be baked into every layer of your device-to-cloud communication, not bolted on at the end. At a minimum, all data in transit must be encrypted using strong protocols like HTTPS with TLS 1.2 or above. For MQTT-based systems, TLS should be used to secure the connection between device and server. And since push notifications rely on platform-managed infrastructure, both iOS and Android require HTTPS for secure delivery out of the box.</p>
+
+
+
+<p>But encryption alone isn’t enough.</p>
+
+
+
+<p>Two critical concepts—authentication and authorization—need to be clearly defined and properly implemented. Authentication ensures that both the device and cloud know who they’re talking to. Authorization ensures that each party is allowed to perform the action it’s requesting. In most systems, this means leaning on certificate-based authentication or public key infrastructure (PKI). For added assurance, consider using mutual TLS (mTLS) to validate both ends of the connection.</p>
+
+
+
+<p>For implanted medical devices, there&#8217;s an additional challenge: communication often passes through a mobile phone acting as a relay. To protect against man-in-the-middle attacks, these systems typically benefit from a secure tunnel protocol. One where the message payload is encrypted in a way that only the cloud and the device itself can decrypt. That way, even though the mobile app is in the loop, it can’t read or modify the contents in transit.</p>
+
+
+
+<p>These layers of protection aren’t just for compliance, they’re essential to patient safety, system integrity, and trust in your connected solution.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Engineering for Real-World Reliability</h2>
+
+
+
+<p>Reliable communication is essential in connected medical devices. When data doesn’t reach the cloud, it can create gaps in patient records, interfere with clinical decisions, and complicate compliance.</p>
+
+
+
+<p>Designing for reliability means accounting for real-world conditions like intermittent connectivity, limited device resources, and cloud systems that may not always be available. Supporting message queuing, acknowledgments, and retry logic is essential, particularly in systems where devices may be offline or out of range for extended periods.</p>
+
+
+
+<h3 class="wp-block-heading">Message Queues with MQTT</h3>
+
+
+
+<p>A common way to build resilience into device communication is by using a message queuing protocol like MQTT, often through cloud services such as Azure IoT Hub or AWS IoT Core. These platforms can provide guarantees like <em>at least once</em> delivery, where messages are retried until the device confirms receipt.</p>
+
+
+
+<p>But for device-to-cloud communication, reliability often hinges on how well the device handles being offline. It’s critical that the device is equipped to:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Queue messages locally</strong>: Store unsent data until a connection is restored.</li>
+
+
+
+<li><strong>Wait for acknowledgment</strong>: Only clear messages from the queue once they’ve been confirmed as received.</li>
+
+
+
+<li><strong>Retry intelligently</strong>: Implement a strategy to resend messages when the network comes back without draining battery or flooding the system.</li>
+</ul>
+
+
+
+<p>These patterns ensure that temporary outages don’t turn into permanent data loss.</p>
+
+
+
+<h3 class="wp-block-heading">Web APIs</h3>
+
+
+
+<p>HTTP-based APIs can also support reliable communication, but the bar is higher. Because HTTP is synchronous, the client and server must both be online and reachable at the same time. That makes network hiccups more disruptive unless deliberate reliability measures are in place.</p>
+
+
+
+<p>On the client side, consider:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Retry policies</strong>: Use exponential backoff (with jitter) to avoid overwhelming the server or killing the battery.</li>
+
+
+
+<li><strong>Circuit breakers</strong>: Temporarily stop retries if repeated failures indicate a broader issue.</li>
+
+
+
+<li><strong>Timeouts</strong>: Set sensible limits so the app doesn’t hang indefinitely.</li>
+
+
+
+<li><strong>Fallback strategies</strong>: Cache configuration data locally or use sane defaults when a server call fails.</li>
+
+
+
+<li><strong>Offline queuing</strong>: Store unsent data for later transmission, similar to the MQTT model.</li>
+
+
+
+<li><strong>Background processing</strong>: Run non-UI tasks (like Bluetooth communication or retries) in the background to maintain responsiveness.</li>
+</ul>
+
+
+
+<p>On the server side, reliability patterns include:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Robust error handling</strong>: Gracefully handle malformed requests, service hiccups, or temporary overloads. Use clear status codes like 503 Service Unavailable to help clients respond appropriately.</li>
+
+
+
+<li><strong>Idempotency</strong>: Prevent issues from retries by designing endpoints that safely handle duplicate requests, often using unique transaction IDs.</li>
+</ul>
+
+
+
+<p>Choosing the right approach depends on your product’s environment and data criticality. MQTT-based systems offer more built-in resilience, especially when connectivity is unpredictable. But if you’re working with HTTP APIs, you’ll need to deliberately engineer reliability into both ends of the system.</p>
+
+
+
+<p>In either case, don’t treat reliability as a later-phase concern. It’s a foundational part of delivering a trustworthy, effective medtech solution.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Why Architecture Expertise Matters</h2>
+
+
+
+<p>Designing secure, reliable communication between a connected device and the cloud isn’t just a matter of implementing the right protocol. It requires system-level thinking that accounts for regulatory constraints, real-world failure modes, cross-platform behavior, and future scalability.</p>
+
+
+
+<p>These kinds of decisions often cut across engineering disciplines—firmware, mobile, cloud, and security—making it difficult for internal teams to own every detail without support. Bringing in an experienced architecture partner can help expose hidden risks, validate design decisions early, and streamline development by aligning everyone around a coherent strategy.</p>
+
+
+
+<p>The most effective partnerships aren&#8217;t about handing off work. Instead, they’re about collaborating with teams who understand both the technical depth and regulatory context required to get it right.</p>
+
+
+
+<h2 class="wp-block-heading">Conclusion</h2>
+
+
+
+<p>Communication architecture decisions carry long-term consequences for connected medical devices, from how reliably data moves through the system to how easily it scales and stays compliant over time. Getting it right requires more than implementation; it requires intention.</p>
+
+
+
+<p>If you&#8217;re working through these decisions and want to explore more, we’ve published additional resources on <a href="https://punchthrough.com/resources/bluetooth-low-energy/" target="_blank" rel="noreferrer noopener">BLE</a>, <a href="https://punchthrough.com/topics/system-architecture/" target="_blank" rel="noreferrer noopener">system architecture</a>, and <a href="https://punchthrough.com/resources/cloud-and-backend-development/" target="_blank" rel="noreferrer noopener">cloud communication</a> for <a href="https://punchthrough.com/topics/connected-medical-ecosystems/" target="_blank" rel="noreferrer noopener">connected medical devices</a>. And if you&#8217;re looking for a second opinion or strategic input, <a href="https://punchthrough.com/contact/" target="_blank" rel="noreferrer noopener">we’re always open to a conversation</a>.</p>
+
+
+
+<p></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>The Cloud Architecture Review Process for Regulated Connected Systems</title>
+		<link>https://punchthrough.com/cloud-architecture-review-proces/</link>
+		
+		<dc:creator><![CDATA[Justin Berger]]></dc:creator>
+		<pubDate>Thu, 29 May 2025 18:52:04 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Development Process]]></category>
+		<category><![CDATA[System Architecture]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=11164</guid>
+
+					<description><![CDATA[Running an architecture review requires more than technical expertise. This article walks through the process teams use to surface risks, align decisions, and adapt over time.]]></description>
+										<content:encoded><![CDATA[
+<h2 class="wp-block-heading">Introduction</h2>
+
+
+
+<p>Once you recognize the importance of architecture reviews in connected device development, the next question is how to actually run one—especially when the stakes include regulatory approval, data security, and clinical reliability. In regulated environments, good architecture is more than clean design, it’s a critical foundation for product viability.</p>
+
+
+
+<p>But architecture reviews don’t just happen. They need structure, timing, and buy-in across teams. And for connected medical ecosystems, they need to address the nuances of interoperability, traceability, and evolving requirements without slowing you down.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What You’ll Get</h2>
+
+
+
+<p>This article breaks down the cloud architecture review process into practical, repeatable steps, whether you&#8217;re working in a traditional waterfall model or adapting to Agile. You’ll learn:</p>
+
+
+
+<ul class="wp-block-list">
+<li>How to identify decisions worth reviewing</li>
+
+
+
+<li>What goes into an effective architecture proposal</li>
+
+
+
+<li>How to validate decisions in high-stakes, evolving systems</li>
+
+
+
+<li>How to integrate reviews into Agile workflows using ADRs</li>
+
+
+
+<li>When to seek outside input to avoid hidden risk</li>
+</ul>
+
+
+
+<p>Whether you&#8217;re facilitating a formal review or trying to build a more resilient decision-making culture within your team, this guide will help you structure a process that fits your system and your stage.</p>
+
+
+
+<p class="has-background" style="background-color:#bce6fd">If you’re still deciding whether an architecture review is worth it, <a href="https://punchthrough.com/why-cloud-architecture-review/" target="_blank" rel="noreferrer noopener">this article</a> outlines why they’re critical for connected medical systems.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What Does the Cloud Architecture Review Process Look Like?</h2>
+
+
+
+<p>There’s no one-size-fits-all approach to architecture reviews. Some organizations lean toward upfront design, reviewing architectural decisions early in the project before implementation begins. Others take a more iterative, Agile approach—evaluating architectural components as they emerge throughout development.</p>
+
+
+
+<p>Regardless of development methodology, there are common elements that make architecture reviews more effective. The steps below illustrate a typical structure, but the depth and format may vary depending on your system’s complexity, development phase, and internal experience.</p>
+
+
+
+<h3 class="wp-block-heading">Step 1: Identify Architecturally Relevant Decisions</h3>
+
+
+
+<p>The first step is surfacing the decisions that warrant deeper scrutiny. A helpful rule of thumb: if a design choice affects more than one team, or involves a third-party dependency, it’s likely architecturally relevant.</p>
+
+
+
+<p>In early stages, this often includes broader system considerations like supported programming languages, naming conventions, cloud providers, or external services. For example, when evaluating third-party tools or services, the goal isn’t always to decide immediately whether to use them—it’s to understand under what circumstances they’re a good fit, and when they might introduce risk.</p>
+
+
+
+<p>The earlier these questions are raised, the easier it is to make informed decisions before dependencies become entrenched in the system and before downstream changes become costly or disruptive.</p>
+
+
+
+<p>Decisions around tools, services, or integrations often emerge early, sometimes before teams realize how much they’ll shape the project’s scope. These <a href="https://punchthrough.com/cloud-connected-medical-devices-considerations/" target="_blank" data-type="link" data-id="https://punchthrough.com/cloud-connected-medical-devices-considerations/" rel="noreferrer noopener">five scope-related considerations</a> can help teams frame those early discussions more clearly.</p>
+
+
+
+<h3 class="wp-block-heading">Step 2: Look for Existing Patterns or Solutions</h3>
+
+
+
+<p>Before designing something new, teams should ask: has a similar decision already been made elsewhere in the organization? If a proven solution or design pattern exists, reusing it can speed up development and reduce risk.</p>
+
+
+
+<p>However, reuse isn’t always one-to-one. Teams should assess whether the existing approach is flexible enough to apply to the current situation, or if only parts of it are worth adopting. In some cases, this may lead to new decisions around generalizing shared functionality into libraries or services to make future reuse easier.</p>
+
+
+
+<p>Even if the full solution doesn’t apply, it might reveal patterns or components that can be adapted, highlighting opportunities to reduce duplication and increase consistency across the system.</p>
+
+
+
+<h3 class="wp-block-heading">Step 3: Propose a Solution</h3>
+
+
+
+<p>Once a relevant decision is identified, the next step is to develop and document a proposed solution. This should include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Benefits and tradeoffs</li>
+
+
+
+<li>Cost and licensing implications</li>
+
+
+
+<li>Potential for reuse or long-term support</li>
+
+
+
+<li>Any alternatives considered, and why they were rejected</li>
+</ul>
+
+
+
+<p>For connected health systems, proposals should also account for compliance impact and interoperability, especially when patient data or regulated endpoints are involved.</p>
+
+
+
+<p>Depending on the complexity, this step may also involve building a lightweight prototype to validate that the solution will work with the existing architecture. This could be as simple as testing basic compatibility in your environment, or as involved as integrating a new architecture into a subset of the system to ensure multiple components can work together.</p>
+
+
+
+<p>At this stage, the goal is not to fully implement the solution but to gather enough information to make a well-informed architectural decision.</p>
+
+
+
+<h3 class="wp-block-heading">Step 4: Collect Feedback</h3>
+
+
+
+<p>Once a proposal is documented, it should be shared for review. The review process doesn’t need to be formal, but it should include the right voices, especially stakeholders who will be impacted by the decision, or who own intersecting areas of the system.</p>
+
+
+
+<p>Feedback can be collected in various ways, such as asynchronous channels like Slack, live discussions, or more structured review meetings. What matters most is giving people a chance to weigh in, identify edge cases, and surface potential conflicts.</p>
+
+
+
+<p>Feedback might lead to minor revisions or, in some cases, a shift in direction. For example, a proposed cloud resource might introduce new compliance requirements, or a hardware integration might expose a previously overlooked security concern. The team proposing the solution should work with others to adjust the recommendation accordingly, ensuring concerns are resolved and well-documented.</p>
+
+
+
+<h3 class="wp-block-heading">Step 5: Make a Decision</h3>
+
+
+
+<p>Once feedback has been incorporated, a final decision can be made. Some organizations have formal Architecture Review Boards (ARBs) that own this step, while others rely on collaboration between the proposing team and a technical lead or architect.</p>
+
+
+
+<p>The decision should be recorded in the system’s architectural documentation and include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>The problem the decision was intended to solve</li>
+
+
+
+<li>The options considered and their respective pros and cons</li>
+
+
+
+<li>The final solution and when to apply it</li>
+
+
+
+<li>Guidelines for validating that the implementation aligns with the design</li>
+</ul>
+
+
+
+<p>If no single solution addresses all use cases, the documentation should reflect when and where each option applies.</p>
+
+
+
+<p>For architectural decisions around medical APIs or cloud-connected apps, <a href="https://punchthrough.com/how-to-architect-a-robust-medical-web-based-api-or-app/" target="_blank" rel="noreferrer noopener">this article</a> offers deeper guidance on building reliable, compliant interfaces.</p>
+
+
+
+<h3 class="wp-block-heading">Step 6: Implement and Validate</h3>
+
+
+
+<p>With the decision made, teams move into implementation, but that doesn’t mean the review process is over. It’s critical to ensure the final implementation reflects the intended architecture. This can happen through code reviews, QA testing, or as part of release readiness checks.</p>
+
+
+
+<p>As systems evolve, so do requirements and technologies. In regulated environments like connected medical systems, this makes validation even more important—not just for performance and functionality but also to ensure the implementation continues to meet safety, privacy, and compliance expectations over time. A solution that made sense six months ago might no longer be the best fit.</p>
+
+
+
+<p>Having a clear record of the decision—what was considered, what was rejected, and why—gives teams a strong foundation to revisit architectural choices as needed without starting from scratch. It’s not just about enforcing conformance, it’s about enabling agility through documentation and context.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Agile Architecture Review</h2>
+
+
+
+<p>Organizations transitioning to Agile development practices often struggle to reconcile traditional architecture processes with the iterative nature of Agile. This is especially true for teams accustomed to designing the entire architecture upfront, before implementation begins. In contrast, Agile expects architecture to evolve alongside the product, adapting to changes in requirements over time.</p>
+
+
+
+<p>This challenge is especially pronounced in connected medical device development, where Agile needs to align with documentation, traceability, and safety requirements. As teams build and iterate, they encounter a steady stream of Architecturally Relevant Decisions. Rather than trying to predict all of them in advance (or scrambling to document them retroactively) Agile teams review and capture these decisions as they arise.</p>
+
+
+
+<h3 class="wp-block-heading">Using ADRs to Support Agile Architecture</h3>
+
+
+
+<p>A common and effective approach is to use Architecture Decision Records (ADRs). These are lightweight documents that capture a specific problem, the proposed solution, and any alternatives considered. When stored in the code repository alongside the relevant component, ADRs are easy for developers to maintain during implementation. They also allow architects to use existing tooling (e.g., peer reviews, pull requests) to participate in architecture reviews without creating a separate process.</p>
+
+
+
+<p>ADRs serve a dual purpose: they preserve the rationale behind key decisions and provide valuable onboarding context for new developers. Because they live with the code, they’re more likely to stay up to date, and they encourage the same iterative, flexible approach to architecture as Agile promotes for development.</p>
+
+
+
+<h3 class="wp-block-heading">Maintaining Alignment as Systems Evolve</h3>
+
+
+
+<p>When architectural decisions span multiple components or teams or involve broader changes, developers can collaborate with architects to coordinate and document the impacts. These broader decisions should be stored in a shared location and reviewed by all affected teams to ensure alignment across the system.</p>
+
+
+
+<p>As requirements shift or new technologies emerge, having a record of past decisions—including the reasoning behind them—makes it easier to revisit old choices with clarity. Even if the team decides to stick with an existing solution due to cost or effort, simply acknowledging the tradeoffs helps future teams understand what’s possible and why certain paths were (or weren’t) taken.</p>
+
+
+
+<p>That said, not every architecture decision needs to be made in isolation, especially when the stakes are high or the unknowns are deep.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">When to Seek External Support</h2>
+
+
+
+<p>Not every team has the internal bandwidth or perspective to manage all reviews solo, especially when the risks are system-wide. While many architectural decisions can be handled internally, there are moments when an outside perspective becomes critical.</p>
+
+
+
+<p>If you&#8217;re operating in a regulated environment, dealing with system-wide complexity, or scaling a connected product into production, a focused architecture review can uncover risks before they impact product viability or patient safety. In these moments, a well-timed external review can bring clarity, challenge assumptions, and uncover architectural blind spots that internal teams may overlook.</p>
+
+
+
+<p>Working with the right partner early on can turn architecture from a potential liability into a lasting competitive advantage. If you&#8217;re navigating one of these inflection points, <a href="https://punchthrough.com/contact/" target="_blank" rel="noreferrer noopener">contact us</a> to explore whether a structured review could help your team avoid costly missteps.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Conclusion</h2>
+
+
+
+<p>Cloud architecture reviews aren’t just a best practice—they’re a strategic safeguard for connected medical systems. In fast-moving, regulated development cycles, they create space for thoughtful decisions, reduce the risk of rework, and help teams align around what matters most.</p>
+
+
+
+<p>By embedding a structured review process into your workflow, especially through tools like ADRs, you give your teams the ability to adapt confidently, maintain traceability, and build with purpose. It’s not about slowing things down—it’s about building systems that are scalable, secure, and resilient enough to support real-world use.</p>
+
+
+
+<p>Architecture isn’t just a technical concern. It’s a strategic asset that ensures your platform can scale, comply, and align across teams.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Why Architecture Reviews Are Essential for Connected Device Systems</title>
+		<link>https://punchthrough.com/why-cloud-architecture-review/</link>
+		
+		<dc:creator><![CDATA[Justin Berger]]></dc:creator>
+		<pubDate>Thu, 29 May 2025 18:41:15 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Risk Mitigation]]></category>
+		<category><![CDATA[System Architecture]]></category>
+		<category><![CDATA[Technical Strategy]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=11151</guid>
+
+					<description><![CDATA[Understand the purpose of cloud architecture reviews, why they matter in regulated connected systems, and how they help teams reduce risk, avoid rework, and align with compliance.]]></description>
+										<content:encoded><![CDATA[
+<h2 class="wp-block-heading">Introduction</h2>
+
+
+
+<p>Software and system architecture decisions are some of the most consequential choices in any development project. They shape not just how a system is built, but how well it performs under pressure, how easily it scales, and how securely it handles sensitive data. A well-planned architecture supports long-term maintainability, operational resilience, and cost efficiency. Poor decisions, on the other hand, can quietly build into technical debt that derails progress, increases risk, and drives up costs.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What You&#8217;ll Get From This Article</h2>
+
+
+
+<p>This article walks through how cloud architecture reviews reduce risk, improve performance, and support compliance—especially in connected medical ecosystems. Whether you&#8217;re designing a new system or evaluating an existing one, you’ll get a practical overview of what’s involved in reviewing architecture for <a href="https://punchthrough.com/cloud-connected-medical-devices-considerations/" target="_blank" data-type="link" data-id="https://punchthrough.com/cloud-connected-medical-devices-considerations/" rel="noreferrer noopener">regulated, cloud-connected systems</a>—including the kinds of decisions that introduce systemic risk, and how to evaluate them effectively in both traditional and Agile workflows.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What Is an Architecture Review?</h2>
+
+
+
+<p>While there’s no single definition of an architecture review, the core purpose remains the same: to assess whether your system’s architecture—spanning software, hardware, or a combination of both—supports the goals and constraints of the project. It’s a checkpoint designed to evaluate whether the decisions being made will hold up under the demands of real-world use.</p>
+
+
+
+<p>Every architecture review is shaped by the specific needs of the system, but there are common areas that most reviews should address. A sound architecture typically:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Aligns with business requirements </strong>– Ensures that technical decisions support the goals and priorities of the organization.</li>
+
+
+
+<li><strong>Is secure by design</strong> – Accounts for threats and mitigations from the ground up, not just through post-implementation testing.</li>
+
+
+
+<li><strong>Scales with usage</strong> – Can handle increased demand as more customers or users come onboard.</li>
+
+
+
+<li><strong>Scales with team growth</strong> – Supports multiple development teams working in parallel without stepping on each other.</li>
+
+
+
+<li><strong>Follows best practices and standards</strong> – Incorporates industry conventions and proven patterns to minimize risk.</li>
+
+
+
+<li><strong>Is well-documented </strong>– Captures key decisions, rationales, and architectural overviews for future reference and onboarding.</li>
+
+
+
+<li><strong>Reuses existing solutions</strong> – Leverages shared libraries, COTS (commercial off-the-shelf) tools, or internal frameworks where appropriate.</li>
+
+
+
+<li><strong>Avoids known issues or gaps</strong> – Identifies and mitigates potential problem areas before they become technical debt.</li>
+</ul>
+
+
+
+<p>Each organization may weigh these criteria differently, depending on its industry, priorities, or risk tolerance. What matters is that your review process makes those priorities explicit—and that any Architecturally Significant Decision is evaluated against them.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What Is an Architecturally Significant Decision?</h2>
+
+
+
+<p>Architecturally Significant Decisions (ASDs) are the choices that shape how your system is designed, implemented, and ultimately maintained—and they’re the ones that come with the highest stakes. These are the decisions that, if made incorrectly, would be costly or difficult to change later. Whether the cost is financial, technical, regulatory, or operational, these decisions have a disproportionate impact on the success and sustainability of your architecture.</p>
+
+
+
+<p>Common types of ASDs include:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Shared Librarie</strong>s – Assessing both internal and third-party dependencies for security, performance, long-term support, and fit for purpose.</li>
+
+
+
+<li><strong>External Integrations</strong> – Evaluating cloud services or third-party APIs to ensure they’re reliable, secure, and able to scale with usage.</li>
+
+
+
+<li><strong>Internal Integrations </strong>– Ensuring that internal components interact safely and reliably, without introducing new failure points or bottlenecks.</li>
+
+
+
+<li><strong>Communication Protocols</strong> – Selecting protocols that balance efficiency, interoperability, and compatibility with existing systems.</li>
+
+
+
+<li><strong>Privacy</strong> – Designing systems that protect sensitive data, such as PII and PHI, and comply with relevant regulatory frameworks.</li>
+
+
+
+<li><strong>Access Controls</strong> – Defining who can access what—and under what conditions—both internally and externally.</li>
+
+
+
+<li><strong>Cryptography</strong> – Verifying that encryption is applied appropriately, securely, and in line with industry standards.</li>
+</ul>
+
+
+
+<p>The impact of a poor architectural decision might be immediate and measurable—like increased cloud costs or regulatory fines for noncompliance. But it can also show up more subtly over time: technical rework, fragile systems, scaling challenges, or repeated outages. That’s why these decisions demand deliberate scrutiny before they become deeply embedded in your system—especially in connected medical devices, where stability, security, and regulatory alignment are foundational to product viability.</p>
+
+
+
+<p>For a closer look at how these decisions play out when architecting connected medical web applications, see our <a href="https://punchthrough.com/how-to-architect-a-robust-medical-web-based-api-or-app/" target="_blank" data-type="link" data-id="https://punchthrough.com/how-to-architect-a-robust-medical-web-based-api-or-app/" rel="noreferrer noopener">guide to designing a robust medical web API.</a></p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Why Architecture Reviews Matter (Especially in Regulated Environments)</h2>
+
+
+
+<p>In connected medical systems, architecture reviews serve a broader purpose: reducing not just technical risk, but also compliance risk. Decisions made early in development—around communication protocols, data storage, cloud providers, and integration patterns—can directly affect your ability to meet <a href="https://punchthrough.com/regulatory-compliant-software/" target="_blank" rel="noreferrer noopener">regulatory requirements</a>, protect PHI, and ensure clinical performance. A strong review doesn’t just evaluate cloud components, it ensures the <a href="https://punchthrough.com/de-risking-connected-device-development/" target="_blank" rel="noreferrer noopener">full connected system functions reliably</a> across mobile, embedded, and cloud layers.</p>
+
+
+
+<p>That’s why architecture reviews go beyond technical best practices. They help ensure your system is ready for real-world regulatory, security, and operational demands. When these decisions go unchecked, the downstream consequences add up quickly.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" width="1024" height="546" src="https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-1024x546.png" alt="Diagram showing the negative consequences of poor system architecture, with 'Wrong Architecture' at the center and arrows pointing to issues such as increased maintenance, manufacturing, and operational costs; expensive fixes; decreased performance and scalability; security vulnerabilities; testing difficulties; lost opportunities; and damaged reputation." class="wp-image-11155" srcset="https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-1024x546.png 1024w, https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-300x160.png 300w, https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-150x80.png 150w, https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-768x409.png 768w, https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-1536x819.png 1536w, https://punchthrough.com/wp-content/uploads/2025/05/PunchThroughBlogIllustrations_4-30-25_WORKING-2048x1092.png 2048w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+</div>
+
+
+<p>Poor architectural choices can introduce security vulnerabilities, limit scalability, or jeopardize compliance. And once they’re implemented, the cost to correct them—both in time and resources—can be significant. For example:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Choosing the wrong cloud services can lead to unexpected computing costs, vendor lock-in, or gaps in security and compliance.</li>
+
+
+
+<li>Misguided decisions around cryptography may create vulnerabilities, reduce device battery life, inflate manufacturing costs, or cause compatibility issues across hardware platforms.</li>
+</ul>
+
+
+
+<p>Intentional, well-reviewed architecture decisions help teams avoid these pitfalls. They ensure your system can scale, adapt, and perform reliably under pressure—without surprise costs or last-minute workarounds.</p>
+
+
+
+<p>In connected systems, these reviews also serve as a cost-control mechanism—reducing time-to-market delays, avoiding rework from architecture drift, and minimizing the risk of regulatory pushbacks that can halt product release.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">When to Conduct a Cloud Architecture Review</h2>
+
+
+
+<p>Cloud architecture reviews aren’t needed at every stage, but there are specific moments when they can make a measurable difference, especially when early decisions start to harden into the system. Consider a review when:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>You&#8217;re moving from prototype to production</strong><br>Early technical shortcuts often don’t scale. This is the time to ensure the architecture supports long-term growth, maintainability, and compliance.</li>
+
+
+
+<li><strong>You&#8217;re integrating multiple systems (e.g., mobile, cloud, device firmware)</strong><br>System-level complexity increases risk. Architecture reviews help prevent fragile dependencies and integration failures.</li>
+
+
+
+<li><strong>You&#8217;re scaling beyond your initial architecture</strong><br>What worked for five pilot users might collapse under the demands of real-world usage, reviews ensure scale-readiness across the stack.</li>
+
+
+
+<li><strong>You&#8217;re preparing for regulatory submissions or audits</strong><br>A review can surface architectural gaps that could impact safety, traceability, or documentation—especially for Class II/III devices.</li>
+
+
+
+<li><strong>You’ve experienced instability, rework, or integration failures</strong><br>These are often symptoms of deeper architectural misalignment, reviews help teams diagnose root causes, not just fix surface issues.</li>
+</ul>
+
+
+
+<p>These are key inflection points where a cloud architecture review can reduce risk and prevent costly surprises later.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">When to Seek External Support</h2>
+
+
+
+<p>While many architectural decisions can be handled internally, there are moments when an outside perspective is critical.</p>
+
+
+
+<p>If you’re navigating strict compliance requirements, complex integrations, or uncertain scalability in a connected medical ecosystem, a focused architecture review can uncover risks before they derail progress or impact patient safety. The right guidance early on can turn architecture from a liability into a competitive advantage.</p>
+
+
+
+<p>In high-stakes environments, engaging the right partner can make all the difference. <a href="https://punchthrough.com/contact/" target="_blank" rel="noreferrer noopener">Let&#8217;s talk</a> if you&#8217;re looking for experienced support.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Moving Forward with Confidence</h2>
+
+
+
+<p>Cloud architecture reviews are more than a technical exercise—they’re a strategic safeguard for connected medical systems. By catching issues early, aligning decisions with real-world requirements, and ensuring your architecture can scale securely and compliantly, reviews help you build a stronger foundation for product success.</p>
+
+
+
+<p>If you&#8217;re interested in how to run an effective architecture review—or how to adapt the process for Agile teams building regulated systems—our <a href="https://punchthrough.com/cloud-architecture-review-proces/" target="_blank" data-type="link" data-id="https://punchthrough.com/cloud-architecture-review-proces/" rel="noreferrer noopener">follow-up articles</a> break it down with practical steps, real-world examples, and tools to make architecture reviews part of your ongoing development workflow.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>How to Architect a Robust Medical Web API or App</title>
+		<link>https://punchthrough.com/how-to-architect-a-robust-medical-web-based-api-or-app/</link>
+		
+		<dc:creator><![CDATA[Kurt Wiersma]]></dc:creator>
+		<pubDate>Wed, 05 Jun 2024 21:59:10 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<category><![CDATA[Software Best Practices]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=6184</guid>
+
+					<description><![CDATA[Learn to build a secure and efficient medical web API and app with a high-level blueprint for development, maintenance, and operational excellence.]]></description>
+										<content:encoded><![CDATA[
+<p>As more and more people embrace connected medical devices, there&#8217;s a growing need for robust, connected ecosystems to support these innovative solutions. A medical web API or an app plays a crucial role in this ecosystem, acting as the glue that holds everything together. It allows devices, healthcare providers, and patients to communicate and share data seamlessly. However, creating such a system is incredibly complex, and with that complexity comes some pretty big challenges, especially when keeping data secure and protecting patient safety and privacy.</p>
+
+
+
+<p>Several reasons for this complexity include the need to accommodate existing interoperability standards, manage legacy implementations, and handle the sensitive nature of the data involved. Connected medical devices often deal with Protected Health Information (PHI), which is subject to stringent laws and regulations, such as&nbsp;<a href="https://www.hhs.gov/hipaa/index.html" target="_blank" rel="noreferrer noopener">HIPAA</a>. Ensuring compliance with these regulations adds another layer of complexity to the already challenging task of securing and managing access to APIs and apps within these ecosystems.</p>
+
+
+
+<h2 class="wp-block-heading">What&#8217;s In This Guide</h2>
+
+
+
+<p>In this article, we&#8217;ll provide a high-level blueprint for creating a robust medical web API or app. Drawing on over 15 years of cloud architecture experience, we&#8217;ll cover the basics that simplify development, ease maintenance, and ensure operational excellence. We&#8217;ll share insights and best practices to help you navigate the complexities and avoid common pitfalls while building a high-quality solution.</p>
+
+
+
+<p>At Punch Through, we&#8217;ve seen firsthand the competitive advantages and risk reduction of building a solid foundation. We want to stress the importance of getting it right from the start, and we hope to impart some of that foundational knowledge to you. If you or your team find yourself hitting blockers, <a href="https://punchthrough.com/contact">our cloud team</a> is here to help.</p>
+
+
+
+<p>So, let&#8217;s dive in and establish a blueprint for a secure and reliable medical web API or app.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Establishing a Medical Web API or App Blueprint</h2>
+
+
+
+<p>Constructing a medical web API or app is similar to laying down a foundation for a building. Just as a sturdy base supports a house through critical infrastructure like electricity and water, a well-designed foundational layer for your API provides essential capabilities. This foundation supports future growth and adaptability for the entire application.</p>
+
+
+
+<p>Our blueprint for developing high-quality, secure web API and app includes the following foundational elements:</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong><a href="#implementation">Secure API Implementation Infrastructure</a></strong> <br>This cornerstone ensures secure exchanges between mobile apps or medical devices, maintaining data integrity and confidentiality.</li>
+
+
+
+<li><strong><a href="#developer-experience-tooling">Developer-Friendly Tooling</a></strong><br>We provide a selection of tools designed to enhance the developer experience, making the development process more efficient and less prone to errors.</li>
+
+
+
+<li><strong><a href="#automated-tests">Automated Testing</a></strong><br>Our commitment to quality is reflected in our rigorous automated testing, ensuring our code meets the highest standards.</li>
+
+
+
+<li><strong><a href="#ci-cd">Continuous Integration / Continuous Deployment (CI/CD)</a></strong><br>Our CI/CD framework guarantees that our code is high quality and adheres to our stringent guidelines, facilitated by automated tests and lint checks.</li>
+
+
+
+<li><strong><a href="#observability">Observability Tools</a></strong><br>We employ essential tools and practices that allow us to monitor and debug issues effectively from development through production.</li>
+
+
+
+<li><strong><a href="#documentation">Documentation Templates</a></strong><br>Our starter templates ensure that we capture key information right from the start of developing our medical web API or app.</li>
+</ol>
+
+
+
+<div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<figure class="wp-block-image size-large"><img decoding="async" width="1024" height="573" src="https://punchthrough.com/wp-content/uploads/2025/03/Foundation-1024x573.png" alt="Foundation" class="wp-image-6189" srcset="https://punchthrough.com/wp-content/uploads/2025/03/Foundation-1024x573.png 1024w, https://punchthrough.com/wp-content/uploads/2025/03/Foundation-300x168.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/Foundation-150x84.png 150w, https://punchthrough.com/wp-content/uploads/2025/03/Foundation-768x430.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/Foundation.png 1470w" sizes="(max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>To make an awesome medical web API or app (or a house), you want to have a solid foundation to build on top of.</em></figcaption></figure>
+
+
+
+<p>Let&#8217;s explore each component and its role in the overall architecture. This will show how each element contributes to a web API or app&#8217;s stability, security, and performance. In the following sections, we&#8217;ll discuss each component&#8217;s implementation and best practices.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Medical Web API Implementation Infrastructure</h2>
+
+
+
+<p>Understanding the critical implementation infrastructure of a medical web API is paramount to building a solid foundation. By examining core aspects such as authentication, authorization, versioning, documentation, data modeling, and application configuration, you&#8217;ll gain insights into the fundamental elements necessary for creating secure, scalable, and maintainable web APIs. This section will summarize each core component and highlight our preferred approaches, tools, and libraries.</p>
+
+
+
+<h3 class="wp-block-heading" id="authentication"><strong>Authentication</strong></h3>
+
+
+
+<p>Security is top-of-mind when working on web-based medical APIs and apps. We like to use proven libraries to power any security-related functionality, such as authentication. Using <a href="https://oauth.net/2/grant-types/authorization-code/" target="_blank" rel="noreferrer noopener">OAuth 2.0&#8217;s Authorization Code</a> flow with <a href="https://oauth.net/2/pkce/" target="_blank" rel="noreferrer noopener">PCKE</a> (pronounced pixie) allows users in a mobile app or single page app to authenticate securely with a web-based API. </p>
+
+
+
+<p>PCKE is an extension to OAuth 2 that helps prevent CSRF (cross-site request forgery) attacks. Using a proven library means you don&#8217;t have to spend valuable engineering time implementing the authentication flow or worry about introducing a security bug.&nbsp;</p>
+
+
+
+<p>Some libraries we prefer and trust:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>For Python</strong>
+<ul class="wp-block-list">
+<li><a href="https://authlib.org/" target="_blank" rel="noreferrer noopener">AuthLib</a></li>
+
+
+
+<li><a href="https://django-oauth-toolkit.readthedocs.io/" target="_blank" rel="noreferrer noopener">Django OAuth Toolkit</a></li>
+</ul>
+</li>
+
+
+
+<li><strong>For C#/.Net</strong>
+<ul class="wp-block-list">
+<li><a href="https://documentation.openiddict.com/" target="_blank" rel="noreferrer noopener">OpenIdDict</a></li>
+</ul>
+</li>
+</ul>
+
+
+
+<p>You can even use a service like <a href="https://developer.okta.com/docs/concepts/oauth-openid/" target="_blank" rel="noreferrer noopener">Okta</a>, <a href="https://auth0.com/docs/authenticate/protocols/oauth" target="_blank" rel="noreferrer noopener">Auth0</a>, <a href="https://aws.amazon.com/cognito/" target="_blank" rel="noreferrer noopener">AWS Cognito</a>, or <a href="https://learn.microsoft.com/en-us/azure/active-directory-b2c/client-credentials-grant-flow" target="_blank" rel="noreferrer noopener">Azure AD B2C</a> to provide the OAuth server along with a user management interface. Migrating authentication between the different options can be annoying and tedious, so try to choose the type that best fits your near-future needs.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Web Application Login</strong></h3>
+
+
+
+<p>Implementing a secure and user-friendly login system is vital for all web application authentication. Here, we’ll cover best practices for implementing login functionality, handling password resets, and enhancing security with two-factor authentication.</p>
+
+
+
+<h4 class="wp-block-heading">Implementing Login Functionality</h4>
+
+
+
+<p>If your application has a web-based UI, use a library for the login screen. These libraries often include password reset and change features. We recommend using the library&#8217;s features instead of building them from scratch. This is for the same reasons we mentioned for API authentication.&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Password Reset Process</h4>
+
+
+
+<p>A robust password reset process is important for user experience and security. When implementing password reset functionality, keep the following best practices in mind:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Use a library or framework-provided solution to handle password reset flows.</li>
+
+
+
+<li>Send users a token via email to access the password change form rather than emailing the password directly.</li>
+
+
+
+<li>Store passwords securely in the database by using a hashing algorithm with a salt.</li>
+
+
+
+<li>During the password reset process, do not reveal whether an account exists for a given email address to prevent potential attackers from enumerating valid user accounts.</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">Two-Factor Authentication</h4>
+
+
+
+<p>Consider using a library to build in Two-factor Authentication (2FA) support from the start. Many of the services listed above in the API authentication section also support two-factor authentication. This will be especially critical if you have an admin-type interface that allows a small number of super users to see and edit sensitive information in your application.&nbsp;</p>
+
+
+
+<p>The benefits of implementing two-factor authentication include:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Enhanced security</strong> by making it more difficult for attackers to gain unauthorized access, even if they obtain a user’s password.</li>
+
+
+
+<li><strong>Reduced risk of account takeovers</strong>, especially for high-value targets like admin accounts.</li>
+
+
+
+<li><strong>Increased user trust and confidence</strong> in the security of your application.</li>
+</ul>
+
+
+
+<p>Services like <a href="https://developer.okta.com/docs/concepts/oauth-openid/" target="_blank" rel="noreferrer noopener">Okta</a> and <a href="https://auth0.com/docs/authenticate/protocols/oauth" target="_blank" rel="noreferrer noopener">Auth0</a> provide easy-to-integrate solutions for implementing 2FA in your web application. If you are already using a single sign-on service, like Google Workspace or Microsoft Entra, for your organization’s employees, you should be able to use their sign-on system and libraries to enforce 2FA for those employees.&nbsp;</p>
+
+
+
+<p>By leveraging proven libraries, following best practices for password reset processes, and incorporating two-factor authentication, you can build a robust login system that provides a strong foundation for your web application&#8217;s security.</p>
+
+
+
+<h3 class="wp-block-heading" id="authorization" style="font-size:24px"><strong>Authorization</strong></h3>
+
+
+
+<p>With authentication in place, your application knows who is logged in. Now, you must ensure the user is allowed to access the requested resource or action. Authorization is crucial, especially in medical device APIs.</p>
+
+
+
+<h4 class="wp-block-heading">Setting Default Authorization Requirements</h4>
+
+
+
+<p>Its important to ensure we have the right authorization in place. To achieve this, we set a default authorization requirement that applies to all API endpoints by default. This can be adjusted per endpoint as needed. For example, all API requests should require a valid logged-in user, except for the authentication endpoint. Setting a default reduces the risk of new endpoints with no authorization slipping in.</p>
+
+
+
+<h4 class="wp-block-heading">Creating Authorization Helpers</h4>
+
+
+
+<p>Another technique we like to use is to create a set of authorization helpers that can ensure consistent and correct authorization implementation across your API endpoints. These helpers should encapsulate common authorization scenarios and can be easily applied. For example, you might create a helper to check if a user has admin privileges.</p>
+
+
+
+<h4 class="wp-block-heading">Testing Authorization</h4>
+
+
+
+<p>Finally, we include authorization-related tests in our integration tests for each endpoint. This ensures authentication is correctly implemented for every endpoint. These tests should cover various authorization scenarios, such as unauthenticated, unauthorized, and permitted access attempts.</p>
+
+
+
+<p>By incorporating authorization tests into your test suite, you can catch authorization-related bugs early and ensure the security of your API.</p>
+
+
+
+<h3 class="wp-block-heading" id="api-versioning"><strong>API Versioning</strong></h3>
+
+
+
+<p>As you build out your medical web API, it is a good idea to have a plan for API versioning, ideally from the start. This is especially important when working with medical devices and mobile apps that could have old client versions calling your APIs. It is important to keep backward compatibility in mind to ensure those users who haven’t updated yet can still use your API. We recommend starting with &#8220;v1&#8221; in all API endpoint URL routes. Configure the code to support additional versions at the endpoint level for future changes that may introduce breaking changes.</p>
+
+
+
+<p class="has-background" style="background-color:#bce6fd"><strong>For Example:</strong> <code>/api/v1/device-data</code> might capture data sent by the first version of the mobile app’s API client. You might then later have a new version of the device released and a new mobile app version that sends data up to the API in a different format from that device, in which case you would then use <code>/api/v2/device-data</code> as the URL to handle that different API contract.</p>
+
+
+
+<p>Most web frameworks have API version configuration as part of their feature set, so look to see if you can take advantage of those from the start. This will help you ensure you have a way to keep old versions of the API endpoints working even while you introduce new versions that have breaking changes or support newer devices or mobile app versions.</p>
+
+
+
+<h3 class="wp-block-heading" id="api-documentation"><strong>API Documentation</strong></h3>
+
+
+
+<p>Comprehensive and up-to-date API documentation is crucial for ensuring that developers can effectively understand and utilize your API. In this section, we’ll cover our recommendations for configuring and displaying API documentation, as well as strategies for keeping it current.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="353" src="https://punchthrough.com/wp-content/uploads/2025/03/Icon-OpenAPI-1024x353.png" alt="Icon Openapi" class="wp-image-6188" srcset="https://punchthrough.com/wp-content/uploads/2025/03/Icon-OpenAPI-1024x353.png 1024w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-OpenAPI-300x103.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-OpenAPI-150x52.png 150w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-OpenAPI-768x265.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-OpenAPI.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<h4 class="wp-block-heading">Configuring API Documentation</h4>
+
+
+
+<p>From the beginning, we recommend configuring API documentation to output an Open API spec and displaying all the API documentation via <a href="https://github.com/Redocly/redoc" target="_blank" rel="noreferrer noopener">Redoc</a> (<a href="https://redocly.github.io/redoc/" target="_blank" rel="noreferrer noopener">example</a>) or <a href="https://swagger.io/" target="_blank" rel="noreferrer noopener">Swagger Docs</a> (<a href="https://petstore.swagger.io/" target="_blank" rel="noreferrer noopener">example</a>). In particular, we like how Redoc displays an example of the JSON on the right-hand side of the screen next to the detailed description of the endpoints.&nbsp;</p>
+
+
+
+<p>By providing comprehensive API documentation, you enable other team engineers or external developers to quickly grasp the purpose of each endpoint, how to call it, and how to handle its various responses. If your API is not public, you can restrict access to the documentation to authorized users only.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="768" height="378" src="https://punchthrough.com/wp-content/uploads/2025/03/swagger_ui-768x378-1.png" alt="Swagger Ui 768x378" class="wp-image-6201" srcset="https://punchthrough.com/wp-content/uploads/2025/03/swagger_ui-768x378-1.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/swagger_ui-768x378-1-300x148.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/swagger_ui-768x378-1-150x74.png 150w" sizes="auto, (max-width: 768px) 100vw, 768px" /><figcaption class="wp-element-caption">Swagger Docs Example</figcaption></figure>
+</div>
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="768" height="398" src="https://punchthrough.com/wp-content/uploads/2025/03/redoc-demo-768x398-1.png" alt="Redoc Demo 768x398" class="wp-image-6200" srcset="https://punchthrough.com/wp-content/uploads/2025/03/redoc-demo-768x398-1.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/redoc-demo-768x398-1-300x155.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/redoc-demo-768x398-1-150x78.png 150w" sizes="auto, (max-width: 768px) 100vw, 768px" /><figcaption class="wp-element-caption">Redoc Example</figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Documenting the Initial Endpoint</h4>
+
+
+
+<p>When documenting your first API endpoints, take extra care to set a good example for future endpoints. This includes specifying:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Input parameters and JSON bodies</li>
+
+
+
+<li>All possible HTTP status codes that can be returned</li>
+
+
+
+<li>The structure of the responses</li>
+</ul>
+
+
+
+<p>By clearly documenting these aspects, API callers can easily understand how to interact with your endpoints and handle the various outcomes.</p>
+
+
+
+<h4 class="wp-block-heading">Additional Documentation</h4>
+
+
+
+<p>In addition to the basic endpoint details, consider including supplementary documentation within the Open API spec. This can include:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Instructions on how to call the API and the proper order of calls for multi-step process</li>
+
+
+
+<li>Link to separate HTML pages with more detailed explanations</li>
+</ul>
+
+
+
+<p>Don’t forget to specify the authentication required on each endpoint so your users know what is required to use each endpoint.&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Generating the Open API Spec</h4>
+
+
+
+<p>Many API libraries will have built-in functionality to specify the metadata needed for the Open API spec directly in the code. We recommend taking advantage of that to generate the spec from your code to ensure it is as up-to-date as possible. Having this place from the start helps keep documentation up to date as the API evolves.&nbsp; Regularly review and update the documentation whenever changes are made to the API, ensuring that it accurately reflects the current state of your endpoints.</p>
+
+
+
+<h3 class="wp-block-heading" id="basic-data-model"><strong>Basic Data Model</strong></h3>
+
+
+
+<p>Every web app needs at least a simple data model for users and roles. Many platforms provide a library that can get you started with a nice user model that can be saved to a database and assigned roles. We typically extend the default library-provided user model right away as we usually want to store custom attributes about the users and roles in our application or API.&nbsp;</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="548" src="https://punchthrough.com/wp-content/uploads/2025/03/Data-Model-1024x548.png" alt="Data Model" class="wp-image-6190" srcset="https://punchthrough.com/wp-content/uploads/2025/03/Data-Model-1024x548.png 1024w, https://punchthrough.com/wp-content/uploads/2025/03/Data-Model-300x161.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/Data-Model-150x80.png 150w, https://punchthrough.com/wp-content/uploads/2025/03/Data-Model-768x411.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/Data-Model.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>A simple data model for users and roles.</em></figcaption></figure>
+
+
+
+<p>When storing dates and times in our database, we always use the UTC timezone and then format the dates in the user’s timezone when displaying them. This gives us a consistent time zone that can be easily transformed into the one the user prefers.</p>
+
+
+
+<h3 class="wp-block-heading" style="font-size:24px"><strong>Application Configuration</strong></h3>
+
+
+
+<p>Right from the start, we would like to set up our application to use environment variables for all configuration parameters that will be different based on the environment (local, staging, production, etc.) on which the app instance is running. This is one of the core parts of the <a href="https://12factor.net/" target="_blank" rel="noreferrer noopener">12-Factor App</a> that we would like to follow. We typically will create a <code>.env-template</code> file with default settings for local development that doesn’t have any secrets filled in. Then, in our local run instructions, we will have the engineer make a copy of that template and fill in any secrets they need to run the app locally.&nbsp;</p>
+
+
+
+<p>We recommend storing and managing secrets outside the code repository and using services like AWS Parameter Store (or Secrets Manager), Hashicorp Vault, or Azure Key Vault to securely handle them. This helps ensure the secrets are secure and only available to people and systems that need them.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="developer-experience-tooling"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Developer Experience Tooling</strong></h2>
+
+
+
+<p>We prioritize robust tooling to streamline the development process. This section highlights our key tools and techniques for enhancing productivity and simplifying tasks like setup, testing, and dependency management.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Docker Compose</strong></h3>
+
+
+
+<p>We use <a href="https://docs.docker.com/compose/" target="_blank" rel="noreferrer noopener">Docker Compose</a> for any additional services the web app needs, such as databases, caching servers, or even mock cloud services. Docker is open-source, easy to install, and we can quickly write commands to spin up all the necessary services and run them locally for development.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Postman Collection</strong></h3>
+
+
+
+<p>One handy technique we have used is to create a <a href="https://www.postman.com/" target="_blank" rel="noreferrer noopener">Postman collection</a> with example calls to the API endpoints that developers or testers can use to try out the API running locally or even in a deployed test environment. You can generate the Postman collection from your Open API spec and customize it to help developers and testers try it out.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Commands</strong></h3>
+
+
+
+<p>We like to have commands implemented and documented to install library dependencies, build the app, run the app locally, run the tests, and manage the database. These are all based on Docker Compose, so we can quickly get a new engineer up and running with a complete local development environment and help each engineer through the common tasks they will need to perform while developing the app.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="automated-tests"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Automated Tests</strong></h2>
+
+
+
+<p>Now that we have basic medical web application and web API functionality in place, we want to set up all the infrastructure needed to implement the first set of automated tests to verify the authentication and authorization code we set up is working correctly and securely.</p>
+
+
+
+<p>We start with a small number of unit tests and a more significant number of integration-style tests that simulate hitting each HTTP endpoint our API exposes. This approach typically involves setting up a test database that can run locally next to our local development database. Some web app frameworks like Django can set up this for you when you launch your tests, provided the database is already running locally or through a Docker container. We like configuring the integration tests to roll back the DB transaction at the end of each test method to clean up any DB rows created or edited during the test.</p>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="574" src="https://punchthrough.com/wp-content/uploads/2025/03/Automated-Testing-1024x574.png" alt="Automated Testing" class="wp-image-6187" srcset="https://punchthrough.com/wp-content/uploads/2025/03/Automated-Testing-1024x574.png 1024w, https://punchthrough.com/wp-content/uploads/2025/03/Automated-Testing-300x168.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/Automated-Testing-150x84.png 150w, https://punchthrough.com/wp-content/uploads/2025/03/Automated-Testing-768x430.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/Automated-Testing.png 1471w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>Consider the “testing diamond” approach</em>&nbsp;for medical web API and app testing.</figcaption></figure>
+
+
+
+<p>Creating the testing infrastructure and some initial tests for the base functionality will help ensure each new feature added to the web app can easily have tests developed for it right from the start. This helps ensure we can build a high-quality solution from the start and catch any bugs or breaking changes early in the development process.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="ci-cd"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Continuous Integration &amp; Continuous Deployment (CI/CD)</strong></h2>
+
+
+
+<p>Now that we have automated tests and a configurable application, we set up CI. In our CI pipeline, we run build, lint, and test commands on all pull requests to catch issues before code review. This step often helps us catch bugs and setup issues missed during local development. Some CI pipeline services we use include:</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://docs.github.com/en/actions" target="_blank" rel="noreferrer noopener">GitHub Actions</a></li>
+
+
+
+<li><a href="https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines?view=azure-devops" target="_blank" rel="noreferrer noopener">Azure Pipelines</a></li>
+
+
+
+<li><a href="https://bitbucket.org/product/features/pipelines" target="_blank" rel="noreferrer noopener">BitBucket Pipelines</a></li>
+
+
+
+<li><a href="https://circleci.com/" target="_blank" rel="noreferrer noopener">CircleCI</a></li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">Building and Deploying Docker Images</h3>
+
+
+
+<p>If our CI build succeeds, we use the CI tool to build a Docker image deployable to any environment (staging, QA, production, etc.) with separate environment variables for each. Deployment can happen automatically or by manually triggering it from the CI tool&#8217;s dashboard. We set up deployment as another CI pipeline, making it repeatable and easy to monitor. Many Platform-as-a-Service offerings simplify configuring these deployments. We have succeeded with <a href="http://render.com/" target="_blank" rel="noreferrer noopener">Render.com</a> and <a href="https://www.heroku.com/" target="_blank" rel="noreferrer noopener">Heroku</a> in this space, as you can easily trigger a deployment from a git repo or Docker image repository through those services.</p>
+
+
+
+<h3 class="wp-block-heading">Post-Deployment Health Checks</h3>
+
+
+
+<p>Once the app is deployed, having a simple health check endpoint is beneficial. We use an HTTPS request to this endpoint before marking the environment as fully deployed. This approach helps us ensure the deployment was successful. The health check endpoint should ensure it can run a simple query against the database and access any other required shared resources the app needs to function. Finally, consider setting up automated smoke tests against the deployed environment to ensure they work entirely. This approach could be as simple as doing a few HTTPS requests to ensure the login functionality works successfully.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="observability"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Observability</strong></h2>
+
+
+
+<p>The goal is to build a high-quality web-based application that can be run reliably in production. To provide a foundation for operating the web app, we include tooling for monitoring, tracing, and logging right from the start. This tooling will ensure we can quickly find and fix bugs that might make it to production while ensuring our application or API performs within the defined limits.&nbsp;</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Monitoring</strong></h3>
+
+
+
+<p><a href="https://opentelemetry.io/" target="_blank" rel="noreferrer noopener">Open Telemetry</a> is an industry standard now supported by many vendors for monitoring, tracing, and logging. It has libraries for many different web programming platforms. You can move between vendors quickly if needed. Some of the vendors we have seen that have Open Telemetry support are:</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="http://sentry.io/" target="_blank" rel="noreferrer noopener">Sentry.io</a></li>
+
+
+
+<li><a href="http://honeycomb.io/" target="_blank" rel="noreferrer noopener">Honeycomb.io</a></li>
+
+
+
+<li><a href="https://newrelic.com/" target="_blank" rel="noreferrer noopener">New Relic</a></li>
+
+
+
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable?tabs=aspnetcore" target="_blank" rel="noreferrer noopener">Azure Monitor</a></li>
+</ul>
+
+
+
+<p>There are also open-source solutions you can install and run on your infrastructure. The <a href="https://opentelemetry.io/docs/concepts/instrumentation/libraries/" target="_blank" rel="noopener">OpenTelemetry libraries</a> provide auto-instrumentation for many web frameworks, enabling you to start quickly without adding much code to your application. As you develop your app, you can add custom instrumentation for more detailed insights beyond what auto-instrumentation provides.</p>
+
+
+
+<p>These tools offer a good starting point for monitoring errors and tracking application performance. Many also support distributed tracing, allowing you to track operations spanning several microservices. Some vendors, like Sentry, excel at error tracking and performance monitoring but might be weaker in other areas like logging. Evaluate each tool to see which works best for your organization. Our experience has shown that good error tracking and performance monitoring are essential early in an application&#8217;s life.</p>
+
+
+
+<div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h3 class="wp-block-heading"><strong>Logging</strong></h3>
+
+
+
+<p>When starting a new web application or API, we like to start with two types of logging: general logs and audit logs.</p>
+
+
+
+<h4 class="wp-block-heading">General Logs&nbsp;</h4>
+
+
+
+<p>General logging involves capturing details about a particular debugging request that comes into the app. Each request should get assigned a unique identifier so you can track it throughout its life cycle. Many logging libraries and web frameworks can help you do this. These logs come in handy as you develop and debug your application.</p>
+
+
+
+<h4 class="wp-block-heading">Audit Logs</h4>
+
+
+
+<p>Medical IoT applications often require detailed logs. We log who made each request (user and IP address), what was requested, and when the request was received. These logs enhance security and support compliance with HIPAA or SOC 2 policies.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="documentation"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Documentation</strong></h2>
+
+
+
+<p>We typically use a set of technical design, formal requirements, and developer document templates for each application we build. This approach allows us to plan out our application and lay the groundwork for any necessary regulatory submissions. By starting these documents early in the development process, you can ensure they capture all the critical decisions and requirements along the way.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Technical Design Documents</strong></h3>
+
+
+
+<ul class="wp-block-list">
+<li>High-level design document (HDL)</li>
+
+
+
+<li>Low-level design document (LDL)</li>
+
+
+
+<li>Data model document</li>
+</ul>
+
+
+
+<p>On the technical design side of our documentation, we often have a high-level design document (HDL), a low-level design document (LDL), and a data model document. The data model document can be separated or included in the HDL or LDL. The high-level design document captures the application&#8217;s design from a ten-thousand-foot view. The low-level design document dives into deeper detail about each application component. We typically use an Agile approach to populate these documents during development rather than filling them out entirely upfront. Consequently, a solid initial technical design saves time during development.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Formal Requirements Documents</strong></h3>
+
+
+
+<ul class="wp-block-list">
+<li>Use Cases</li>
+
+
+
+<li>Software Requirements Specification (SRS)</li>
+
+
+
+<li>Software Test Plan (STP)</li>
+</ul>
+
+
+
+<p>Our teams typically create use cases for the formal requirements documents based on interviews with subject matter experts from the product management team. These use cases help us develop the Software Requirements Specification (SRS) document. The SRS is a basis for building a Software Test Plan (STP) document. The STP is populated with references to requirements from the SRS.</p>
+
+
+
+<div style="height:0px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h3 class="wp-block-heading"><strong>Developer-Level Documentation</strong></h3>
+
+
+
+<ul class="wp-block-list">
+<li>&#8220;Read me&#8221; file</li>
+
+
+
+<li>Architecture Decision Records (ADRs)</li>
+</ul>
+
+
+
+<p>We recommend having developer-level documentation, including a &#8220;read me&#8221; file in the root of the code repository. This file should cover how to run, build, and execute the tests locally. It should include links to other documentation, such as those listed above. We also suggest creating a folder and template for <a href="https://adr.github.io/" target="_blank" rel="noreferrer noopener">Architecture Decision Records (ADRs)</a>. Start with one outlining the reasons for choosing the particular tech stack and authentication method. The &#8220;read me&#8221; document should also include a section on cloud deployment. This section explains how to initiate deployment and details the cloud resources created and managed through the app&#8217;s deployment scripts and infrastructure as code files. This approach is also a good place to link to the Swagger Docs discussed above. This allows new developers to see quickly what API endpoints are available.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Final Thoughts</strong></h2>
+
+
+
+<p>Building a robust medical web API or app is a complex undertaking that requires a deep understanding of the unique challenges and best practices in the healthcare and IoT software development domains. We hope this article&#8217;s blueprint helps provide you with a clear path towards building your own effective medical web API or app.</p>
+
+
+
+<p>However, we recognize that every project is unique, and not everyone has the resources or expertise to start from scratch or execute effectively. You may encounter blockers that are difficult to resolve on your own, slowing down your progress and hindering your ability to achieve your goals.</p>
+
+
+
+<p>That&#8217;s where Punch Though&#8217;s team of cloud experts can come in. With years of experience in developing cutting-edge, connected medical devices, including their ecosystems and medical web APIs and apps, we&#8217;ve helped numerous clients navigate the complexities of this landscape and bring their vision to life. When challenges arise, we&#8217;re here to help you do more, overcome obstacles, and reach your objectives.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>How To Evolve Cloud Architecture for Connected Medical Devices</title>
+		<link>https://punchthrough.com/evolving-connected-medical-device-cloud-architecture/</link>
+		
+		<dc:creator><![CDATA[Justin Berger]]></dc:creator>
+		<pubDate>Mon, 01 Apr 2024 15:45:30 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/how-to-strategically-evolve-cloud-architecture-for-iomt/</guid>
+
+					<description><![CDATA[Explore how connected medical device cloud architectures evolve over time, and learn strategies to support scalability, integration, and compliance across cloud, mobile, and embedded systems as product complexity increases.]]></description>
+										<content:encoded><![CDATA[
+<p>We&#8217;ve seen firsthand the unique challenges and intricacies of architecting cloud services for connected medical devices. On one hand, much of the work to design the perfect cloud infrastructure is wasted when requirements change. On the other hand, not investing time and effort into scalable cloud architecture can result in inefficient use of cloud resources and slower, less reliable applications. Getting cloud architecture right is difficult and requires experienced engineers that companies might not have on staff.</p>
+
+
+
+<h2 class="wp-block-heading">What&#8217;s In This Article</h2>
+
+
+
+<p>In this article, we&#8217;ll provide a high-level understanding of how to grow your cloud architecture across your connected product lifecycle. We aim to equip you with the key phases, considerations, and strategies for standing up and evolving a robust medical cloud architecture to support your connected medical device ecosystem as your product grows. We hope it will serve as a valuable guidepost on your connected medical device&#8217;s cloud development journey.&nbsp;</p>
+
+
+
+<p>If you run into any blockers along the way and need an <a href="https://punchthrough.com/services/" target="_blank" data-type="page" data-id="1388" rel="noreferrer noopener">expert cloud development</a> partner, <a href="https://punchthrough.com/contact/" target="_blank" data-type="page" data-id="321" rel="noreferrer noopener">reach out</a>; Punch Through’s cloud team is here to help you achieve success. Now, let&#8217;s talk about project phases…</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading toc" id="project-phases">Project Phases Across Startup, Growth, and Maturity</h2>
+
+
+
+<p>Understanding the optimal timing for cloud architecture in connected medical device development is foundational to success. While every company is different, common challenges are faced at key stages. We&#8217;ve distilled these observations into three phases where cloud architecture considerations are critical: Startup, Growth, and Maturity. Identifying your current phase will help determine how to best approach your cloud architecture strategy.</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong><a href="#startup">Startup Phase</a>:</strong> At this initial phase, companies are developing prototypes or navigating through clinical trials without a product yet on the market. Their focus is on proof of concept and foundation building.</li>
+
+
+
+<li><strong><a href="#growth">Growth Phase</a>:</strong> Typically, these organizations have recently launched their product and are now grappling with scaling challenges, such as expanding their offerings, attracting new customers, and integrating new team members. Their focus is on scalability and efficiency.</li>
+
+
+
+<li><strong><a href="#maturity">Maturity Phase</a>: </strong>Companies in this phase have laid down the infrastructure needed to support ongoing growth. They often boast multiple successful products and focus on streamlining processes and <a href="https://punchthrough.com/iot-cloud-integration-with-emr-systems/" target="_blank" data-type="post" data-id="6391" rel="noreferrer noopener">exploring third-party integrations, including Electronic Health Record (EHR) systems</a> like Epic or Cerner. Their focus is on stability and interoperability.</li>
+</ul>
+
+
+
+<p>Next, we&#8217;ll delve deeper into each phase, using situational examples to help illustrate the unique challenges and strategies in tackling cloud architecture for each situation.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading toc" id="startup"><strong>Startup: </strong>Architecting a Foundation for Growth</h2>
+
+
+
+<p>During the startup phase of a project, where the product hasn’t been released yet, you don’t have the time or resources to build everything all at once. So, you start by building a solid foundation for future work and then iterate on the most important features.</p>
+
+
+
+<h3 class="wp-block-heading">Scenario</h3>
+
+
+
+<p>To help illustrate cloud architecture needs at the startup phase, lets use New Product LLC as an example situations:</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<p class="has-background" style="background-color:#bce6fd"><em>New Product LLC. is a startup with a small team of skilled engineers working on developing a connected medical device. Their engineers are creating the associated firmware, mobile, and web applications for patients, as well as a set of APIs for both the devices and mobile apps to communicate with the cloud and each other. They plan to work on a web UI for the management of patients, data, and devices.</em><br><br><em>The company’s primary focus is on launching their product. They need a reliable, high-quality system with good uptime that doesn’t cost them too much and is delivered as fast as possible. Due to the time constraints, they can only implement some of the features they desire.&nbsp;</em><br><br><em>The engineering teams want clear requirements and guidance to prioritize the essential features. Regular and prompt feedback is necessary to ensure they’re on the right track and can correct any misunderstandings or changes in requirements early on. They aim to build a system that will support future growth and innovation.</em></p>
+</div></div>
+</div></div>
+
+
+
+<h3 class="wp-block-heading">Specific Cloud Challenges</h3>
+
+
+
+<p>In the startup phase, designing a robust and scalable cloud architecture can be challenging due to various factors inherent in the early stages of a project. Here are some specific challenges that startups often face:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Unclear Requirements</strong>: At the beginning of a project, many unknowns can lead to ambiguous or incomplete requirements. This lack of clarity makes it difficult to design an optimal cloud architecture that will meet the project&#8217;s current and future needs.<br></li>
+
+
+
+<li><strong>Changing Priorities</strong>: As new information is discovered during the implementation phase, requirements and priorities may shift. These changes can necessitate significant modifications to the cloud architecture, which can be time-consuming and costly to implement.<br></li>
+
+
+
+<li><strong>Cost Implications of Inefficient Implementation</strong>: Startups often have limited financial resources, making it crucial to design an efficient cloud implementation from the outset. Inefficient architectures can lead to increased costs, which can strain the startup&#8217;s budget and hinder its growth.<br></li>
+
+
+
+<li><strong>Limited Expertise</strong>: Startups may not have access to experienced cloud architects or developers, which can result in suboptimal design decisions and implementation challenges.</li>
+</ul>
+
+
+
+<p>Additionally, connected medical devices and medical software requires:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Strong Security Requirements</strong>: Connected medical devices and medical software projects require robust security measures from the very beginning to protect sensitive patient data and ensure compliance with industry regulations. Implementing these security features can be complex and time-consuming.<br></li>
+
+
+
+<li><strong>Regulatory Requirements</strong>: Medical software is subject to strict regulatory requirements, such as HIPAA and GDPR, which impose additional work on the development team. Ensuring compliance with these regulations can be a significant challenge for startups with limited resources.<br></li>
+
+
+
+<li><strong>Formal Verification and Validation</strong>: Connected medical devices and medical software projects require thorough documentation and testing to ensure the reliability and safety of the product. This process can be resource-intensive and may slow down the development timeline.<br></li>
+
+
+
+<li><strong>Higher Cloud Provider Costs</strong>: Cloud providers often charge more for the security features required for connected medical device and medical software, which can further strain a startup&#8217;s budget.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">Cloud Architecture Strategies</h3>
+
+
+
+<p>The best way to start any new cloud implementation is to use an <a href="https://punchthrough.com/agile-and-medical-device-industry/" target="_blank" data-type="post" data-id="6711" rel="noreferrer noopener">Agile approach to medical device development</a>. Start simple, then improve through multiple interactions. The first step is to develop a High-Level Design (HLD) that defines the system’s most important features and dependencies. From there, you build a prototype with a subset of those features that can be demonstrated and tested. This iterative approach lets you get feedback at each iteration to ensure you are on the right track. For each interaction, you make incremental changes to the design and the prototype, adding more and more functionality.</p>
+
+
+
+<h4 class="wp-block-heading"><strong>Internal Architecture Planning</strong></h4>
+
+
+
+<p>The same approach applies to the architecture behind the scenes. It is best to start with a single “modular monolithic” application, where the application is built as a single application in a single codebase but is broken down internally as if each component were a microservice. This allows developers to iterate quickly, refactor when needed, or even completely change the design as requirements become clearer. It also makes it easier to break down into multiple services as the complexity increases.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_1_ModularMonolith-scaled.jpg" alt="An illustrated diagram showing what a modular monolith in cloud architecture planning." class="wp-image-5182"/><figcaption class="wp-element-caption"><em>An example of what we mean by “modular monolith” is where related logic is grouped to make future microservice migrations easier.</em></figcaption></figure>
+</div>
+
+
+<p>We avoid adding unnecessary complexity early on by:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Focusing on just the core features to start with</li>
+
+
+
+<li>Avoiding async background processing</li>
+
+
+
+<li>Using existing cloud services to handle some of the complexity</li>
+
+
+
+<li>Breaking features into independent microservices only when needed</li>
+
+
+
+<li>Simple reporting and Robust data exports, allowing users to generate their own reports from the data</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading"><strong>Groundwork for SOC 2 Compliance</strong></h4>
+
+
+
+<p>We include the following features to ensure the system&#8217;s security and patient privacy. However, we also design them with future SOC 2 compliance in mind. It can be difficult to implement the necessary security and privacy requirements later on if proper security controls are not in place from the beginning.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_2_GroundworkForSOC2Compliance-scaled.jpg" alt="An illustration visualizing SOC 2 “Trust Services Principles”" class="wp-image-5183"/><figcaption class="wp-element-caption"><em>SOC 2 “Trust Services Principles”</em></figcaption></figure>
+</div>
+
+
+<div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h5 class="wp-block-heading"><strong>Monitoring and Logging Built-In</strong></h5>
+
+
+
+<p>Overlooking observability at this stage in the project can be a costly decision that leads to significant additional work later in the project. You should have a strategy for monitoring and logging that will support the ability to locate issues in development and production. Including this at the beginning of a project is much easier than adding it after the fact and lays a solid foundation for SOC 2 compliance.</p>
+
+
+
+<p>I prefer to instrument the code using open standards like OpenTelemetry connected to commercial tools such as New Relic or Sentry. By using OpenTelemetry in the code, I can switch between different monitoring services or even use multiple simultaneously. I use commercial services to collect telemetry because the open-source alternatives aren’t as feature-rich without substantial configuration, which isn’t a good use of effort early in a project.</p>
+
+
+
+<h5 class="wp-block-heading">Authentication and Access Management</h5>
+
+
+
+<p>Any new connected medical device software project must start with a plan for Authentication, Authorization, and Audit logging.</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Authentication</strong> is the process of determining who is making the request. This includes users logging in and how software components authenticate with each other. You should also enforce two-factor authentication for any account that can access data for multiple patients.<br></li>
+
+
+
+<li><strong>Authorization</strong> is the process of determining whether the requester is allowed to make that request, including what types of data a user or software component can access and what actions they can perform. It also includes controlling access to specific records, such as users only having permission to access their own data.<br></li>
+
+
+
+<li><strong>Audit Logging</strong> is the practice of maintaining a record of all interactions with data, including access, modification, and deletion. It’s crucial to have a well-defined strategy for identifying the types of data that require audit logs, particularly personally identifiable information (PII) or protected health information (PHI). These logs will allow you to monitor suspicious activity and ensure data is used solely for authorized purposes.</li>
+</ul>
+
+
+
+<p>It&#8217;s important to have automated tests that verify that these are in place and are working correctly. That way, you can ensure that changes as part of a future release, do not break any necessary security controls.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_3_SOC2Example-scaled.jpg" alt="Illustration showing Authentication, Authorization, and Audit Logging." class="wp-image-5184"/><figcaption class="wp-element-caption"><em><strong>Authentication</strong>: Presenting or scanning your employee ID to gain entry is a form of authentication. <strong>Authorization</strong>: Authorization is about controlling access, like employee-only doorways.&nbsp;<strong>Audit Logging</strong>:&nbsp;Sign-in sheets and badge tracking systems function as a form of audit logs. They let you tell a story about what happened and who did it.</em></figcaption></figure>
+</div>
+
+
+<div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h5 class="wp-block-heading">Securing the Infrastructure</h5>
+
+
+
+<p>It is just as important to apply authentication, authorization, and audit logging to the infrastructure behind the application. The only difference is that you usually grant access to employees and contractors instead of the software users.</p>
+
+
+
+<p>Because access to the infrastructure could enable access to a larger volume of data, with many access controls managed outside the software system, you should limit access to production data – both in terms of permissions and the number of accounts with access. There should be few accounts with full access, and they should not be used in day-to-day work.</p>
+
+
+
+<h5 class="wp-block-heading">Encryption</h5>
+
+
+
+<p>All data should be encrypted when stored or transmitted between systems. Except for PHI data, which <em>must</em> be encrypted. In addition, the encryption keys must be stored securely with access controls so only the necessary systems can access them to maintain the security of the encrypted data.</p>
+
+
+
+<h5 class="wp-block-heading">Automated Testing</h5>
+
+
+
+<p>Security, monitoring, and audit logging should all be tested with automated tests. Oftentimes, these are difficult to test manually, and bugs that affect them can be missed because they’re not directly related to the feature being implemented or tested. These automated tests can cover many complex combinations of access controls and quickly verify that all access controls work as intended for every application release.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading toc" id="growth"><strong>Growth:</strong> Architecting for Scale &amp; Efficiency</h2>
+
+
+
+<p>The growth phase of a project starts after the first product is launched. You start to scale in terms of users of the system and load on the system. To keep up, you scale the size of the development team(s) working on the project. The growth may also require you to reevaluate your priorities and strategies.</p>
+
+
+
+<h3 class="wp-block-heading">Scenario</h3>
+
+
+
+<p>For the growth phase, lets use Growth Inc. as an example situation:</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<p class="has-background" style="background-color:#bce6fd"><em>Growth Inc., is a growing connected medical device company that just launched its first product. The product is used by customers more and more every day, and many of the company’s limitations and needs are changing as well. All the core features are in place now, and the engineering teams are working on fixing bugs and adding new features. The company is also expanding its engineering department to keep up with the growth of the rest of the company. All of this growth has resulted in improvements to the system taking longer and longer to complete.</em><br><br><em>At this point, the company focused on expanding the application’s features, fixing bugs, and handling the growth of development teams and the number of customers. The business is also very sensitive to downtime of the application. They may also be considering integrating with third-party platforms.</em><br><br><em>The engineering teams are busy fixing bugs and getting new features out as quickly as possible and are sensitive to anything that slows them down. Engineers may bring up issues like code ownership or “tech debt.”</em></p>
+</div></div>
+
+
+
+<h3 class="wp-block-heading">Specific Cloud Challenges</h3>
+
+
+
+<p>As an connected medical device company enters the growth phase, the development team faces new challenges in managing the increasing complexity of the cloud infrastructure and codebase. Here are some specific issues that often arise:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Increased Coordination Overhead</strong>: Expanding the development team requires more coordination to keep everyone on the same page, which leads to more meetings and more project management.<br></li>
+
+
+
+<li><strong>Accumulating Technical Debt</strong>: “Tech Debt” starts to play a significant role. Such as:
+<ul class="wp-block-list">
+<li>Architecture decisions that didn’t scale as well as planned.</li>
+
+
+
+<li>Small pieces of inefficient code that add up to major performance issues.</li>
+
+
+
+<li>Requirement changes that render a complex section of code unnecessary that can’t be removed without major rework.<br></li>
+</ul>
+</li>
+
+
+
+<li><strong>Monolithic Architecture Scalability Issues</strong>: The growing complexity of the system makes it more difficult to keep building as a monolith.</li>
+</ul>
+
+
+
+<p>Connected medical devices and medical software again introduces some additional challenges, such as:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Regulatory Compliance Limiting Access</strong>: Regulatory requirements for the launched product are now in effect, which limits access to production systems and data, making it more difficult to troubleshoot issues.<br></li>
+
+
+
+<li><strong>Regulatory Approval for Changes and Rework</strong>: Many changes require regulatory approval and significant system rework introduces additional risk that can be difficult to get approved.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading toc">Cloud Architecture Strategies</h3>
+
+
+
+<h4 class="wp-block-heading">Architectural Refinement</h4>
+
+
+
+<p>It’s important to revisit any previous architectural decisions that aren’t working as planned. The engineering teams know more than they did at the start and may find ways to improve the system in terms of performance, cost, or capabilities. In addition, user behavior may differ from the initial expectations or experiments, which may expose missing features or issues in the design that weren’t visible before.</p>
+
+
+
+<h4 class="wp-block-heading">Architecture Review</h4>
+
+
+
+<p>An important way to coordinate changes across all the engineering teams is to have regular Architecture Review meetings.&nbsp; These meetings aim to share design documents for major changes to the system and get feedback from other teams about the design.</p>
+
+
+
+<h4 class="wp-block-heading">Embracing Microservices</h4>
+
+
+
+<p>It’s at this stage that we start discussing microservices. The decision to break the monolith down is driven more by how many teams will be working on the project than by scalability at this stage (you can always spin up more instances of the monolith). The focus is on making it easier for teams to work independently with fewer dependencies, so they don’t require as many meetings or coordinated releases.&nbsp;</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_4_EmbracingMicroservices-scaled.jpg" alt="A diagram illustrating how to break down a modular monolith by team" class="wp-image-5185"/><figcaption class="wp-element-caption"><em>The modular monolith from before, broken down into separate services.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Implementing API Gateway</h4>
+
+
+
+<p>None of the components should expose any endpoints to the internet. Instead, a single API gateway should be created that allows a common, managed entry point into the system. From there, the API gateway should call the endpoints for the corresponding components. This makes it a lot easier to secure the system from outside access and allows uniform security rules and logging across all endpoints to be enforced.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_5_ImplementingAPIGateway-scaled.jpg" alt="An illustration of how to best implement an API gateway" class="wp-image-5187"/><figcaption class="wp-element-caption"><em>The API gateway serves as a common entry point for the services behind it, handling common concerns across services.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Enhancing CICD Processes</h4>
+
+
+
+<p>One final component to add is Continuous Integration/Continuous Delivery (CICD). Some parts of the CICD process may have been introduced during the initial stages of the project, but here, it becomes much more important to invest a lot of effort into getting it right. </p>
+
+
+
+<p>The first part, Continuous Integration, is about making it easier and more efficient for developers to create a branch, implement the ticket they are working on, get the changes reviewed, test the changes, and get them merged back into the main branch. The second part of CICD, Continuous Delivery, is about automating as much of the deployment process as possible and trying to remove manual changes that are often the cause of deployment failures. </p>
+
+
+
+<p>Due to regulatory approval requirements, these CICD processes should only be released directly to production with manual review and approval, but once approved, the actual deployment should be as automated as possible.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_6_EnhancingCICDProcesses-scaled.jpg" alt="A diagram illustrating Continuous Integration / Continuous Deliver (CICD) stages" class="wp-image-5188"/><figcaption class="wp-element-caption"><em>The stages of CICD and how the process informs future iterations</em>.</figcaption></figure>
+</div>
+
+
+<div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+
+<h4 class="wp-block-heading">Advancing SOC 2 Compliance</h4>
+
+
+
+<p>Many of the deployment, documentation, and reliability improvements implemented during this stage cover requirements of SOC 2 compliance. Audits for SOC 2 compliance can take 6-12 months to complete, so it is important to have the necessary controls in place before starting the process.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading toc" id="maturity"><strong>Maturity:</strong> Architecting for Stability &amp; Interoperability&nbsp;</h2>
+
+
+
+<p>During the maturity phase of a project, the company’s growth is more consistent and predictable than before, and there are processes in place to handle continued growth. However, the scale of the whole system has grown to the point where change is incredibly slow and complex, and the project is starting to run into limitations of the original architecture and chosen technologies. </p>
+
+
+
+<p>At this point, companies look to build interoperability with external partners, which requires some standardization throughout the system. Proper security controls become even more important because the system is too complex for a single person to keep track of all the parts of the system at once.</p>
+
+
+
+<h3 class="wp-block-heading">Scenario</h3>
+
+
+
+<p>For the maturity phase, lets use Stabilize Corp. as an example situation:</p>
+
+
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-constrained wp-block-group-is-layout-constrained">
+<p class="has-background" style="background-color:#bce6fd"><em>Stabilize Corp. is a large connected medical device company with a complex system and many development teams working on it. They have released multiple hardware devices running on various firmware versions. They also have several major third-party integrations at various stages of completion. The cloud architecture has grown past the point where a single person can keep track of it all.</em><br><br><em>The business needs better interoperability between various system components, commercial off-the-shelf software, and integrations with third-party systems. They also need to address any performance and stability issues that remain from the previous phases.</em><br><br><em>There are many engineering teams, each working on different projects for different parts of the system. Some are working on third-party integrations, while others are adding new features.</em></p>
+</div></div>
+
+
+
+<h3 class="wp-block-heading">Specific Cloud Challenges</h3>
+
+
+
+<p>As an connected medical device company&#8217;s cloud infrastructure reaches maturity, new challenges emerge that require careful planning and management to maintain the system&#8217;s stability, security, and performance. Some of the key issues faced at this stage include:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Architectural Complexity and Risk</strong>: Large changes to the overall architecture require work from many different teams and introduce significant risk.<br></li>
+
+
+
+<li><strong>Cascading Failures and Amplified Outages</strong>: There are many ways for the system to fail, and often, failures in one component cascade into failures in many other parts of the system. Simple retries start to amplify outages rather than help alleviate them.<br></li>
+
+
+
+<li><strong>Data Analysis Challenges at Scale</strong>: Analyzing data across all the independent parts of the system is incredibly difficult and requires new solutions to continue scaling effectively.</li>
+</ul>
+
+
+
+<p>Connected medical device development and medical software has additional challenges, especially at this scale:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Stringent Security, Privacy and Availability Requirements</strong>: These can limit the use of third-party software and services that can’t meet those strict requirements. The third-party solutions that are available often cost much more to meet those requirements.<br></li>
+
+
+
+<li><strong>Complex Integrations with Electronic Medical Records (EMR) Systems</strong>: Integrations with EMR systems, in particular, can be especially challenging due to various factors, including outdated standards, vendor-specific integrations, and extensive customization of data exchange formats. Our guide on <a href="https://punchthrough.com/iot-cloud-integration-with-emr-systems/" target="_blank" data-type="post" data-id="6391" rel="noreferrer noopener">IoT Cloud Integration with EMR Systems</a> has some great advice and key considerations for EMR integrations with healthcare platforms.<br></li>
+
+
+
+<li><strong>Compliance with Regulations and Audits</strong>: Companies may need to perform SOC 2 audits, which will uncover flaws in the system that need to be addressed. These audits are important to prove to stakeholders and customers that data is being handled securely. Some companies may also need to meet the European Union’s <a href="https://gdpr.eu/" target="_blank" rel="noreferrer noopener">General Data Protection Regulation (GDPR</a>), the <a href="https://oag.ca.gov/privacy/ccpa" target="_blank" rel="noreferrer noopener">California Consumer Protection Act (CCPA)</a>, or other regulatory requirements beyond SOC 2.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">Cloud Architecture Strategies</h3>
+
+
+
+<h4 class="wp-block-heading">Customized Solutions</h4>
+
+
+
+<p>The approaches to projects at this stage become much more specific to the problem being resolved. They often require working closely with all the teams involved to find the right solution to avoid downtime and still provide the desired benefit.&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Strategic Breakdown for Large-Scale Updates</h4>
+
+
+
+<p>One approach we take for large-scale architectural changes is to break them down the same way we discussed breaking down the monolith into microservices previously. This might require many additional steps depending on the change being introduced but can provide a path forward by taking on the change in smaller pieces.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_7_StrategicBreakdownForLargeScaleUpdates-scaled.jpg" alt="A diagram illustrating a strategic breakdown for large-scale cloud architectural updates" class="wp-image-5189"/><figcaption class="wp-element-caption"><em>Breaking down a single service into individual components. Changing only one component at a time reduces the risk of downtime and deployment rollbacks.</em></figcaption></figure>
+</div>
+
+
+<p>For example, when breaking down a service used by many other services into individual components, we break them out of that service behind the same interface as the original service. When teams are ready, they can then switch to calling the individual services directly, and finally, the obsolete endpoints can be deprecated.&nbsp;API Gateways and API versioning can be used to simplify this process and reduce the changes required of consumers of the service.</p>
+
+
+
+<h4 class="wp-block-heading">Enhancing System Resilience&nbsp;</h4>
+
+
+
+<p>There are many different strategies to prevent failures within the system from cascading into bigger issues, all depending on the types and causes of the failures.&nbsp;</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_8_EnhancedSystemResillience-scaled.jpg" alt="A diagram illustrating asynchronous messaging approaches." class="wp-image-5190"/><figcaption class="wp-element-caption"><em>Asynchronous messaging stores requests so they are not lost if the sender or receiver goes offline.</em></figcaption></figure>
+</div>
+
+
+<p>For example, asynchronous messaging solutions can be used in place of HTTP requests and can store the request or response, preventing it from being lost even if either of the services crashes. However, this can make synchronous requests that depend on these queued messages more complex.</p>
+
+
+
+<p>An alternative for requests that must remain as a synchronous HTTP request is to use a combination of different techniques to handle outages of that service, such as callers caching the last successful result and using the successful result if the system does not respond, exponential backoff on retries so the retries don’t overwhelm the affected service, and the <a href="https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern" target="_blank" rel="noreferrer noopener">circuit breaker design pattern</a>.&nbsp;</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_9_DataIntegrationApproaches-scaled.jpg" alt="An example of a &quot;Data Lake&quot; Data Integration Approach" class="wp-image-5191"/><figcaption class="wp-element-caption"><em>The “data lake” gathers data from various services and puts it into a central location. It is easier for users to explore what data is available in this central location. They can also build AI/ML applications based on this central repository.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Data Integration Approaches</h4>
+
+
+
+<p>A solution for aggregating data might be to build a “data lake” by having all the key operations and data changes within the system fire events and then gather those events into a tool like <a href="https://www.snowflake.com/" target="_blank" rel="noreferrer noopener">Snowflake</a> or <a href="https://www.databricks.com/" target="_blank" rel="noreferrer noopener">Databricks</a> to be queried. This solution is useful for exploratory analysis or using machine learning to generate insights from the data.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PTBlog_10_DataIntegrationApproaches_Option2-scaled.jpg" alt="An illustration of GraphQL being used to query data across different services." class="wp-image-5192"/><figcaption class="wp-element-caption"><em>GraphQL is a standardized interface to query data across many different services. It is most commonly used by other software components.</em></figcaption></figure>
+</div>
+
+
+<p>Another solution might be establishing a set of data standards for types of exposed data and having every system expose a GraphQL (or similar) endpoint that can be queried across systems. Then, create services that provide the necessary aggregated data by querying each relevant service. This second approach can require more changes to the system. Still, it can be cheaper than full-scale analytics platforms when the data is used to provide data to other parts of the system on demand or the queries being performed are predictable and known in advance.</p>
+
+
+
+<h4 class="wp-block-heading">Finalizing SOC 2 Compliance</h4>
+
+
+
+<p>Regarding SOC 2 compliance, many of the steps already mentioned can provide a good foundation and will have been implemented earlier in the project. What’s most important at this stage is verifying that everything follows those standards. For example, there may be user accounts without two-factor authentication enabled or applications not adequately isolated to a virtual network (vNet).</p>
+
+
+
+<h4 class="wp-block-heading">Streamlining Compliance Audits</h4>
+
+
+
+<p>Automated processes for auditing compliance with security and privacy standards should be enabled, such as <a href="https://www.microsoft.com/en-au/security/business/cloud-security/microsoft-defender-cloud" target="_blank" rel="noreferrer noopener">Microsoft Defender for Cloud</a> (formerly Azure Defender), <a href="https://aws.amazon.com/security-hub/" target="_blank" rel="noreferrer noopener">Amazon’s AWS Security Hub</a>, or <a href="https://sysdig.com/" target="_blank" rel="noreferrer noopener">SysDig</a>. These tools automate the process of auditing many parts of the cloud system, which helps produce reports for audits and maintain proper security controls as new features are rolled out.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading toc" id="final-thoughts">Final Thoughts &amp; Key Takeaways</h2>
+
+
+
+<p>As your company grows, your cloud implementation objectives and requirements will evolve. Adapting your strategies to meet these changing needs is crucial for success. Understanding the specific challenges and priorities at each stage of your company&#8217;s lifecycle allows you to make informed decisions and allocate resources effectively.</p>
+
+
+
+<p><strong>Key takeaways:</strong></p>
+
+
+
+<ol class="wp-block-list">
+<li>Align your cloud strategies with your company&#8217;s current stage and anticipate future requirements.</li>
+
+
+
+<li><strong>Startup</strong>: Build a solid foundation in the startup phase, focusing on precise requirements, robust security, regulatory compliance, and cost optimization.</li>
+
+
+
+<li><strong>Growth</strong>: Scale your infrastructure, address technical debt, and maintain compliance during growth.</li>
+
+
+
+<li><strong>Maturity</strong>: Standardize processes, optimize performance, and ensure ongoing compliance in the maturity phase.</li>
+</ol>
+
+
+
+<p>Applying the approaches and insights shared in this guide can help you navigate cloud implementation challenges and achieve your goals at every stage. If you or your team need expert guidance on cloud architecture, the Punch Through team is here to help you realize a scalable, connected ecosystem.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Choosing the Right EMR Integration Strategy for Connected Medical Devices</title>
+		<link>https://punchthrough.com/iot-cloud-integration-with-emr-systems/</link>
+		
+		<dc:creator><![CDATA[Kurt Wiersma]]></dc:creator>
+		<pubDate>Tue, 19 Mar 2024 22:47:00 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Cloud Data Integration]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=6391</guid>
+
+					<description><![CDATA[Identify when gateway, API, or FHIR‑bridge patterns best connect medical devices to EMRs, reducing integration risk, controlling costs, and scaling secure data exchange.]]></description>
+										<content:encoded><![CDATA[
+<p>In today’s connected health landscape, choosing the right&nbsp;EMR integration strategy&nbsp;for&nbsp;connected medical devices&nbsp;is critical to enabling seamless data exchange, improving clinical workflows, and enhancing patient care. Once a cloud-based backend is in place, the next step is determining how device data should be integrated with EMR systems — an area where limited interoperability and rigid EMR capabilities often create significant challenges.</p>
+
+
+
+<h2 class="wp-block-heading">What We&#8217;ll Cover</h2>
+
+
+
+<p>Choosing the right integration approach early can reduce complexity, avoid tight coupling with EMRs, and ensure your connected device scales efficiently within modern healthcare ecosystems. This guide explores the most common standards for EMR integration, offers our strategic recommendations for identifying the most effective integration approach, and discusses the advantages and disadvantages of each method.</p>
+
+
+
+<ol class="wp-block-list">
+<li><a href="#identify">Identify your data and integration needs</a></li>
+
+
+
+<li><a href="#choose">Choose an EMR integration method</a></li>
+
+
+
+<li><a href="#datapipeline">Design a robust data pipeline</a></li>
+
+
+
+<li><a href="#security">Ensuring data security throughout the process</a></li>
+
+
+
+<li><a href="#partner">Value of an IoT cloud integration partner</a></li>
+</ol>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Considerations Across Cloud Development Stages</h2>
+
+
+
+<p>Both established medical device manufacturers and companies at all stages of development need to be aware of these integration considerations. Early awareness can inform design decisions, ease future integration efforts, and facilitate a smoother path to market. Understanding how cloud architecture can evolve to meet these needs is crucial, and our article on <a href="https://punchthrough.com/how-to-strategically-evolve-cloud-architecture-for-iomt/" target="_blank" rel="noreferrer noopener">the optimal cloud architecture for each stage of your business</a> provides valuable insights for startups and established companies alike, exploring the essential cloud architectural needs at different phases of an IoT project.</p>
+
+
+
+<p>At Punch Through, we have seen firsthand how early planning and thoughtful cloud architecture design can significantly streamline the EMR integration process for our clients. With our team&#8217;s years of experience in <a href="https://www.punchthrough.com/services" target="_blank" rel="noreferrer noopener">medical IoT cloud system design and integration</a>, particularly in the healthcare industry, we have developed a deep understanding of the challenges and best practices associated with EMR integration. Our team has successfully guided numerous clients through the process, helping them navigate the complexities of medical IoT cloud development and ensuring seamless integration with their chosen EMR systems. We hope you find these recommendations valuable in your cloud planning and development process.</p>
+
+
+
+<p>Now, let&#8217;s begin by identifying your data and integration needs.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="identify"/>
+
+
+
+<h2 class="wp-block-heading">Identify Your Data and Integration Needs</h2>
+
+
+
+<p>The first step in any EMR integration project should be determining what data needs to be sent to the EMR system and how clinicians will view and utilize it once it&#8217;s there. It&#8217;s essential to recognize that EMR systems have limited built-in support for displaying data from devices, so understanding the data and its intended use will likely influence the integration method chosen.</p>
+
+
+
+<h3 class="wp-block-heading">1. Select the Right Integration Approach</h3>
+
+
+
+<p>When selecting an integration approach, it&#8217;s important to consider the limitations of each method. Some integration methods only allow you to read but not write certain data types to the EMR system. To ensure seamless integration, we recommend mapping each data type in your IoT system onto structures inside the EMR that make the most sense. The <a href="https://www.hl7.org/fhir/datatypes.html" target="_blank" rel="noreferrer noopener">FHIR data spec</a> can serve as a valuable guide in this process.</p>
+
+
+
+<h3 class="wp-block-heading">2. Choose EMR Systems for Compatibility</h3>
+
+
+
+<p>At this point in the process, you need to identify which EMR systems you plan to support. <a href="https://klasresearch.com/report/us-hospital-emr-market-share-2023-market-energy-driven-mostly-by-small-organizations/3013" target="_blank" rel="noreferrer noopener">Epic holds a dominant market share in the U.S. EHR landscape</a>, followed by Cerner and several smaller players. Ideally, you should pick an integration method that supports Epic, Cerner, Allscripts, and other systems that support the standards discussed later in this article. However, if standards-based methods cannot fulfill your requirements, you might have to resort to Epic or Cerner-specific integration methods.</p>
+
+
+
+<h3 class="wp-block-heading">3. Partner with Health Systems for Testing</h3>
+
+
+
+<p>To ensure a successful integration, we strongly recommend identifying at least one health system partner. This partnership will help you define the requirements for your first integration, allowing you to focus on how the data will be stored and displayed in a functioning EMR system. It&#8217;s essential to ensure that the health system&#8217;s technology team is willing and able to grant you access to a test environment where you can set up a test integration with fake data.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="choose"/>
+
+
+
+<h2 class="wp-block-heading">Choose an EMR Integration Method</h2>
+
+
+
+<p>Choosing the appropriate integration method ensures seamless data exchange between your IoT devices and EMR systems. Each integration method has advantages and disadvantages; some are better suited for specific use cases than others. At Punch Through, we have extensive experience working with various integration methods and can help you navigate the complexities of choosing the most suitable approach for your project. The following are some of the most common methods and standards:</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="#FHIR">FHIR</a></li>
+
+
+
+<li><a href="#HL7">HL7</a></li>
+
+
+
+<li><a href="#SMART">SMART on FHIR</a></li>
+
+
+
+<li><a href="#thirdparty">Third-Party Services</a></li>
+
+
+
+<li><a href="#apis">Proprietary APIs</a></li>
+</ul>
+
+
+
+<h3 class="wp-block-heading" id="FHIR"><strong>FHIR</strong></h3>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="452" src="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-fhir-1024x452.png" alt="Icon Blog Emr Integration Standards Hl7 Fhir" class="wp-image-6401" srcset="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-fhir-1024x452.png 1024w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-fhir-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-fhir-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-fhir-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-fhir.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>HL7 FHIR is the standard for healthcare data exchange.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">About FHIR</h4>
+
+
+
+<p>The first integration method and standard to evaluate is <a href="https://www.hl7.org/fhir/summary.html" target="_blank" rel="noreferrer noopener">FHIR</a> (Fast Healthcare Interoperability Resources). FHIR is an industry standard for healthcare data exchange that utilizes messages and data types supported by major EMR systems such as Epic, Cerner, and AllScripts. These EMR systems expose <a href="https://www.hl7.org/fhir/http.html" target="_blank" rel="noreferrer noopener">a REST-based web API defined in the FHIR specification</a>, with OAuth 2.0 as the authentication mechanism.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="451" src="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-1-1024x451.png" alt="Article Erm Diagram 1" class="wp-image-10853" srcset="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-1-1024x451.png 1024w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-1-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-1-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-1-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-1.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>Your medical device backend system can call out to the EMR’s FHIR API via a HTTPs to read and write data to the EMR’s database.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Advantages of FHIR</h4>
+
+
+
+<p>FHIR is an excellent choice when your device data maps easily to its supported data types. As a standard, FHIR enables you to support several different EMR systems, such as Epic and Cerner, with a single integration approach. Furthermore, FHIR&#8217;s REST-based web API over HTTPS makes it straightforward for developers to work with, streamlining the integration process.</p>
+
+
+
+<h4 class="wp-block-heading">Limitations of FHIR</h4>
+
+
+
+<p>Despite its advantages, FHIR does have some limitations. Currently, Epic and Cerner only support writing data for a small subset of the supported FHIR data types.</p>
+
+
+
+<h4 class="wp-block-heading">Recommendations</h4>
+
+
+
+<p>Being the most modern and effective integration approach, the FHIR API &nbsp;would be our first choice&#8211;if it meets your needs and you can access it. FHIR&#8217;s standardized format and RESTful architecture make it ideal for seamless data exchange between IoT devices and EMR systems. By leveraging FHIR, you can ensure interoperability, reduce development time, and minimize the need for custom integrations.</p>
+
+
+
+<p>However, it&#8217;s essential to carefully evaluate your specific data requirements and the limitations of the EMR systems you plan to integrate with. Epic and Cerner, for example, currently only support writing data for a small subset of the supported FHIR data types. If your device data needs to be written using unsupported data types, you should investigate alternative integration methods or explore Epic or Cerner&#8217;s proprietary APIs.</p>
+
+
+
+<p>When considering FHIR as your integration approach, we recommend the following steps:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Identify the data types your IoT device generates and map them to the corresponding FHIR resources.</li>
+
+
+
+<li>Research the FHIR support and limitations of your target EMR systems, focusing on their ability to read and write the specific data types you need.</li>
+
+
+
+<li>Evaluate the feasibility of using FHIR based on your data requirements and the EMR systems&#8217; capabilities.</li>
+
+
+
+<li>If FHIR meets your needs, proceed with the integration using the standard. If not, explore alternative methods or proprietary APIs to accommodate your data requirements.</li>
+</ol>
+
+
+
+<h3 class="wp-block-heading" id="HL7">Health Level 7 (HL7)</h3>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="452" src="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-1024x452.png" alt="Icon Blog Emr Integration Standards Hl7" class="wp-image-6402" srcset="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-1024x452.png 1024w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-hl7.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>Health Level 7 is a global integration standard for healthcare data.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">About HL7</h4>
+
+
+
+<p>HL7 (Health Level 7) encompasses a range of global standards for transferring healthcare data between systems. <a href="https://www.hl7.org/implement/standards/product_brief.cfm?product_id=185" target="_blank" rel="noreferrer noopener">HL7 v2</a>, in particular, is a messaging standard designed to support hospital workflows. The message format is text-based, with segments (lines) separated by a delimiter (typically the pipe &#8220;|&#8221; character) and fields within each segment separated by a sub-delimiter (usually &#8220;^&#8221;). Each segment has a specific message type with defined fields, allowing for structured data exchange.</p>
+
+
+
+<h4 class="wp-block-heading">Advantages of HL7</h4>
+
+
+
+<p>HL7 has been widely used by health systems for years to exchange data, and EMR systems have built-in support to process HL7 messages and map them to fields in their databases. For certain types of data, such as lab orders and lab results, HL7 is often the default integration method. One of the key advantages of HL7 is its flexibility and customization options, which allow it to adapt to various healthcare system requirements. However, this flexibility can also make integrations challenging, as only some healthcare systems use a particular field similarly.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="451" src="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-2-1024x451.png" alt="Article Erm Diagram 2" class="wp-image-10852" srcset="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-2-1024x451.png 1024w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-2-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-2-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-2-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-2.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>Your medical device backend systems can use a middleware service, like Mirth, to send HL7 messages via an IPsec tunnel to the EMR system.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Limitations of HL7</h4>
+
+
+
+<p>Sending and receiving HL7 messages often relies on an <a href="https://en.wikipedia.org/wiki/IPsec" target="_blank" rel="noreferrer noopener">IPsec tunnel</a> between your system and the health system&#8217;s EMR or middleware provider. The IPsec tunnel ensures that all communications are encrypted, using TLS for secure data transfer. Setting up and maintaining these secure connections can add additional complexity to the integration process.</p>
+
+
+
+<p>Fortunately, several middleware systems are available to help build, send, and process HL7 messages. <a href="https://www.nextgen.com/solutions/interoperability/mirth-integration-engine" target="_blank" rel="noreferrer noopener">Mirth Connect</a> is an open-source solution that provides a Java-based messaging platform with a user interface for monitoring and configuring message processing. Mirth can parse the HL7 for you, and you can use its JavaScript-based API to process messages and send the contents to and from your system. <a href="https://www.interfaceware.com/epic-integration" target="_blank" rel="noreferrer noopener">Interfaceware Iguana</a> is another commercial option in this space.</p>
+
+
+
+<h4 class="wp-block-heading">Recommendation</h4>
+
+
+
+<p>HL7 is a good method if the FHIR API method does not fulfill your requirements or is unavailable to you. When considering HL7 as your integration approach, we recommend:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Evaluate your data exchange requirements and determine if HL7 fits your needs best.</li>
+
+
+
+<li>Research the HL7 support and capabilities of your target EMR systems. As part of this step, try to find a healthcare system to conduct your first integration and establish a data map for each HL7 message that you plan to send to them.</li>
+
+
+
+<li>Assess the need for middleware systems to simplify the process of building, sending, and processing HL7 messages.</li>
+
+
+
+<li>Establish secure connections, such as IPsec tunnels, to ensure the safe transfer of healthcare data.</li>
+</ol>
+
+
+
+<h3 class="wp-block-heading" id="SMART"><strong>SMART on FHIR</strong></h3>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="452" src="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-smart-fhir-1024x452.png" alt="Icon Blog Emr Integration Standards Smart Fhir" class="wp-image-6403" srcset="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-smart-fhir-1024x452.png 1024w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-smart-fhir-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-smart-fhir-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-smart-fhir-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-smart-fhir.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>SMART on FHIR</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">About SMART</h4>
+
+
+
+<p><a href="https://smarthealthit.org/smart-on-fhir-api/" target="_blank" rel="noreferrer noopener">SMART (Substitutable Medical Applications, Reusable Technologies) on FHIR</a> is a framework that aims to provide a standard way for developers to build applications that can be launched by any EMR system, with access to that EMR&#8217;s data via the FHIR API. This framework enables EMR systems like Epic and Cerner to provide an &#8220;app store&#8221; for their platforms, where developers can create apps that theoretically work seamlessly within either system.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="451" src="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-3-1024x451.png" alt="Article Erm Diagram 3" class="wp-image-10851" srcset="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-3-1024x451.png 1024w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-3-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-3-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-3-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-3.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>SMART on FHIR apps are built in HTML &amp; Javascript and can connect to the EMR’s FHIR API as well your web API.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Advantages of SMART</h4>
+
+
+
+<p>With SMART on FHIR, you can build a single-page application (SPA) in JavaScript that communicates with both your system&#8217;s web APIs and the FHIR API of the EMR system that launched the app. This communication occurs under the authentication and authorization of the current EMR system user. By leveraging this framework, you can create an application that launches directly from the EMR system&#8217;s user interface and displays data from the EMR system and your system. If you use this integration method, you might not need to send your device data to the EMR system; instead, you can display your data within the EMR using the SMART on the FHIR app. To ensure accurate data matching, confirm that your system and that of the EMR contain the same patient identifier.</p>
+
+
+
+<p>This type of integration really shines when you have device data that doesn&#8217;t map easily to what the EMR systems can display. It also allows you to maintain a consistent user interface, which will be more familiar to clinicians already accustomed to working with your system.</p>
+
+
+
+<h4 class="wp-block-heading">Limitations of SMART</h4>
+
+
+
+<p>The disadvantages of this integration method involve the limitations of the &#8220;app store&#8221; model. To effectively use this method, your organization will need to join each intended EMR system&#8217;s developer program. You’ll also want to test your app in each of their sandboxes to ensure it works as expected. Some EMR systems, such as drug identifiers, may store data differently, so care must be taken to ensure your app works with each EMR system. Apart from that, there may be costs associated with distributing your SMART on FHIR application to the different health systems that want to use it.</p>
+
+
+
+<h4 class="wp-block-heading">Recommendation</h4>
+
+
+
+<p>SMART on FHIR is a good method if you need to display or capture data from EMR users within the EMR user interface. This method is worth considering as long as the health system is willing to install your app and you can agree to the &#8220;app store&#8221; business terms set by Epic and/or Cerner.</p>
+
+
+
+<p>When evaluating SMART on FHIR as your integration approach, we recommend the following:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Assessing your data display and capture requirements to determine if SMART on FHIR is the best fit.</li>
+
+
+
+<li>Evaluate the costs and business terms of distributing your SMART on the FHIR application.</li>
+
+
+
+<li>Join the developer programs of the EMR systems you plan to integrate with and test your app in their sandboxes.</li>
+
+
+
+<li>Ensure your app is compatible with the data storage and handling practices of each EMR system.</li>
+</ol>
+
+
+
+<h3 class="wp-block-heading" id="thirdparty"><strong>Third-Party Services</strong></h3>
+
+
+
+<p>Third-party services have emerged to simplify the integration process between medical devices and EMR systems. These services have established integrations with a collection of health systems and offer a single web-based API that you can use to integrate with those health systems&#8217; EMR systems. <a href="https://www.redoxengine.com/connect/ehrs-supported/" target="_blank" rel="noreferrer noopener">Redox</a> and <a href="https://rhapsody.health/solutions/integrate/" target="_blank" rel="noreferrer noopener">Rhapsody Health</a> are two examples of such third-party services.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="451" src="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-4-1024x451.png" alt="Article Erm Diagram 4" class="wp-image-10850" srcset="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-4-1024x451.png 1024w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-4-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-4-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-4-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-4.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>Your medical device backend system can call the third party’s API via HTTPS and it will handle communicating with each different health system’s EMR system.</em></figcaption></figure>
+</div>
+
+
+<h4 class="wp-block-heading">Considerations</h4>
+
+
+
+<p>One of the main advantages of using third-party integrators is that they offer a single API to get your data into the connected health systems&#8217; EMRs with minimal work on your side. This can significantly reduce the complexity and effort required to integrate multiple EMR systems. However, it&#8217;s essential to consider that these services introduce an intermediary into your process, which can limit your control over the workflow and the data types supported for transmission to the EMRs. Additionally, there are typically high fees associated with using these services, as it takes time and resources for the integrators to establish and maintain connections with the different health systems.</p>
+
+
+
+<h4 class="wp-block-heading">Recommendation</h4>
+
+
+
+<p>A third-party service could be a good solution if the health systems you target already have connections with one of these integrators and the integrator supports the data types you need. Before making a decision, we recommend:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Identifying the health systems you plan to integrate and researching their connections with third-party integrators.</li>
+
+
+
+<li>Evaluating the compatibility of your data types and workflows with the integrator&#8217;s supported features.</li>
+
+
+
+<li>Assessing the third-party service costs and comparing them to the potential benefits and time-savings.</li>
+
+
+
+<li>Reviewing the level of control and customization you require over the integration process and whether the third-party service can accommodate your needs.</li>
+</ol>
+
+
+
+<h3 class="wp-block-heading" id="apis"><strong>An EMR System’s Proprietary APIs</strong></h3>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large is-resized"><img loading="lazy" decoding="async" width="1024" height="452" src="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-apis-1024x452.png" alt="Icon Blog Emr Integration Standards Apis" class="wp-image-6399" style="width:840px;height:auto" srcset="https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-apis-1024x452.png 1024w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-apis-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-apis-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-apis-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2024/03/Icon-blog-emr-integration-standards-apis.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>Cerner, Epic and Veradigm are popular EMR systems that offer their own proprietary APIs.</em></figcaption></figure>
+</div>
+
+
+<p>In addition to the standard-based IoT cloud integration methods, some EMR systems, such as <a href="https://open.epic.com/" target="_blank" rel="noreferrer noopener">Epic</a>,  <a href="https://code.cerner.com/" target="_blank" rel="noreferrer noopener">Cerner</a>, and <a href="https://veradigm.com/" target="_blank" rel="noreferrer noopener">Veradigm</a> (formerly Allscripts) offer their own proprietary APIs. These APIs provide access to various functionalities, such as creating or updating data in the EMR that may not be currently available through their FHIR APIs. While proprietary APIs can be a viable integration option, using them as a last resort is generally recommended if the standards-based methods described above do not meet your specific requirements.</p>
+
+
+
+<p>When working with proprietary APIs, remember that your system must include code that&#8217;s specific&nbsp;to each intended EMR system. This can increase the complexity of your codebase and make maintenance and updates more challenging, especially when combined with the intricacies of IoT cloud development. Additionally, to access information about the APIs and testing sandboxes, you will likely need to join each EMR system&#8217;s developer program, which may involve additional costs and resources.</p>
+
+
+
+<h4 class="wp-block-heading">Recommendation</h4>
+
+
+
+<p>In many cases, proprietary APIs are used when the required functionality is unavailable through standard-based methods, such as FHIR or HL7.</p>
+
+
+
+<p>When considering the use of proprietary APIs, it&#8217;s essential to:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Evaluate your integration requirements thoroughly and determine if the desired functionality is genuinely unavailable through standard-based methods.</li>
+
+
+
+<li>Assess the impact of proprietary APIs on your system&#8217;s codebase, especially with the added complexity and maintenance.</li>
+
+
+
+<li>Understand the costs and resources associated with joining each EMR system&#8217;s developer program, accessing their API documentation, and testing sandboxes.</li>
+
+
+
+<li>Plan for the long-term implications of relying on proprietary APIs, as changes or updates to these APIs may require significant modifications to your integration.</li>
+</ol>
+
+
+
+<p>Selecting the most suitable IoT cloud integration method is critical in ensuring the successful data exchange between your medical device and the targeted EMR systems. By carefully evaluating your specific requirements, the capabilities of the EMR systems, and the advantages and limitations of each integration approach, you can make an informed decision that will lay the foundation for a seamless and efficient IoT cloud integration.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="datapipeline"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Design a robust data pipeline</strong></h2>
+
+
+
+<h3 class="wp-block-heading">Establish Clean and Aggregate Data</h3>
+
+
+
+<p>Once you’ve determined the data you need to send to the EMR and decided on the integration method, the next step is to design a data pipeline between your system and the EMR. The goal is to establish a process for delivering clean and aggregated data, which can be challenging to update once it&#8217;s been sent to the EMR system. Ensure that the data you intend to send is correct and includes pre-calculated values that the EMR system can effectively work with.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="1024" height="451" src="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-5-1024x451.png" alt="Article Erm Diagram 5" class="wp-image-10849" srcset="https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-5-1024x451.png 1024w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-5-300x132.png 300w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-5-150x66.png 150w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-5-768x339.png 768w, https://punchthrough.com/wp-content/uploads/2025/05/article-erm-diagram-5.png 1470w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption"><em>This diagram illustrates the flow of data, from new data being sent to your medical device backend system (1) to the data being marked as successfully sent to the EMR (6).</em></figcaption></figure>
+</div>
+
+
+<h3 class="wp-block-heading">Optimizing Data Transmission Frequency and Format</h3>
+
+
+
+<p>Determining the optimal frequency for sending data to the EMR system is essential. First, consider clinicians&#8217; expectations: do they require near real-time data flow, or is a daily feed sufficient? Then, evaluate whether clinicians will view the data in aggregate or if they need access to individual data points within the EMR system. Answering these questions will help you design a system component that stores data in a format optimized for transmission to the EMR.</p>
+
+
+
+<h3 class="wp-block-heading">Designing a Reliable System for Data Delivery</h3>
+
+
+
+<p>With the data cleaned, aggregated, and optimized, the next step is to design a reliable system for sending the data to the EMR system. It&#8217;s crucial to ensure that any records that fail to be sent for any reason are tracked to allow for re-sending, preventing the EMR&#8217;s data set from becoming out of sync with your system. To achieve this, consider using a middleware solution between your system and the EMR. Middleware can help translate between the format expected by the EMR and the format your system can provide. Mirth Connect offers helpful tools for tracking HL7, file transfers, and web API calls. Cloud-based messaging services like Azure Service Bus or AWS&#8217;s SQS are also options to ensure reliable, repeatable delivery.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading" id="security"><strong>Ensuring Data Security Throughout the Process</strong></h2>
+
+
+
+<p>Though this should go without saying, data security is paramount when dealing with sensitive patient health information. It is crucial to ensure that data is encrypted at rest (where it’s stored) and in transit (when it’s transmitted). EMR integrations typically involve using HTTPS for secure web-based communication and a secure tunnel with TLS (Transport Layer Security) for HL7 message exchange.</p>
+
+
+
+<p>To maintain the highest level of security, you must verify that any middleware systems or services you employ also store their data in an encrypted data store. In addition, you can design the message processing so that no sensitive data is included in the message itself. Instead, sensitive information can be looked up during message processing time, minimizing the risk of exposure.</p>
+
+
+
+<p>When implementing data security measures, consider the following best practices:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Use industry-standard encryption algorithms and protocols, such as AES (Advanced Encryption Standard) for data at rest and TLS 1.2 or higher for data in transit.</li>
+
+
+
+<li>Regularly update and patch your systems to address known vulnerabilities and maintain the most up-to-date security features.</li>
+
+
+
+<li>Implement access controls and authentication mechanisms to ensure that only authorized personnel can access sensitive data.</li>
+
+
+
+<li>Conduct regular security audits and assessments to identify and address any potential weaknesses in your data security infrastructure.</li>
+
+
+
+<li>Develop and maintain a comprehensive data security policy that outlines the procedures and responsibilities for handling sensitive patient information.</li>
+</ol>
+
+
+
+<p>By prioritizing data security throughout the IoT cloud development and EMR integration process, you can protect patient privacy, maintain trust, and ensure compliance with relevant regulations, such as HIPAA (Health Insurance Portability and Accountability Act) in the United States.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity" id="partner"/>
+
+
+
+<h2 class="wp-block-heading"><strong>The Value of an EMR Integration Strategy Partner</strong></h2>
+
+
+
+<p>Integrating medical IoT applications with EMR systems is a complex process that requires careful planning and execution at every stage. From selecting the appropriate IoT cloud integration method to ensuring data security, each step plays a crucial role in the success of your project. However, by following best practices and partnering with experienced medical IoT cloud development and EMR integration partners, you can navigate these complexities and achieve a seamless, efficient, and secure solution that enhances clinical workflows and improves patient care.</p>
+
+
+
+<p>If you find yourself unsure about navigating the complexities of IoT cloud integration with EMR systems, it may be beneficial to seek a trusted partner to guide you through the process. An experienced IoT cloud development partner who understands the intricacies of device-to-cloud connectivity, cloud development, and EMR integration can be invaluable in helping IoT product owners successfully integrate their applications with EMR systems.</p>
+
+
+
+<p>When selecting a development partner, look for a team with a proven track record of delivering secure, efficient, and scalable solutions in the medical IoT space. They should have deep expertise in IoT cloud architectures, data pipeline design, and ensuring data security and compliance with relevant regulations, such as HIPAA.</p>
+
+
+
+<p>By collaborating with a knowledgeable and experienced partner, such as Punch Through, you can more effectively navigate the challenges of IoT cloud development and EMR integration, make informed decisions, and ultimately achieve a seamless IoT cloud integration that enhances clinical workflows and improves patient care.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>5 Cloud Infrastructure Tips for Cloud-Connected Medical Devices</title>
+		<link>https://punchthrough.com/cloud-connected-medical-devices-considerations/</link>
+		
+		<dc:creator><![CDATA[Kurt Wiersma]]></dc:creator>
+		<pubDate>Mon, 25 Sep 2023 15:21:32 +0000</pubDate>
+				<category><![CDATA[Cloud & Backend]]></category>
+		<category><![CDATA[Cloud Architecture]]></category>
+		<category><![CDATA[Cloud Data Integration]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/5-things-to-consider-for-successful-cloud-infrastructure-in-medical-iot/</guid>
+
+					<description><![CDATA[Protect data integrity, ensure regulatory‑ready security, and maintain observability by applying five cloud infrastructure practices that keep connected medical devices scalable, resilient, and cost‑efficient.]]></description>
+										<content:encoded><![CDATA[
+<p>Cloud infrastructure is now an essential component in the development of connected medical devices across the Internet of Medical Things (IoMT) space. It allows medical professionals and patients to access crucial health data remotely while enabling manufacturers to manage their device fleet. However, this convenience comes with its own set of security, compliance, and privacy challenges that product owners and cloud developers need to consider.</p>
+
+
+
+<p>In this article, we will dive into five fundamental web app and cloud development areas crucial for building a successful cloud-connected medical device infrastructure. Leveraging Punch Through&#8217;s expertise in solving complex connectivity and custom software development issues, we aim to help you and your team avoid common pitfalls that could lead to unforeseen risks or delays to your cloud project.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Setting Your Cloud Project Up For Success</h2>
+
+
+
+<p>Cloud infrastructure starts with choosing a cloud provider and service offerings (<a href="https://aws.amazon.com" target="_blank" rel="noreferrer noopener">AWS</a>, <a href="https://azure.microsoft.com/en-us" target="_blank" rel="noreferrer noopener">Azure</a>, and <a href="https://cloud.google.com" target="_blank" rel="noreferrer noopener">Google Cloud</a> are the most common). As you begin designing and setting up a cloud-based infrastructure, keep in mind these five cornerstones: security, reliability, compliance, scalability, and observability.</p>
+
+
+
+<h3 class="wp-block-heading">1. Cloud Security Considerations for Medical IoT</h3>
+
+
+
+<p>Cloud infrastructure and data storage are critical components when securing connected medical devices. While a broader security design would also cover device-level protocols like BLE, this article zeroes in on important considerations for cloud security. Specifically, one should consider multi-layered security, restricted data access, and security integration across the software development lifecycle.</p>
+
+
+
+<p><strong>Multiple Layers of Security</strong>: Setting up multiple layers of security in your cloud infrastructure is essential. In each layer, you should ensure that only pre-approved traffic and users can pass through to the next layer. For example, these security layers can prevent one clinic from accessing another clinic&#8217;s patient data.</p>
+
+
+
+<p><strong>Limited Access to Sensitive Data</strong>: While implementing these layers, it is important to limit access to sensitive data to the smallest number of users and systems possible. This will reduce the chance of errors or unauthorized access and changes.</p>
+
+
+
+<p><strong>Security Throughout SDLC</strong>: Remember to think about security throughout the Software Development Lifecycle (SDLC), not just at the end of a project after the infrastructure has already been provisioned. By deliberately thinking about the security design up front, you save a lot of time in reworking the system to be more secure later.</p>
+
+
+
+<p><strong>Data Encryption</strong>: Make sure to consider data both in transit and at rest.</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>In Transit</strong>: To ensure the security of potentially sensitive data sent to and from the cloud application, encrypt data in transit using HTTPS for web applications and TLS 1.2+ for database connections.</li>
+
+
+
+<li><strong>At Rest</strong>: Data must also be encrypted where it&#8217;s stored. This can be accomplished by using the cloud service&#8217;s managed database services (like AWS&#8217;s <a href="https://aws.amazon.com/rds/" target="_blank" rel="noreferrer noopener">RDS</a> or Azure&#8217;s <a href="https://azure.microsoft.com/en-us/products/category/databases" target="_blank" rel="noreferrer noopener">Database</a> service) and choosing to have the database storage and backups reside in encrypted storage.</li>
+</ul>
+
+
+
+<p><strong>Automated Tests and Audit Logs</strong>: Implement automated tests to ensure security rules are in place and functioning as expected. Make sure to maintain audit logs to track everything a user or system attempts to access. Also, consider sending all security logs to a secure, separate logging service to help prevent an intruder from being able to modify or delete the logs.</p>
+
+
+
+<p>This could be as simple as copying the logs to a separate AWS account with permissions set not to allow data deletion when another account sends log data to it.</p>
+
+
+
+<p class="has-background" style="background-color:#bce6fd"><strong>Further Reading:</strong> For a more comprehensive approach to connected device security design, please read our article on <a href="https://punchthrough.com/ble-security-best-pract/" target="_blank" data-type="post" data-id="7024" rel="noreferrer noopener">the security design of your device&#8217;s BLE communication with a smartphone</a>.</p>
+
+
+
+<h3 class="wp-block-heading">2. Cloud Reliability Considerations for Medical IoT</h3>
+
+
+
+<p>When <a href="https://ptddev.wpengine.com/architecting-ble-ios-android-apps/" target="_blank" rel="noreferrer noopener">capturing data from remote devices</a> into your cloud solution, setting up a reliable system to ingest and store the data is essential for reliability. One of the goals here is to prevent any chance that critical medical data is lost or unable to be fully captured by the cloud system. To ensure this level of reliability in your strategy, consider leveraging event-based infrastructure, optimizing cloud &#8216;serverless&#8217; services, and implementing fail-safes like over-provisioning and multi-zone deployment.</p>
+
+
+
+<p><strong>Event-Based Infrastructure</strong>: Depending on the volume of data collected, consider setting up some event-based infrastructure to ensure data capture so it can be transferred or analyzed later.&nbsp;</p>
+
+
+
+<p><strong>Leverage Cloud &#8220;Serverless&#8221; Services</strong>: One way would be to leverage cloud providers&#8217; &#8220;serverless&#8221; services and an event or message bus service.&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Message Bus</strong>: Use a cloud provider&#8217;s &#8220;serverless&#8221; services and an event or message bus service to ensure reliable and scalable data capture.</li>
+
+
+
+<li><strong>Asynchronous Process</strong>: Using an asynchronous process with a message bus can help ensure all the data is captured reliably in a way that is also scalable as the number of devices or the amount of the data grows.&nbsp;</li>
+</ul>
+
+
+
+<div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/PunchThroughBlogIllustration_Kurt-1024x561.png" alt="" class="wp-image-4729"/><figcaption class="wp-element-caption">Serverless data processing infrastructure showing the ordering of data moving through the system.</figcaption></figure>
+</div>
+
+
+<p><strong>Over-Provision Instances:</strong> One strategy you can employ is to slightly over-provision the number of cloud instances of your services. Should you experience a sudden spike in system usage, the capacity would already be there to handle such an influx. It also gives the system time to scale up during sudden traffic bursts.&nbsp;</p>
+
+
+
+<p><strong>Deploy Across Multiple Availability Zones or Regions:</strong> Another aspect to consider would be deploying your app in multiple availability zones in AWS or multiple regions on different cloud services. If there&#8217;s an outage in one zone or region, it won&#8217;t bring down the service.&nbsp;</p>
+
+
+
+<p><strong>Employ Automated Software Test Suites:</strong> It&#8217;s also important to note that <a href="https://ptddev.wpengine.com/automated-testing/" target="_blank" rel="noreferrer noopener">automated software test suites</a> with unit and integration tests can help reduce the number and severity of defects that make it to production. Have these test suites run with each code change your software developers create to help catch defects early in the development process and prevent regressions. Use a cloud-based CI service like GitHub Actions or Azure DevOps to build the software, run the automated test suites, and deploy the code to a test environment once all checks pass and reviewers approve the code change.</p>
+
+
+
+<h3 class="wp-block-heading">3. Cloud Compliance Considerations for Medical IoT</h3>
+
+
+
+<p>Given the stringent regulatory requirements for patient privacy in healthcare, navigating compliance is critical to setting up cloud infrastructure for medical devices. To successfully navigate these compliance challenges, selecting HIPAA-compliant cloud providers is crucial, as understanding their specific services for healthcare applications and utilizing reference architectures is a starting point.</p>
+
+
+
+<p><strong>HIPAA-Compliant Cloud Providers</strong>: These companies ensure that the provider designates the services you use to securely handle personal health information (PHI). Ensure a <a href="https://healthitsecurity.com/features/what-is-a-hipaa-business-associate-agreement-baa" target="_blank" rel="noreferrer noopener">HIPAA Business Associate Agreement (BAA)</a> between your organization and the cloud provider is in place.</p>
+
+
+
+<p><strong>AWS as an Example</strong>:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>List of Services</strong>: AWS provides a list of <a href="https://aws.amazon.com/compliance/hipaa-eligible-services-reference/" target="_blank" rel="noreferrer noopener">HIPAA-compliant AWS services</a>.</li>
+
+
+
+<li><strong>Reference Architecture</strong>: AWS also offers a <a href="https://aws-quickstart.github.io/quickstart-compliance-hipaa/" target="_blank" rel="noreferrer noopener">HIPAA reference architecture</a> to help set a starting point for securing your infrastructure. This documentation can guide you on what services to use and how to configure networking between them securely.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">4. Cloud Scalability Considerations for Medical IoT</h3>
+
+
+
+<p>Understanding how to scale your cloud infrastructure effectively is vital to managing costs and performance in the connected medical device space. To master this, you&#8217;ll want to focus on initial traffic assessment, the benefits of cloud-based hosting, and the specific cloud services that facilitate scalability.</p>
+
+
+
+<p><strong>Initial Traffic Assessment</strong>: When launching your service, it&#8217;s crucial to understand the traffic needs of different system components. Knowing the scalability settings of your cloud services allows you to adjust instance counts on the fly, accommodating more traffic than initially expected.</p>
+
+
+
+<p><strong>Benefits of Cloud-Based Hosting</strong>: One key advantage of using cloud-based hosting for web applications is the platform&#8217;s scalability controls. These help you manage peaks and dips in traffic gracefully. Well-designed systems can reduce costs by removing under-utilized resources without affecting the performance of users&#8217; experience.&nbsp;</p>
+
+
+
+<p><strong>Load Balancing and API Gateways</strong>: The major cloud providers offer a few different services to guarantee scalability. The two areas to explore would be load balancing and API gateway services.&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Load Balancers</strong>: These route web requests to different service instances based on traffic volume or geographical location.</li>
+
+
+
+<li><strong>API Gateways</strong>: These route web API requests to different services based on the HTTP path or other request attributes.</li>
+</ul>
+
+
+
+<p><strong>Functions-as-a-Service/Serverless</strong>: These services will offer auto-scaling settings, or you can set up your control of how many instances are running of each service. You can even scale these services down to zero instances to save money when a service isn&#8217;t being used and have it automatically started or scaled up as the load grows.</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Auto-Scaling</strong>: Major cloud providers offer &#8220;functions as a service&#8221; or &#8220;serverless&#8221; options with auto-scaling settings.</li>
+
+
+
+<li><strong>Manual Control</strong>: You can also manually control the number of running instances, scaling to zero to save costs when unused.</li>
+</ul>
+
+
+
+<p><strong>Container-Based Services</strong>:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Docker Containers</strong>: Cloud providers offer services to run web applications via Docker containers, which can be quickly scaled up if designed to run statelessly.</li>
+
+
+
+<li><strong>Manual or Auto-Scaling</strong>: Like serverless offerings, you can configure these services to scale the number of container instances based on traffic or CPU metrics.</li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">5. Cloud Observability Considerations for Medical IoT</h3>
+
+
+
+<p>Implementing robust observability practices is essential for monitoring system health and performance to ensure the smooth operation of your cloud-based medical device application. To achieve this, a comprehensive approach to observability should include system monitoring, structured logging, and application performance monitoring, each offering its advantages.</p>
+
+
+
+<p><strong>System Monitoring</strong>: As you test and then launch your new cloud-based application, you&#8217;ll want a way to understand and monitor the system. Monitoring will help detect defects (hopefully before they make it to production), assist with quickly fixing them, monitor application performance, and understand how the system functions in the different deployed environments.</p>
+
+
+
+<p><strong>Structured Logging</strong>: Consider setting up a structured logging system in your web-based application. Structured logging systems will provide information about each request coming in and what the system did to act upon that request. Ensure these logs are stored in a secure location that can have information appended but does not allow logs to be overwritten or deleted.</p>
+
+
+
+<p><strong>Application Performance Monitoring (APM)</strong>: APM tools like <a href="https://newrelic.com/platform/application-monitoring" target="_blank" rel="noreferrer noopener">New Relic</a> or <a href="https://sentry.io/for/performance/" target="_blank" rel="noreferrer noopener">Sentry</a> can help your team monitor your application&#8217;s performance.&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Alerts</strong>: Set up alerts so you know if your application isn&#8217;t performing according to your service level objectives (SLOs) or is suddenly much slower than usual. APM services often have an error tracking feature you can use to get alerts when unhandled errors occur.</li>
+
+
+
+<li><strong>Error Tracking</strong>: Use the information in APM error reports and structured logs to speed up the time to make and deploy fixes. Sentry, in particular, shines at this and makes it easy for software engineers to set up error capture and quickly see important error information.</li>
+</ul>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Final Thoughts</h2>
+
+
+
+<p>By keeping these five pillars—security, reliability, compliance, scalability, and observability— at the forefront of your Medical IoT cloud infrastructure planning process, you’ll be well on your way to building a high-quality, robust solution. Also, don’t miss the advice cloud providers like <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank" rel="noreferrer noopener">AWS</a>, <a href="https://learn.microsoft.com/en-us/azure/well-architected/" target="_blank" rel="noreferrer noopener">Azure</a>, and <a href="https://cloud.google.com/architecture/scalable-and-resilient-apps" target="_blank" rel="noreferrer noopener">Google Cloud</a> provide to give you additional guidance on architecting systems in the cloud.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>
