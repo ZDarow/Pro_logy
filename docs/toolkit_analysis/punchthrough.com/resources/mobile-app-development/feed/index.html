@@ -1,0 +1,1704 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/" >
+
+<channel>
+	<title>Mobile Apps &#8211; Punch Through</title>
+	<atom:link href="https://punchthrough.com/resources/mobile-app-development/feed/" rel="self" type="application/rss+xml" />
+	<link>https://punchthrough.com</link>
+	<description></description>
+	<lastBuildDate>Mon, 16 Mar 2026 13:41:43 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.4</generator>
+
+<image>
+	<url>https://punchthrough.com/wp-content/uploads/2025/02/favicon-punchthrough-logo.png</url>
+	<title>Mobile Apps &#8211; Punch Through</title>
+	<link>https://punchthrough.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Mastering Android BLE Permissions for Bluetooth Low Energy</title>
+		<link>https://punchthrough.com/mastering-permissions-for-bluetooth-low-energy-android/</link>
+		
+		<dc:creator><![CDATA[Chee Yi Ong]]></dc:creator>
+		<pubDate>Tue, 31 Dec 2024 21:48:00 +0000</pubDate>
+				<category><![CDATA[Mobile Apps]]></category>
+		<category><![CDATA[Android BLE]]></category>
+		<category><![CDATA[BLE Permissions]]></category>
+		<category><![CDATA[BLE Software Development]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[Software Best Practices]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=6365</guid>
+
+					<description><![CDATA[Navigate Android BLE permissions across OS versions, including runtime request flows, location access requirements, and how to handle user denials in connected apps.]]></description>
+										<content:encoded><![CDATA[
+<p>Navigating Android’s ever-evolving permissions landscape can be a daunting task for developers building Bluetooth Low Energy (BLE) applications. Over the years, Android OS updates have introduced new permissions, modified existing ones, and changed how developers must approach permissions for BLE-related functionality.&nbsp;</p>
+
+
+
+<p>Keeping up with these changes can feel like aiming at a moving target, especially when each version of Android brings its own set of requirements. Whether it’s managing runtime permissions, addressing user denials, or making complex requests more user-friendly, understanding and adapting to these challenges is essential for building reliable and user-focused BLE apps.</p>
+
+
+
+<h3 class="wp-block-heading">Why Should You Trust Us?</h3>
+
+
+
+<p>Here at Punch Through, we understand these challenges intimately. With over a decade of experience tackling BLE-specific issues, we’ve encountered and <a href="https://punchthrough.com/our-work" target="_blank" rel="noreferrer noopener">solved countless problems</a> that developers like you face daily. As the creators of the <a href="https://www.punchthrough.com/lightblue" target="_blank" rel="noreferrer noopener">LightBlue app</a> — a widely trusted tool in the BLE development community — we’ve worked extensively with BLE permissions and learned firsthand what works, what doesn’t, and how to make the process more efficient.</p>
+
+
+
+<h3 class="wp-block-heading">What&#8217;s In This Article?</h3>
+
+
+
+<p>This article is designed to be your practical, code-focused resource for managing BLE permissions on Android. Our goal is to cut through the complexity and provide clear, actionable solutions to help you streamline your development process. Whether you’re struggling with permissions setup, runtime management, or user education, this guide will equip you with the knowledge to handle it all.Before diving in, note that this resource assumes you already have your BLE project set up. If you’re still in the early stages and need help getting started, we recommend checking out our <a href="https://punchthrough.com/android-ble-guide/" target="_blank" rel="noreferrer noopener">Ultimate Guide to Android BLE</a>, where we cover project setup in detail. Once you’re ready, let’s dive into the intricacies of permissions handling and take your BLE app to the next level.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Code Companion &amp; Examples</h2>
+
+
+
+<p>All the code snippets in this guide aim to showcase how a given BLE operation should be performed. The actual, full implementation in the context of an example app is available on&nbsp;<a href="https://github.com/PunchThrough/ble-starter-android" target="_blank" rel="noreferrer noopener">our open-source GitHub repo</a>.</p>
+
+
+
+<p class="has-background" style="background-color:#fff9eb"><em><strong>As of April 17, 2024</strong> we’ve updated this entire repo to support a&nbsp;<code>targetSdk</code>&nbsp;of Android 14, along with new Nearby Devices permission handling for Android 12+ and the new&nbsp;<code>BluetoothGattCallback</code>&nbsp;methods for Android 13+.</em></p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Permissions Handling</h2>
+
+
+
+<h3 class="wp-block-heading">Why Are Permissions So Important?</h3>
+
+
+
+<p>Permissions are foundational to building BLE apps, directly influencing your app’s ability to access BLE hardware, comply with Android’s safety requirements, and deliver a positive user experience. From the very beginning of app development, understanding your permissions requirements and implementing appropriate handling strategies is essential to ensuring your app can scan for, connect to, and exchange data with BLE devices</p>
+
+
+
+<p>Beyond functionality, permissions are critical for building privacy and trust into your app. BLE functionality often requires access to sensitive user data, such as location, which can raise concerns for users. Implementing permissions thoughtfully during development helps you create an app that is transparent, respects user privacy, and builds trust. Android’s permissions framework ensures that users stay in control of their data, and it’s your responsibility as a developer to design an app that aligns with these expectations.</p>
+
+
+
+<p>With each new Android version, permissions policies evolve to address emerging threats and ensure apps handle sensitive data appropriately. This ever-changing landscape makes staying up-to-date on Android permissions requirements essential for BLE developers. Each Android update introduces new rules or adjustments that can impact how your app functions. Falling behind on these changes can lead to errors, crashes, or even the inability for your app to access BLE hardware at all.&nbsp;</p>
+
+
+
+<p>By understanding the dependencies between BLE functionality and permissions—and adapting your app as policies evolve—you ensure your app remains secure, compliant, and functional, delivering the best possible experience to your users.</p>
+
+
+
+<h3 class="wp-block-heading">Declaring Required Permissions in AndroidManifest.xml</h3>
+
+
+
+<p>Now that we’ve established why permissions are essential to BLE app functionality and user trust, let’s start with the first step in the permissions implementation process: declaring the required permissions in your AndroidManifest.xml file.</p>
+
+
+
+<p>This file serves as the blueprint for your app’s permissions, informing Android about the features your app intends to use. Without the proper declarations here, your app won’t even get off the ground when it comes to accessing BLE hardware.</p>
+
+
+
+<p>Whether you’re starting a new project or revisiting an existing one, ensuring that all necessary permissions are included is crucial for avoiding runtime issues and ensuring compliance with Android’s evolving policies. Let’s walk through how to set this up.</p>
+
+
+
+<p>Begin by opening your project’s &nbsp;<code>AndroidManifest.xml</code>&nbsp;. You can find this file under app → manifests → <code>AndroidManifest.xml</code>&nbsp;in your project’s tool window. Within the &lt;manifest&gt; tag, you’ll need to include permissions that allow your app to perform core BLE tasks, such as scanning for and connecting to devices. Here’s what you’ll need to add:</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(2 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>&lt;!-- Request legacy Bluetooth permissions on versions older than API 31 (Android 12). -->
+&lt;uses-permission android:name="android.permission.BLUETOOTH"
+    android:maxSdkVersion="30" />
+&lt;uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+    android:maxSdkVersion="30" />
+&lt;uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
+    android:maxSdkVersion="30" />
+&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    android:maxSdkVersion="30" />
+&lt;uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+    android:usesPermissionFlags="neverForLocation"
+    tools:targetApi="s" />
+&lt;uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /></textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #6A737D">&lt;!-- Request legacy Bluetooth permissions on versions older than API 31 (Android 12). --&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-permission</span><span style="color: #24292E"> </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.permission.BLUETOOTH&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:maxSdkVersion</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;30&quot;</span><span style="color: #24292E"> /&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-permission</span><span style="color: #24292E"> </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.permission.BLUETOOTH_ADMIN&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:maxSdkVersion</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;30&quot;</span><span style="color: #24292E"> /&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-permission</span><span style="color: #24292E"> </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.permission.ACCESS_COARSE_LOCATION&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:maxSdkVersion</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;30&quot;</span><span style="color: #24292E"> /&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-permission</span><span style="color: #24292E"> </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.permission.ACCESS_FINE_LOCATION&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:maxSdkVersion</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;30&quot;</span><span style="color: #24292E"> /&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-permission</span><span style="color: #24292E"> </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.permission.BLUETOOTH_SCAN&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:usesPermissionFlags</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;neverForLocation&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">tools:targetApi</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;s&quot;</span><span style="color: #24292E"> /&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-permission</span><span style="color: #24292E"> </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.permission.BLUETOOTH_CONNECT&quot;</span><span style="color: #24292E"> /&gt;</span></span></code></pre></div>
+
+
+
+<p>Here’s what each of these permissions do:</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://developer.android.com/reference/android/Manifest.permission.html#BLUETOOTH" target="_blank" rel="noreferrer noopener"><strong>BLUETOOTH</strong></a>: Legacy permission that allows the app to connect to Bluetooth devices.</li>
+
+
+
+<li><a href="https://developer.android.com/reference/android/Manifest.permission.html#BLUETOOTH_ADMIN" target="_blank" rel="noreferrer noopener"><strong>BLUETOOTH_ADMIN</strong></a>: Legacy permission that allows the app to scan for and bond with Bluetooth devices.</li>
+
+
+
+<li><a href="https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_FINE_LOCATION" target="_blank" rel="noreferrer noopener"><strong>ACCESS_FINE_LOCATION</strong></a>: Between Android 6 and Android 11 (inclusive on both ends), location permission is required for the app to get BLE scan results. The main motivation behind having to require the users to grant this permission explicitly is to protect users’ privacy.&nbsp; A BLE scan can often unintentionally reveal the user’s location to unscrupulous app developers who scan for specific BLE beacons, or some BLE devices may advertise location-specific information. Before Android 10, <a href="https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_COARSE_LOCATION" target="_blank" rel="noreferrer noopener">ACCESS_COARSE_LOCATION</a> can be used to gain access to BLE scan results, but we recommend using <a href="https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_FINE_LOCATION" target="_blank" rel="noreferrer noopener">ACCESS_FINE_LOCATION</a> instead since it works for all versions of Android.</li>
+
+
+
+<li><a href="https://developer.android.com/reference/android/Manifest.permission#ACCESS_COARSE_LOCATION" target="_blank" rel="noreferrer noopener"><strong>ACCESS_COARSE_LOCATION</strong></a>: Apps targeting Android 12 (API 31) and above must also request this permission in addition to <a href="https://developer.android.com/reference/android/Manifest.permission.html#ACCESS_FINE_LOCATION" target="_blank" rel="noreferrer noopener">ACCESS_FINE_LOCATION</a>.</li>
+
+
+
+<li><a href="https://developer.android.com/reference/android/Manifest.permission#BLUETOOTH_SCAN" target="_blank" rel="noreferrer noopener"><strong>BLUETOOTH_SCAN</strong></a>: For apps targeting Android 12 and above, developers can finally request explicit permission to perform only Bluetooth scans without having to obtain location access for devices running Android 12 and above.</li>
+
+
+
+<li><a href="https://developer.android.com/reference/android/Manifest.permission#BLUETOOTH_CONNECT" target="_blank" rel="noreferrer noopener"><strong>BLUETOOTH_CONNECT</strong></a>: For apps targeting Android 12 and above, developers can request this permission to connect to Bluetooth peripherals that are currently bonded to an Android device running Android 12 and above.</li>
+</ul>
+
+
+
+<p>Out of all these permissions, <code>ACCESS_COARSE_LOCATION</code>, <code>ACCESS_FINE_LOCATION</code>, <code>BLUETOOTH_SCAN</code>, and <code>BLUETOOTH_CONNECT</code> are considered — in Android terms — <a href="https://developer.android.com/guide/topics/permissions/overview#dangerous_permissions" target="_blank" rel="noreferrer noopener">dangerous or runtime permissions</a>. What this means is that while some permissions are automatically granted to the app during installation time, <strong>the user needs to explicitly grant these permissions to the app</strong> from the app UI. It’s of utmost importance to stress to the user that your app won’t use their location for anything aside from ensuring BLE scanning works if that’s the case.</p>
+
+
+
+<p>If BLE hardware is a requirement for your app, you can optionally declare that your app uses BLE features on Android devices. By doing so, users on devices without BLE capabilities won’t see your app on the Google Play Store. If this behavior sounds good, add the following snippet below the <code>&lt;uses-permission&gt;</code> tags.</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(1 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>&lt;uses-feature
+    android:name="android.hardware.bluetooth_le"
+    android:required="true" /></textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">uses-feature</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:name</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;android.hardware.bluetooth_le&quot;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #6F42C1">android:required</span><span style="color: #24292E">=</span><span style="color: #032F62">&quot;true&quot;</span><span style="color: #24292E"> /&gt;</span></span></code></pre></div>
+
+
+
+<h3 class="wp-block-heading">Requesting Runtime Permissions From the User</h3>
+
+
+
+<p>On Android, runtime permissions are used to enhance user control and privacy. Unlike install-time permissions, which are granted automatically when the app is installed, runtime permissions require users to explicitly grant access to sensitive features or data during app usage. This ensures that users are fully aware of and in control of the data or functionalities the app accesses at specific moments.</p>
+
+
+
+<p>For Bluetooth Low Energy (BLE) apps, runtime permissions are essential because BLE functionality often involves accessing sensitive user data, such as location or nearby devices, which Android classifies as potentially privacy-invading. Without these permissions, your app cannot initiate key BLE operations, like scanning for or connecting to devices.</p>
+
+
+
+<p>One of the things we recommend you have in your&nbsp;<code>Activity</code>,&nbsp;<code>ViewModel</code>, or at least in a&nbsp;<code>Context</code>&nbsp;extension function, is a way to know whether the user has granted the required runtime permissions. The following&nbsp;<code>Context</code>&nbsp;extension functions work together to do just this:</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(2 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>/**
+ * Determine whether the current &#91;Context&#93; has been granted the relevant &#91;Manifest.permission&#93;.
+ */
+fun Context.hasPermission(permissionType: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permissionType) ==
+        PackageManager.PERMISSION_GRANTED
+}
+/**
+ * Determine whether the current &#91;Context&#93; has been granted the relevant permissions to perform
+ * Bluetooth operations depending on the mobile device's Android version.
+ */
+fun Context.hasRequiredBluetoothPermissions(): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        hasPermission(Manifest.permission.BLUETOOTH_SCAN) &amp;&amp;
+            hasPermission(Manifest.permission.BLUETOOTH_CONNECT)
+    } else {
+        hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+}</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #6A737D">/**</span></span>
+<span class="line"><span style="color: #6A737D"> * Determine whether the current &#91;Context&#93; has been granted the relevant &#91;Manifest.permission&#93;.</span></span>
+<span class="line"><span style="color: #6A737D"> */</span></span>
+<span class="line"><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">Context</span><span style="color: #24292E">.</span><span style="color: #6F42C1">hasPermission</span><span style="color: #24292E">(permissionType: </span><span style="color: #6F42C1">String</span><span style="color: #24292E">): </span><span style="color: #6F42C1">Boolean</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">return</span><span style="color: #24292E"> ContextCompat.</span><span style="color: #6F42C1">checkSelfPermission</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">, permissionType) </span><span style="color: #D73A49">==</span></span>
+<span class="line"><span style="color: #24292E">        PackageManager.PERMISSION_GRANTED</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #6A737D">/**</span></span>
+<span class="line"><span style="color: #6A737D"> * Determine whether the current &#91;Context&#93; has been granted the relevant permissions to perform</span></span>
+<span class="line"><span style="color: #6A737D"> * Bluetooth operations depending on the mobile device&#39;s Android version.</span></span>
+<span class="line"><span style="color: #6A737D"> */</span></span>
+<span class="line"><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">Context</span><span style="color: #24292E">.</span><span style="color: #6F42C1">hasRequiredBluetoothPermissions</span><span style="color: #24292E">(): </span><span style="color: #6F42C1">Boolean</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">return</span><span style="color: #24292E"> </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (Build.VERSION.SDK_INT </span><span style="color: #D73A49">&gt;=</span><span style="color: #24292E"> Build.VERSION_CODES.S) {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6F42C1">hasPermission</span><span style="color: #24292E">(Manifest.permission.BLUETOOTH_SCAN) </span><span style="color: #D73A49">&amp;&amp;</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6F42C1">hasPermission</span><span style="color: #24292E">(Manifest.permission.BLUETOOTH_CONNECT)</span></span>
+<span class="line"><span style="color: #24292E">    } </span><span style="color: #D73A49">else</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6F42C1">hasPermission</span><span style="color: #24292E">(Manifest.permission.ACCESS_FINE_LOCATION)</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span></code></pre></div>
+
+
+
+<p>The two functions above are extension functions on the&nbsp;<code>Context</code>&nbsp;object, meaning each&nbsp;<code>Context</code>&nbsp;instance with access to these functions can call them and use them as if these functions were part of the original class declaration. Depending on how you structure your source code, these extension functions may reside in another Kotlin source file so that they can be accessed by other&nbsp;<code>Activities</code>&nbsp;as well.</p>
+
+
+
+<p>Now add a top-level constant declaration outside your <code>Activity</code>‘s class declaration — the actual value of the constant can be any positive integer you want:</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(1 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>private const val PERMISSION_REQUEST_CODE = 1</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">const</span><span style="color: #24292E"> </span><span style="color: #D73A49">val</span><span style="color: #24292E"> PERMISSION_REQUEST_CODE </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #005CC5">1</span></span></code></pre></div>
+
+
+
+<p>Since the runtime permissions are only needed from the moment when the user wants to perform a BLE scan, it makes sense that we should only prompt the user to grant this permission when they want to initiate a BLE scan. The following snippets assume you have a Button that’ll start scanning for BLE devices when tapped.</p>
+
+
+
+<p>In that <code>Button</code>’s <code>OnClickListener</code>, we want to call a function <code>startBleScan()</code>. If that’s the only thing the <code>Button</code> will do, your code should look something like this:</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(1 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>scanButton.setOnClickListener { startBleScan() }</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #24292E">scanButton.</span><span style="color: #6F42C1">setOnClickListener</span><span style="color: #24292E"> { </span><span style="color: #6F42C1">startBleScan</span><span style="color: #24292E">() }</span></span></code></pre></div>
+
+
+
+<p><code>startBleScan()</code> will essentially check to see if the required runtime permissions have been granted before allowing the user to proceed with performing a BLE scan.</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(2 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>private fun startBleScan() {
+    if (!hasRequiredBluetoothPermissions()) {
+        requestRelevantRuntimePermissions()
+    } else { /* TODO: Actually perform scan */ }
+}
+private fun Activity.requestRelevantRuntimePermissions() {
+    if (hasRequiredBluetoothPermissions()) { return }
+    when {
+        Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.S -> {
+            requestLocationPermission()
+        }
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            requestBluetoothPermissions()
+        }
+    }
+}
+private fun requestLocationPermission() = runOnUiThread {
+    AlertDialog.Builder(this)
+        .setTitle("Location permission required")
+        .setMessage(
+            "Starting from Android M (6.0), the system requires apps to be granted " +
+            "location access in order to scan for BLE devices."
+        )
+        .setCancelable(false)
+        .setPositiveButton(android.R.string.ok) { _, _ ->
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+        .show()
+}
+@RequiresApi(Build.VERSION_CODES.S)
+private fun requestBluetoothPermissions() = runOnUiThread {
+    AlertDialog.Builder(this)
+        .setTitle("Bluetooth permission required")
+        .setMessage(
+            "Starting from Android 12, the system requires apps to be granted " +
+                "Bluetooth access in order to scan for and connect to BLE devices."
+        )
+        .setCancelable(false)
+        .setPositiveButton(android.R.string.ok) { _, _ ->
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+        .show()
+    }
+}</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">startBleScan</span><span style="color: #24292E">() {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (</span><span style="color: #D73A49">!</span><span style="color: #6F42C1">hasRequiredBluetoothPermissions</span><span style="color: #24292E">()) {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6F42C1">requestRelevantRuntimePermissions</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">    } </span><span style="color: #D73A49">else</span><span style="color: #24292E"> { </span><span style="color: #6A737D">/* TODO: Actually perform scan */</span><span style="color: #24292E"> }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">Activity</span><span style="color: #24292E">.</span><span style="color: #6F42C1">requestRelevantRuntimePermissions</span><span style="color: #24292E">() {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (</span><span style="color: #6F42C1">hasRequiredBluetoothPermissions</span><span style="color: #24292E">()) { </span><span style="color: #D73A49">return</span><span style="color: #24292E"> }</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">when</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">        Build.VERSION.</span><span style="color: #6F42C1">SDK_INT</span><span style="color: #24292E"> &lt; </span><span style="color: #6F42C1">Build</span><span style="color: #24292E">.</span><span style="color: #6F42C1">VERSION_CODES</span><span style="color: #24292E">.</span><span style="color: #6F42C1">S</span><span style="color: #24292E"> -&gt; {</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6F42C1">requestLocationPermission</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">        Build.VERSION.SDK_INT </span><span style="color: #D73A49">&gt;=</span><span style="color: #24292E"> Build.VERSION_CODES.S </span><span style="color: #D73A49">-&gt;</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6F42C1">requestBluetoothPermissions</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">requestLocationPermission</span><span style="color: #24292E">() </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #6F42C1">runOnUiThread</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">    AlertDialog.</span><span style="color: #6F42C1">Builder</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setTitle</span><span style="color: #24292E">(</span><span style="color: #032F62">&quot;Location permission required&quot;</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setMessage</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #032F62">&quot;Starting from Android M (6.0), the system requires apps to be granted &quot;</span><span style="color: #24292E"> </span><span style="color: #D73A49">+</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #032F62">&quot;location access in order to scan for BLE devices.&quot;</span></span>
+<span class="line"><span style="color: #24292E">        )</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setCancelable</span><span style="color: #24292E">(</span><span style="color: #005CC5">false</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setPositiveButton</span><span style="color: #24292E">(android.R.string.ok) { _, _ </span><span style="color: #D73A49">-&gt;</span></span>
+<span class="line"><span style="color: #24292E">            ActivityCompat.</span><span style="color: #6F42C1">requestPermissions</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">                </span><span style="color: #005CC5">this</span><span style="color: #24292E">,</span></span>
+<span class="line"><span style="color: #24292E">                </span><span style="color: #6F42C1">arrayOf</span><span style="color: #24292E">(Manifest.permission.ACCESS_FINE_LOCATION),</span></span>
+<span class="line"><span style="color: #24292E">                PERMISSION_REQUEST_CODE</span></span>
+<span class="line"><span style="color: #24292E">            )</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">show</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #6F42C1">@RequiresApi</span><span style="color: #24292E">(Build.VERSION_CODES.S)</span></span>
+<span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">requestBluetoothPermissions</span><span style="color: #24292E">() </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #6F42C1">runOnUiThread</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">    AlertDialog.</span><span style="color: #6F42C1">Builder</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setTitle</span><span style="color: #24292E">(</span><span style="color: #032F62">&quot;Bluetooth permission required&quot;</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setMessage</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #032F62">&quot;Starting from Android 12, the system requires apps to be granted &quot;</span><span style="color: #24292E"> </span><span style="color: #D73A49">+</span></span>
+<span class="line"><span style="color: #24292E">                </span><span style="color: #032F62">&quot;Bluetooth access in order to scan for and connect to BLE devices.&quot;</span></span>
+<span class="line"><span style="color: #24292E">        )</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setCancelable</span><span style="color: #24292E">(</span><span style="color: #005CC5">false</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">setPositiveButton</span><span style="color: #24292E">(android.R.string.ok) { _, _ </span><span style="color: #D73A49">-&gt;</span></span>
+<span class="line"><span style="color: #24292E">            ActivityCompat.</span><span style="color: #6F42C1">requestPermissions</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">                </span><span style="color: #005CC5">this</span><span style="color: #24292E">,</span></span>
+<span class="line"><span style="color: #24292E">                </span><span style="color: #6F42C1">arrayOf</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">                    Manifest.permission.BLUETOOTH_SCAN,</span></span>
+<span class="line"><span style="color: #24292E">                    Manifest.permission.BLUETOOTH_CONNECT</span></span>
+<span class="line"><span style="color: #24292E">                ),</span></span>
+<span class="line"><span style="color: #24292E">                PERMISSION_REQUEST_CODE</span></span>
+<span class="line"><span style="color: #24292E">            )</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">        .</span><span style="color: #6F42C1">show</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span></code></pre></div>
+
+
+
+<p><code>startBleScan()</code> will call <code>requestRelevantRuntimePermissions()</code> if we don’t yet have the relevant runtime permissions — this API-dependent check is encapsulated within <code>hasRequiredBluetoothPermissions()</code>, an extension function that we shared earlier.</p>
+
+
+
+<p>If at least one runtime permission is missing, an alert will then be shown to inform the user of the need to grant the missing runtime permission(s) and giving them the sole option of “OK,” which will trigger a system dialog prompting the user to grant the relevant permission(s) to the app.</p>
+
+
+
+<p>We’ll now need to do the same thing as before and react to the user’s actions, this time by overriding the <code>onRequestPermissionsResult()</code> function on <code>ActivityCompat</code> to handle the case when the <code>requestCode</code> is equal to <code>PERMISSION_REQUEST_CODE</code>:</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(2 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array&lt;out String>,
+    grantResults: IntArray
+) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode != PERMISSION_REQUEST_CODE) return
+    val containsPermanentDenial = permissions.zip(grantResults.toTypedArray()).any {
+        it.second == PackageManager.PERMISSION_DENIED &amp;&amp;
+            !ActivityCompat.shouldShowRequestPermissionRationale(this, it.first)
+    }
+    val containsDenial = grantResults.any { it == PackageManager.PERMISSION_DENIED }
+    val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+    when {
+        containsPermanentDenial -> {
+            // TODO: Handle permanent denial (e.g., show AlertDialog with justification)
+            // Note: The user will need to navigate to App Settings and manually grant
+            // permissions that were permanently denied
+        }
+        containsDenial -> {
+            requestRelevantRuntimePermissions()
+        }
+        allGranted &amp;&amp; hasRequiredBluetoothPermissions() -> {
+            startBleScan()
+        }
+        else -> {
+            // Unexpected scenario encountered when handling permissions
+            recreate()
+        }
+    }
+}</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #D73A49">override</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">onRequestPermissionsResult</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">    requestCode: </span><span style="color: #6F42C1">Int</span><span style="color: #24292E">,</span></span>
+<span class="line"><span style="color: #24292E">    permissions: </span><span style="color: #6F42C1">Array</span><span style="color: #24292E">&lt;</span><span style="color: #6F42C1">out</span><span style="color: #24292E"> </span><span style="color: #6F42C1">String</span><span style="color: #24292E">&gt;,</span></span>
+<span class="line"><span style="color: #24292E">    grantResults: </span><span style="color: #6F42C1">IntArray</span></span>
+<span class="line"><span style="color: #24292E">) {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #005CC5">super</span><span style="color: #24292E">.</span><span style="color: #6F42C1">onRequestPermissionsResult</span><span style="color: #24292E">(requestCode, permissions, grantResults)</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (requestCode </span><span style="color: #D73A49">!=</span><span style="color: #24292E"> PERMISSION_REQUEST_CODE) </span><span style="color: #D73A49">return</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">val</span><span style="color: #24292E"> containsPermanentDenial </span><span style="color: #D73A49">=</span><span style="color: #24292E"> permissions.</span><span style="color: #6F42C1">zip</span><span style="color: #24292E">(grantResults.</span><span style="color: #6F42C1">toTypedArray</span><span style="color: #24292E">()).</span><span style="color: #6F42C1">any</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">        it.second </span><span style="color: #D73A49">==</span><span style="color: #24292E"> PackageManager.PERMISSION_DENIED </span><span style="color: #D73A49">&amp;&amp;</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #D73A49">!</span><span style="color: #24292E">ActivityCompat.</span><span style="color: #6F42C1">shouldShowRequestPermissionRationale</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">, it.first)</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">val</span><span style="color: #24292E"> containsDenial </span><span style="color: #D73A49">=</span><span style="color: #24292E"> grantResults.</span><span style="color: #6F42C1">any</span><span style="color: #24292E"> { it </span><span style="color: #D73A49">==</span><span style="color: #24292E"> PackageManager.PERMISSION_DENIED }</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">val</span><span style="color: #24292E"> allGranted </span><span style="color: #D73A49">=</span><span style="color: #24292E"> grantResults.</span><span style="color: #6F42C1">all</span><span style="color: #24292E"> { it </span><span style="color: #D73A49">==</span><span style="color: #24292E"> PackageManager.PERMISSION_GRANTED }</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">when</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">        containsPermanentDenial </span><span style="color: #D73A49">-&gt;</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6A737D">// TODO: Handle permanent denial (e.g., show AlertDialog with justification)</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6A737D">// Note: The user will need to navigate to App Settings and manually grant</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6A737D">// permissions that were permanently denied</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">        containsDenial </span><span style="color: #D73A49">-&gt;</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6F42C1">requestRelevantRuntimePermissions</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">        allGranted </span><span style="color: #D73A49">&amp;&amp;</span><span style="color: #24292E"> </span><span style="color: #6F42C1">hasRequiredBluetoothPermissions</span><span style="color: #24292E">() </span><span style="color: #D73A49">-&gt;</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6F42C1">startBleScan</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #D73A49">else</span><span style="color: #24292E"> </span><span style="color: #D73A49">-&gt;</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6A737D">// Unexpected scenario encountered when handling permissions</span></span>
+<span class="line"><span style="color: #24292E">            </span><span style="color: #6F42C1">recreate</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span></code></pre></div>
+
+
+
+<p>If the user agrees to grant the app with the runtime permissions that we’ve requested, we’re good to go and can start scanning for BLE devices; otherwise, we’ll keep asking them to grant those permissions if they have yet to permanently deny the request by checking the “Don’t ask again” box.</p>
+
+
+
+<p><strong>Note on Android 11 and newer</strong>: A repeated denial is implicitly treated as a permanent denial by Android, and the app can no longer prompt the user to grant those permissions. In this case, developers should have proper UX explaining why the permissions are needed and how to remedy this situation by directing the users to App Settings so they can manually grant those denied permissions. A common way of doing so is by launching an <code>Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)</code> and by setting the <code>Intent</code>‘s data to a specific URI which describes the app’s package name, e.g., <code>package:com.punchthrough.lightblueandroid</code>.</p>
+
+
+
+<p>Again, a well-designed app should have a more graceful way of handling the various rejection scenarios, but we’ll leave that as an exercise for the reader.&nbsp;</p>
+
+
+
+<p>Onwards!</p>
+
+
+
+<p>At this point, we’d like you to once again build and run the app on a physical Android device. If your Android device is running Android 6–11 (inclusive on both ends of the range), you should see a location access prompt appear as you tap “Start Scan”; if your device is running Android 12 or newer, you should see a nearby Bluetooth devices access prompt appear instead. Verify that the deny option will cause the permission request prompt to reappear, after which you should grant the requested permissions to avoid getting into the permanent denial execution branch.</p>
+
+
+
+<p><em>For the sake of brevity, we’ll assume these runtime permissions have been granted for all the following sections.</em></p>
+
+
+
+<h3 class="wp-block-heading">Making Sure That Bluetooth is Enabled</h3>
+
+
+
+<p>If Bluetooth being enabled is crucial to your app’s core functionality, you’ll want to make sure that your users keep Bluetooth enabled while they’re using your app. Fortunately, Android provides an <code>Intent</code> action that can prompt a user to turn on Bluetooth on their device. The only caveat is that if your app targets Android 12 or higher, the new <code>BLUETOOTH_CONNECT</code> permission <em>must</em> be granted before you can use this <code>Intent</code> action.</p>
+
+
+
+<p>In our example below, we want to check in the <code>Activity</code>’s <code>onResume()</code> if Bluetooth is enabled; if it’s not, we display an alert:</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(2 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>private val bluetoothAdapter: BluetoothAdapter by lazy {
+    val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    bluetoothManager.adapter
+}
+private val bluetoothEnablingResult = registerForActivityResult(
+    ActivityResultContracts.StartActivityForResult()
+) { result ->
+    if (result.resultCode == Activity.RESULT_OK) {
+        // Bluetooth is enabled, good to go
+    } else {
+        // User dismissed or denied Bluetooth prompt
+        promptEnableBluetooth()
+    }
+}
+override fun onResume() {
+    super.onResume()
+    if (!bluetoothAdapter.isEnabled) {
+        promptEnableBluetooth()
+    }
+}
+/**
+ * Prompts the user to enable Bluetooth via a system dialog.
+ *
+ * For Android 12+, &#91;Manifest.permission.BLUETOOTH_CONNECT&#93; is required to use
+ * the &#91;BluetoothAdapter.ACTION_REQUEST_ENABLE&#93; intent.
+ */
+private fun promptEnableBluetooth() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &amp;&amp;
+        !hasPermission(Manifest.permission.BLUETOOTH_CONNECT)
+    ) {
+        // Insufficient permission to prompt for Bluetooth enabling
+        return
+    }
+    if (!bluetoothAdapter.isEnabled) {
+        Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE).apply {
+            bluetoothEnablingResult.launch(this)
+        }
+    }
+}</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">val</span><span style="color: #24292E"> bluetoothAdapter: </span><span style="color: #6F42C1">BluetoothAdapter</span><span style="color: #24292E"> </span><span style="color: #6F42C1">by</span><span style="color: #24292E"> </span><span style="color: #6F42C1">lazy</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">val</span><span style="color: #24292E"> bluetoothManager </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #6F42C1">getSystemService</span><span style="color: #24292E">(Context.BLUETOOTH_SERVICE) </span><span style="color: #D73A49">as</span><span style="color: #24292E"> BluetoothManager</span></span>
+<span class="line"><span style="color: #24292E">    bluetoothManager.adapter</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">val</span><span style="color: #24292E"> bluetoothEnablingResult </span><span style="color: #D73A49">=</span><span style="color: #24292E"> </span><span style="color: #6F42C1">registerForActivityResult</span><span style="color: #24292E">(</span></span>
+<span class="line"><span style="color: #24292E">    ActivityResultContracts.</span><span style="color: #6F42C1">StartActivityForResult</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">) { result </span><span style="color: #D73A49">-&gt;</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (result.resultCode </span><span style="color: #D73A49">==</span><span style="color: #24292E"> Activity.RESULT_OK) {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6A737D">// Bluetooth is enabled, good to go</span></span>
+<span class="line"><span style="color: #24292E">    } </span><span style="color: #D73A49">else</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6A737D">// User dismissed or denied Bluetooth prompt</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6F42C1">promptEnableBluetooth</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #D73A49">override</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">onResume</span><span style="color: #24292E">() {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #005CC5">super</span><span style="color: #24292E">.</span><span style="color: #6F42C1">onResume</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (</span><span style="color: #D73A49">!</span><span style="color: #24292E">bluetoothAdapter.isEnabled) {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6F42C1">promptEnableBluetooth</span><span style="color: #24292E">()</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span>
+<span class="line"><span style="color: #6A737D">/**</span></span>
+<span class="line"><span style="color: #6A737D"> * Prompts the user to enable Bluetooth via a system dialog.</span></span>
+<span class="line"><span style="color: #6A737D"> *</span></span>
+<span class="line"><span style="color: #6A737D"> * For Android 12+, &#91;Manifest.permission.BLUETOOTH_CONNECT&#93; is required to use</span></span>
+<span class="line"><span style="color: #6A737D"> * the &#91;BluetoothAdapter.ACTION_REQUEST_ENABLE&#93; intent.</span></span>
+<span class="line"><span style="color: #6A737D"> */</span></span>
+<span class="line"><span style="color: #D73A49">private</span><span style="color: #24292E"> </span><span style="color: #D73A49">fun</span><span style="color: #24292E"> </span><span style="color: #6F42C1">promptEnableBluetooth</span><span style="color: #24292E">() {</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (Build.VERSION.SDK_INT </span><span style="color: #D73A49">&gt;=</span><span style="color: #24292E"> Build.VERSION_CODES.S </span><span style="color: #D73A49">&amp;&amp;</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #D73A49">!</span><span style="color: #6F42C1">hasPermission</span><span style="color: #24292E">(Manifest.permission.BLUETOOTH_CONNECT)</span></span>
+<span class="line"><span style="color: #24292E">    ) {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6A737D">// Insufficient permission to prompt for Bluetooth enabling</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #D73A49">return</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">    </span><span style="color: #D73A49">if</span><span style="color: #24292E"> (</span><span style="color: #D73A49">!</span><span style="color: #24292E">bluetoothAdapter.isEnabled) {</span></span>
+<span class="line"><span style="color: #24292E">        </span><span style="color: #6F42C1">Intent</span><span style="color: #24292E">(BluetoothAdapter.ACTION_REQUEST_ENABLE).</span><span style="color: #6F42C1">apply</span><span style="color: #24292E"> {</span></span>
+<span class="line"><span style="color: #24292E">            bluetoothEnablingResult.</span><span style="color: #6F42C1">launch</span><span style="color: #24292E">(</span><span style="color: #005CC5">this</span><span style="color: #24292E">)</span></span>
+<span class="line"><span style="color: #24292E">        }</span></span>
+<span class="line"><span style="color: #24292E">    }</span></span>
+<span class="line"><span style="color: #24292E">}</span></span></code></pre></div>
+
+
+
+<p>When your first Activity is about to show with these additions, we check if the <code>BluetoothAdapter</code> is enabled. If it’s not, we display a system alert utilizing <code>BluetoothAdapter</code>. <code>ACTION_REQUEST_ENABLE</code> to request that the user enable Bluetooth on their Android device. Remember that you need the <code>BLUETOOTH_CONNECT</code> permission before you can launch this <code>Intent</code> on Android 12 and above!</p>
+
+
+
+<p>At this point, take the time to build and run the app on a physical Android device. We’re using an Android physical device because simulators don’t yet come with Bluetooth support at the time of writing. You’ll notice that if you disable Bluetooth and get to your <code>Activity</code>, a system dialog prompts you to enable Bluetooth. If you dismiss the dialog, the app attempts to keep displaying the same alert over and over again until the user accepts our recommendation to turn on Bluetooth.</p>
+
+
+
+<p>In a production app, there’ll likely be some kind of UX around this to educate the users on why they should enable Bluetooth. Instead of the very crude example of calling <code>promptEnableBluetooth()</code>, you can either display a new informational alert that’ll later call into your function to display the Bluetooth-enabling system alert again or kick-start some other fancy user education flow.</p>
+
+
+
+<h3 class="wp-block-heading">The Android Studio &#8220;MissingPermission&#8221; Warning</h3>
+
+
+
+<p>The code samples in the following sections assume that they’ll only ever be called by the app code when the user has already granted all the relevant runtime permissions.</p>
+
+
+
+<p>For the purposes of running our sample code, if you’re encapsulating all the BLE scanning and connecting logic in one or two main classes, you may want to add a <code>@SuppressLint</code> for the specific “MissingPermission” warning that Android Studio may emit for classes that utilize the Android Bluetooth APIs without an explicit runtime permission check surrounding these usages.</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(1 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><pre class="code-block-pro-copy-button-pre" aria-hidden="true"><textarea class="code-block-pro-copy-button-textarea" tabindex="-1" aria-hidden="true" readonly>@SuppressLint("MissingPermission") // App's role to ensure permissions are available
+class BluetoothManager { ... }</textarea></pre><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #6F42C1">@SuppressLint</span><span style="color: #24292E">(</span><span style="color: #032F62">&quot;MissingPermission&quot;</span><span style="color: #24292E">) </span><span style="color: #6A737D">// App&#39;s role to ensure permissions are available</span></span>
+<span class="line"><span style="color: #D73A49">class</span><span style="color: #24292E"> </span><span style="color: #6F42C1">BluetoothManager</span><span style="color: #24292E"> { </span><span style="color: #D73A49">..</span><span style="color: #24292E">. }</span></span></code></pre></div>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading" style="font-size:32px"><strong>Final Thoughts&#8230;</strong></h2>
+
+
+
+<p>To recap, permissions are the backbone of BLE app functionality. They ensure your app can access essential hardware, comply with Android’s security framework, and create a seamless, privacy-conscious user experience. By understanding why permissions matter, how they interact with BLE functionality, and implementing best practices for managing them, you’re setting your app up for success.</p>
+
+
+
+<p>But handling permissions is just the beginning of building a robust BLE app. Once you’ve nailed down your permissions setup, the next steps involve performing a scan, discovering services, and diving into data transfer through read/write operations. If you’re ready to move on, we recommend exploring our <a href="https://punchthrough.com/android-ble-guide/" target="_blank" rel="noreferrer noopener">Ultimate Guide to Android BLE</a> for a detailed walkthrough of these advanced steps.If you’re looking to go deeper into BLE development, check out our <a href="https://punchthrough.com/resources/" target="_blank" rel="noreferrer noopener">resource page</a> for more insights into advanced BLE functionalities. And if you’re still facing challenges—whether with permissions or any other part of your BLE app development process—Punch Through is here to help. With our extensive BLE expertise and hands-on experience, we’re ready to tackle even the toughest development roadblocks with you.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>iOS 18 AccessorySetupKit: Everything BLE Developers Need To Know</title>
+		<link>https://punchthrough.com/ios18-accessorysetupkit-everything-ble-developers-need-to-know/</link>
+		
+		<dc:creator><![CDATA[Alec Letourneau]]></dc:creator>
+		<pubDate>Wed, 02 Oct 2024 19:43:00 +0000</pubDate>
+				<category><![CDATA[Mobile Apps]]></category>
+		<category><![CDATA[BLE Connection Management]]></category>
+		<category><![CDATA[BLE Software Development]]></category>
+		<category><![CDATA[Core Bluetooth (iOS)]]></category>
+		<category><![CDATA[Software Best Practices]]></category>
+		<category><![CDATA[User Interface Design]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=6319</guid>
+
+					<description><![CDATA[Streamline BLE device setup in iOS 18 with AccessorySetupKit, enabling seamless pairing, programmatic bond management, and reduced permission prompts for a smoother user experience.]]></description>
+										<content:encoded><![CDATA[
+<p>Apple’s <a href="https://www.apple.com/newsroom/2024/06/wwdc24-highlights/" target="_blank" rel="noopener">WWDC 2024</a> brought exciting advancements for Bluetooth Low Energy (BLE) developers with the introduction of <a href="https://developer.apple.com/documentation/accessorysetupkit/" target="_blank" rel="noopener">AccessorySetupKit</a> in <a href="https://www.apple.com/ios/ios-18/" target="_blank" rel="noreferrer noopener">iOS 18</a>. This new framework is designed to streamline the discovery and configuration of companion devices, offering a more efficient and intuitive process. By eliminating complex permission prompts and simplifying device pairing, AccessorySetupKit enhances the user experience for both developers and end-users.</p>
+
+
+
+<p>While AccessorySetupKit introduces new options, it complements existing methods of discovering companion devices rather than replacing them — offering developers greater flexibility. </p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What This Article Covers</h2>
+
+
+
+<p>In this article, we’ll explore the key features of AccessorySetupKit. You’ll learn how it differs from current frameworks, its effect on BLE bonding and connection sharing, and how developers can leverage it to create smoother, permission-free interactions with BLE devices. While we’ve begun to dive into this framework, some aspects remain speculative as we continue to explore its full capabilities.</p>
+
+
+
+<p>While AccessorySetupKit also supports Wi-Fi and Local Network device discovery, <strong>this post will focus specifically on BLE</strong>. The setup process for Wi-Fi and Local Network devices should follow a similar approach.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img fetchpriority="high" decoding="async" width="1024" height="697" src="https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-1-80-1024x697.jpg" alt="Icon Apple Ios Accessorysetupkit Screen 1 80" class="wp-image-6321" srcset="https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-1-80-1024x697.jpg 1024w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-1-80-300x204.jpg 300w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-1-80-150x102.jpg 150w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-1-80-768x523.jpg 768w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-1-80.jpg 1469w" sizes="(max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption">Image from <a href="https://developer.apple.com/wwdc24/" target="_blank" rel="noopener">Apple&#8217;s WWDC 2024</a> Introduction</figcaption></figure>
+</div>
+
+
+<h2 class="wp-block-heading">What is AccessorySetupKit?</h2>
+
+
+
+<p>AccessorySetupKit is a new framework in Apple&#8217;s iOS 18 that simplifies the process of discovering and configuring Bluetooth Low Energy (BLE), Wi-Fi, and Local Network devices. It offers a unified user experience by managing device discovery at the operating system level, eliminating the need for disruptive permission prompts and custom device selection UI.</p>
+
+
+
+<p>Instead of requiring apps to handle device discovery logic, AccessorySetupKit performs the scanning and filtering of devices for you. The OS presents users with only the devices that meet the criteria defined by the app, streamlining the process. Once the user selects a device and grants permission, the app is then able to interact with that device, eliminating the need for manual permission handling and reducing state combinations.</p>
+
+
+
+<p>By handling this critical part of the device connection workflow, AccessorySetupKit helps ensure a more seamless and user-friendly interaction for companion devices, especially those relying on BLE.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Setting up an AccessorySetupKit Session</h2>
+
+
+
+<p>At a basic level, setting up an AccessorySetupKit session involves the following:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Declare supported device filter criteria in the Info.plist</li>
+
+
+
+<li>Activate a discovery session</li>
+
+
+
+<li>If looking for a new device, display the picker view</li>
+
+
+
+<li>Retrieve peripheral object for accessory (new or existing)</li>
+
+
+
+<li>Interact with the selected peripheral as a normal Bluetooth device using the <a href="https://punchthrough.com/core-bluetooth-basics/" target="_blank" rel="noreferrer noopener">CoreBluetooth</a> framework.</li>
+</ol>
+
+
+
+<p>Attempting to configure device filters at runtime that do not match the filters declared in the app&#8217;s Info.plist, or attempting to retrieve peripheral objects for UUIDs other than ones configured through AccessorySetupKit will result in the app being terminated.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">New BLE Bonding Capabilities</h2>
+
+
+
+<p>AccessorySetupKit introduces a powerful new BLE functionality — namely, <strong>the ability for apps to control the lifecycle of BLE bonds programmatically</strong>. As this is a new framework, some bonding behaviors may evolve over time as we continue to learn more about its full potential.</p>
+
+
+
+<h3 class="wp-block-heading">Establishing a BLE Bond</h3>
+
+
+
+<p>When connecting to a device discovered via AccessorySetupKit, pairing and bonding (or pairing without bonding) occurs without the usual OS pairing prompt. Once bonded, an entry for the device appears in the iOS&#8217; Settings app&#8217;s Bluetooth devices list, just like other bonded devices. Devices that do not support pairing will still show up in the device list when discovered through AccessorySetupKit.</p>
+
+
+
+<p>If a device is unbonded and rotates its BLE address, it may become unconnectable. Without bonding, the BLE central cannot identify a device with a new address. BLE bonding, however, ensures that the device’s identity remains resolvable to bonded peers even when addresses are rotated for privacy.</p>
+
+
+
+<h3 class="wp-block-heading">Removing the BLE Bond</h3>
+
+
+
+<p>AccessorySetupKit also provides a method for removing a device that has been discovered. This action deletes the BLE bond and removes the device from the iOS Settings app’s BLE device list. At this time, this method is the only way to delete a BLE bond programmatically from a third-party app.</p>
+
+
+
+<p>In our view, this is a <em>huge</em> UX boon for apps managing multiple BLE bonds throughout their installation lifecycle because these apps now no longer require users to navigate to Settings &gt; Bluetooth to forget bonded peripherals manually.</p>
+
+
+
+<h3 class="wp-block-heading">Security Drawbacks of BLE Bonding</h3>
+
+
+
+<p>BLE bonding offers many advantages for simplifying device management, but it introduces potential security risks that developers need to be mindful of. One notable drawback is that the bond is created at the OS level, not the app level. This means any app on the device can communicate with the bonded BLE device. AccessorySetupKit does not provide additional safeguards to alter this behavior, so developers should rely on app-level security measures.</p>
+
+
+
+<p>For more on securing BLE systems, check out or articles on <a href="https://punchthrough.com/ble-security-where-to-begin/" target="_blank" rel="noreferrer noopener">BLE Security</a>.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Connection Sharing</h2>
+
+
+
+<p>While AccessorySetupKit introduces new BLE discovery features, it does not prevent other apps from interacting with the same device. Even when a device is discovered via AccessorySetupKit, other apps can connect to it using CoreBluetooth or a separate AccessorySetupKit session. This interaction between apps and connected devices raises important considerations, particularly around how pairing, bonding, and sharing accessories are managed.</p>
+
+
+
+<h3 class="wp-block-heading">CoreBluetooth Pairing</h3>
+
+
+
+<p>CoreBluetooth may still prompt the user for pairing, even if the device is already bonded via AccessorySetupKit. If the device is removed via AccessorySetupKit, we expect that the bond will also be removed for both AccessorySetupKit and CoreBluetooth. Regardless of how many apps have discovered the device — either via AccessorySetupKit or CoreBluetooth — only one device entry will appear in the Bluetooth list within the OS’ Settings app.</p>
+
+
+
+<h3 class="wp-block-heading">Handling Multiple Bonds</h3>
+
+
+
+<p>We don’t expect a separate BLE bond to be created when an AccessorySetupKit-connected peripheral is scanned and connected using CoreBluetooth. However, if the pairing prompt does initiate a separate pairing and bonding process, embedded devices could limit connection sharing by restricting the number of active bonds allowed. For instance, the firmware could be designed to allow only one bond at a time, thereby rejecting additional connection attempts from other apps or devices.</p>
+
+
+
+<p>While this could limit unauthorized connections, it would also introduce complications, such as reduced flexibility when switching between apps or devices. In any case, the most reliable approach to securing sensitive communications remains application-level authentication and encryption.&nbsp;</p>
+
+
+
+<p>As we learn more about AccessorySetupKit’s full capabilities and behaviors, we will update this section to provide further clarity.</p>
+
+
+
+<h3 class="wp-block-heading">Accessory Sharing</h3>
+
+
+
+<p>When an app discovers a device via AccessorySetupKit that has already been set up by another app, the device picker prompt changes slightly, asking the user if they&#8217;d like to share the accessory with the new app rather than set it up. We believe that a device will only appear to a second app if it is nearby and actively advertising. However, it&#8217;s possible that an accessory will appear if it&#8217;s actively connected to another app, regardless of whether the device is actively advertising.</p>
+
+
+
+<p>For example, in Apple&#8217;s sample project, two iOS devices continued advertising while connected, which allowed another app to discover the accessory. It remains to be seen whether this behavior will be consistent across other setups, but being already connected to one app did not prevent discovery by another AccessorySetupKit app.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">User Experience</h2>
+
+
+
+<p>AccessorySetupKit streamlines the process of discovering and connecting devices, reducing the complexity of permission prompts and custom UIs. By managing this at the system level, users are presented with only relevant devices, making the experience more intuitive. Here, we’ll explore how this new approach works and its key features for developers.</p>
+
+
+
+<h3 class="wp-block-heading">The Setup Prompt</h3>
+
+
+
+<p>For each type of device you&#8217;d like to discover with AccessorySetupKit, you need to define an ASPickerDisplayItem and pass it to the picker. This object contains a user facing name for the device, an image to represent the device, and the filter criteria used to discover the device.</p>
+
+
+
+<p>When showing the picker, initially a spinner will be displayed until a device is discovered. Then the window transforms into the prompt shown below. When multiple devices are discovered, a page indicator appears below the image, and the user can swipe left and right to select a device.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" width="1024" height="565" src="https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-2-80-1024x565.jpg" alt="Two iOS accessory setup screens side-by-side. The left screen shows a green checkmark with the message &quot;Ready to Use&quot; and an option to continue in the app. The right screen prompts to &quot;Set Up Accessory&quot; with an icon of a car and a button to begin setup." class="wp-image-6320" srcset="https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-2-80-1024x565.jpg 1024w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-2-80-300x165.jpg 300w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-2-80-150x83.jpg 150w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-2-80-768x423.jpg 768w, https://punchthrough.com/wp-content/uploads/2025/03/Icon-Apple-iOS-AccessorySetupKit-Screen-2-80.jpg 1469w" sizes="(max-width: 1024px) 100vw, 1024px" /><figcaption class="wp-element-caption">Example system UI shown during AccessorySetupKit pairing. iOS either confirms the accessory is ready to use or prompts the user to complete setup through the associated app.</figcaption></figure>
+</div>
+
+
+<p>The system prompts displayed by AccessorySetupKit include 4 pieces of configurable information:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>&#8220;App Supplied Name&#8221;</strong>: the string passed into the <code>ASPickerDisplayItem</code></li>
+
+
+
+<li><strong>Image (car on ferry)</strong>: an image passed into the <code>ASPickerDisplayItem</code></li>
+
+
+
+<li><strong>&#8220;Advertised Name&#8221;</strong>: the device name captured from the BLE advertisement</li>
+
+
+
+<li><strong>&#8220;App Name&#8221;</strong>: the display name of the iOS application which is adding the accessory (info.plist bundle name)</li>
+</ul>
+
+
+
+<p>While the Setup Prompt is displayed, it appears that the user cannot leave the app via normal interaction. This may change with the public release of iOS 18.</p>
+
+
+
+<h3 class="wp-block-heading">iOS Settings App Changes</h3>
+
+
+
+<p>Accessories now appear in several locations in the iOS Settings app, along with several new options compared to regular BLE devices. On the Bluetooth page&#8217;s device list, the device entry&#8217;s detail view includes the image used for the AccessorySetupKit prompt and the ability to open the associated app (&#8220;App Name&#8221; in the screenshot below).&nbsp;</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img decoding="async" width="896" height="937" src="https://punchthrough.com/wp-content/uploads/2025/03/image7.png" alt="Bluetooth device detail screen showing &quot;Blue Dice&quot; as the connected accessory, with options to rename the device, open the related app, or forget the device." class="wp-image-6326" style="width:724px;height:auto" srcset="https://punchthrough.com/wp-content/uploads/2025/03/image7.png 896w, https://punchthrough.com/wp-content/uploads/2025/03/image7-287x300.png 287w, https://punchthrough.com/wp-content/uploads/2025/03/image7-143x150.png 143w, https://punchthrough.com/wp-content/uploads/2025/03/image7-768x803.png 768w" sizes="(max-width: 896px) 100vw, 896px" /><figcaption class="wp-element-caption">Example of a connected BLE accessory shown in the iOS 18 device detail screen, with options to rename, open the associated app, or forget the device.</figcaption></figure>
+</div>
+
+
+<p>In the app-specific settings for &#8220;App Name&#8221; a new section, &#8220;Accessories&#8221; exists. Tapping into this option displays a screen similar to the one on the Bluetooth device list, but it includes the ability to revoke each authorized app&#8217;s access to that accessory.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" width="894" height="455" src="https://punchthrough.com/wp-content/uploads/2025/03/image4.png" alt="iOS app settings screen for “App Name,” showing permissions for &quot;Accessories&quot; and &quot;Siri &amp; Search&quot; under the &quot;ALLOW APP NAME TO ACCESS&quot; section." class="wp-image-6327" style="width:728px;height:auto" srcset="https://punchthrough.com/wp-content/uploads/2025/03/image4.png 894w, https://punchthrough.com/wp-content/uploads/2025/03/image4-300x153.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/image4-150x76.png 150w, https://punchthrough.com/wp-content/uploads/2025/03/image4-768x391.png 768w" sizes="auto, (max-width: 894px) 100vw, 894px" /><figcaption class="wp-element-caption">iOS 18 settings screen showing that the app has requested access to a connected BLE accessory under the new &#8220;Accessories&#8221; privacy section.</figcaption></figure>
+</div>
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="727" height="1024" src="https://punchthrough.com/wp-content/uploads/2025/03/image5-727x1024.png" alt="Device settings for “Blue Dice” showing “App Name” under app access with a toggle switch enabled, and options to open the app or forget the device." class="wp-image-6330" srcset="https://punchthrough.com/wp-content/uploads/2025/03/image5-727x1024.png 727w, https://punchthrough.com/wp-content/uploads/2025/03/image5-213x300.png 213w, https://punchthrough.com/wp-content/uploads/2025/03/image5-106x150.png 106w, https://punchthrough.com/wp-content/uploads/2025/03/image5-768x1082.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/image5.png 893w" sizes="auto, (max-width: 727px) 100vw, 727px" /><figcaption class="wp-element-caption">Detailed view of the Blue Dice accessory with toggled app access enabled. Users can revoke access or open the associated app directly.</figcaption></figure>
+</div>
+
+
+<p>Under &#8220;Privacy and Security&#8221; a new listing exists for &#8220;Accessories.&#8221; This section contains a list of all apps that have access to accessories, and selecting an entry displays the same page as accessing the accessory through the app-specific settings entry.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large is-resized"><img loading="lazy" decoding="async" width="846" height="1024" src="https://punchthrough.com/wp-content/uploads/2025/03/image3-846x1024.png" alt="iOS Privacy &amp; Security settings showing access categories like HomeKit, Media &amp; Apple Music, and Accessories. The Accessories section indicates one app has access." class="wp-image-6328" style="width:728px;height:auto" srcset="https://punchthrough.com/wp-content/uploads/2025/03/image3-846x1024.png 846w, https://punchthrough.com/wp-content/uploads/2025/03/image3-248x300.png 248w, https://punchthrough.com/wp-content/uploads/2025/03/image3-124x150.png 124w, https://punchthrough.com/wp-content/uploads/2025/03/image3-768x930.png 768w, https://punchthrough.com/wp-content/uploads/2025/03/image3.png 893w" sizes="auto, (max-width: 846px) 100vw, 846px" /><figcaption class="wp-element-caption">The new &#8220;Accessories&#8221; permission category under Privacy &amp; Security, where users can manage app access to specific BLE devices.</figcaption></figure>
+</div>
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" width="893" height="388" src="https://punchthrough.com/wp-content/uploads/2025/03/image2.png" alt="Accessories settings screen listing “App Name” as having access to the Bluetooth device “Blue Dice.” A note explains that apps with accessory access appear here." class="wp-image-6329" style="width:736px;height:auto" srcset="https://punchthrough.com/wp-content/uploads/2025/03/image2.png 893w, https://punchthrough.com/wp-content/uploads/2025/03/image2-300x130.png 300w, https://punchthrough.com/wp-content/uploads/2025/03/image2-150x65.png 150w, https://punchthrough.com/wp-content/uploads/2025/03/image2-768x334.png 768w" sizes="auto, (max-width: 893px) 100vw, 893px" /><figcaption class="wp-element-caption">The Accessories screen showing that the app &#8220;App Name&#8221; has access to the BLE device &#8220;Blue Dice.&#8221; This access is managed per accessory.</figcaption></figure>
+</div>
+
+
+<h3 class="wp-block-heading">Apple’s Development Guide</h3>
+
+
+
+<p>The above covers the behaviors regarding discovering and connecting to BLE peripherals that we are aware of. Suppose these behaviors sound like a more appealing user experience for your product than the current user experience obtained with CoreBluetooth alone. In that case, the rest of the post will provide guidance on implementing device discovery.</p>
+
+
+
+<p>Apple&#8217;s documentation for AccessorySetupKit can be found here: <a href="https://developer.apple.com/documentation/accessorysetupkit" target="_blank" rel="noopener">https://developer.apple.com/documentation/accessorysetupkit</a></p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Implementing Device Discovery &amp; Filtering</h2>
+
+
+
+<p>Now that we’ve covered how AccessorySetupKit simplifies bonding and connection management, let’s dive into the specifics of how developers can implement device discovery and filtering. AccessorySetupKit provides powerful tools for discovering BLE peripherals and applying precise filtering criteria, enabling you to tailor the discovery process to your app’s needs.</p>
+
+
+
+<h3 class="wp-block-heading">CoreBluetooth Differences</h3>
+
+
+
+<p>To use CoreBluetooth with AccessorySetupKit and bypass the privacy permission prompts, do not declare Bluetooth usage in your app’s Info.plist. Instead, by declaring the necessary AccessorySetupKit keys, your app gains access to a subset of CoreBluetooth functionality without going through the standard permission flow.</p>
+
+
+
+<p>Rather than using <code>CBCentralManager</code> to scan for devices, pass the peripheral UUID provided by AccessorySetupKit into <code>CBCentralManager</code>’s <code>retrievePeripherals</code> function. The corresponding <code>CBPeripheral</code> object will be returned. Attempting to retrieve peripherals that your app doesn’t have access to via AccessorySetupKit will cause the app to terminate.</p>
+
+
+
+<p>Once you have the <code>CBPeripheral</code> object, it can be interacted with like any other BLE device — there are no further limits on how you use CoreBluetooth with that peripheral.</p>
+
+
+
+<p>One notable difference when using CoreBluetooth with AccessorySetupKit is that <code>CBManagerState</code> only takes on the states <code>.poweredOn</code> and <code>.poweredOff</code>. In testing, the states <code>.unknown</code>, <code>.unauthorized</code>, and <code>.unsupported</code> were not seen. While <code>.unsupported</code> may still appear in rare cases, it makes sense that .unauthorized is not shown. The absence of .unknown was unexpected, as it’s typically the initial state when initializing <code>CBCentralManager</code>.</p>
+
+
+
+<h3 class="wp-block-heading">Implementing AccessorySetupKit</h3>
+
+
+
+<p>To perform device discovery using AccessorySetupKit, perform the following:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Create <code>ASPickerDisplayItem</code>‘s for each type of device you&#8217;d like to discover. Specify a name, image, and filter criteria. When using multiple filter criteria, devices must match all criteria to be discovered. To match devices to only some criteria, create multiple <code>ASPickerDisplayItems</code>. Ensure specified filter criteria is also added to the app&#8217;s info.plist.</li>
+
+
+
+<li>Instantiate an <code>ASDiscoverySession</code>.</li>
+
+
+
+<li>Activate the <code>ASDiscoverySession</code> via the <code>activate(on:eventHandler:)</code> function. Pass a reference to an event handler callback into activate&#8217;s parameters.</li>
+
+
+
+<li>Access the <code>ASDiscoverySession</code>&#8216;s <code>accessories</code> property once the session is activated in order to retrieve accessories that were previously set up. Otherwise, pass an array of <code>ASPickerDisplayItems</code> to <code>ASDiscoverySession</code>&#8216;s <code>showPicker(for:)</code> method.</li>
+
+
+
+<li>Once a new or existing <code>ASAccessory</code> has been retrieved or selected by the user, use the <code>bluetoothIdentifier</code> property to retrieve the <code>CBPeripheral</code> object from CoreBluetooth via <code>CBCentralManager</code>&#8216;s <code>retrievePeripherals</code> function and treat it as a normal peripheral object.</li>
+
+
+
+<li>Perform any further device retrieval/discovery by repeating steps 4 and 5, and then clean up the <code>ASAccessorySession</code> via the <code>invalidate</code> method.</li>
+</ol>
+
+
+
+<p><code>ASDiscoverySession</code>&#8216;s <code>removeAccessory</code> method can be used to remove the device from the accessory list and <strong>delete any BLE bonds</strong>. The methods <code>renameAccessory</code>, <code>finishAuthorization</code>, and <code>failAuthorization</code> appear to be related to Wi-Fi accessories, and have no role for BLE accessories.</p>
+
+
+
+<p>For apps that have previously connected to accessories using solely CoreBluetooth, it looks like those accessories can be migrated to AccessorySetupKit by creating <code>ASMigrationDisplayItems</code> with the accessory&#8217;s <code>peripheralUUID</code> and passing them into the <code>showPicker(for:)</code> method.</p>
+
+
+
+<h3 class="wp-block-heading">AccessorySetupKit Discovery Descriptors</h3>
+
+
+
+<p>In order to discover accessories, <code>ASPickerDisplayItems</code> need to be created specifying filter criteria, called discover descriptors (not to be confused with BLE&#8217;s concept of descriptors). For BLE, discover descriptors refer to advertising data. The following advertising data fields can be used for filtering</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Bluetooth Name Substring</strong><br>Substring of the advertised local name field. Will match any substring within the advertised name. Requires a discovery descriptor for company Identifier or service UUID to also be specified</li>
+
+
+
+<li><strong>Bluetooth Service UUID</strong><br>Matches either an advertised service UUID field or the key (service UUID) of an advertised service data field. When matching service data, an optional data blob and mask can be specified to filter based on the service data&#8217;s contents.</li>
+
+
+
+<li><strong>Company Identifier</strong><br>Matches the key of an advertised manufacturing data field. An optional data blob and mask can be specified to filter further based on the manufacturing data&#8217;s contents.</li>
+</ul>
+
+
+
+<p>Name substrings, service UUIDs, and company identifiers must be specified in the info.plist Otherwise the app will be terminated in response to the showPicker(for:) method.</p>
+
+
+
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:1.125rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#24292e;--cbp-line-number-width:calc(2 * 0.6 * 1.125rem);line-height:1.625rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="&lt;dict&gt;
+	&lt;key&gt;NSAccessorySetupBluetoothCompanyIdentifiers&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;FFFF&lt;/string&gt;
+	&lt;/array&gt;
+	&lt;key&gt;NSAccessorySetupBluetoothServices&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;ABCDEF12-3456-7890-ABCD-EF1234567890&lt;/string&gt;
+		&lt;string&gt;180F&lt;/string&gt;
+		&lt;string&gt;180E&lt;/string&gt;
+	&lt;/array&gt;
+	&lt;key&gt;NSAccessorySetupBluetoothNames&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;iPhone&lt;/string&gt;
+	&lt;/array&gt;
+	&lt;key&gt;NSAccessorySetupKitSupports&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;Bluetooth&lt;/string&gt;
+	&lt;/array&gt;
+&lt;/dict&gt;" style="color:#24292e;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"></path></svg></span><pre class="shiki github-light" style="background-color: #fff" tabindex="0"><code><span class="line"><span style="color: #24292E">&lt;</span><span style="color: #22863A">dict</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;NSAccessorySetupBluetoothCompanyIdentifiers&lt;/</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">		&lt;</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;FFFF&lt;/</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;/</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;NSAccessorySetupBluetoothServices&lt;/</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">		&lt;</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;ABCDEF12-3456-7890-ABCD-EF1234567890&lt;/</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">		&lt;</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;180F&lt;/</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">		&lt;</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;180E&lt;/</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;/</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;NSAccessorySetupBluetoothNames&lt;/</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">		&lt;</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;iPhone&lt;/</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;/</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;NSAccessorySetupKitSupports&lt;/</span><span style="color: #22863A">key</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">		&lt;</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;Bluetooth&lt;/</span><span style="color: #22863A">string</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">	&lt;/</span><span style="color: #22863A">array</span><span style="color: #24292E">&gt;</span></span>
+<span class="line"><span style="color: #24292E">&lt;/</span><span style="color: #22863A">dict</span><span style="color: #24292E">&gt;</span></span></code></pre></div>
+
+
+
+<h3 class="wp-block-heading">Data Blobs and Masks</h3>
+
+
+
+<p>To filter based on service data or manufacturing data contents, provide data blob and data mask properties to the <code>ASPickerDisplayItem</code>. These values do not need to appear in the info.plist. Blob and mask objects are of type Data. They need to have an equal length, and be the exact length of the advertised values.</p>
+
+
+
+<p>AccessorySetupKit will attempt to match the Blob object excluding the bitmask represented by the mask object. Bits that are masked out are expected to be zeroed out in the blob object. For example:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Blob:</strong> 01, 02, 03, 04, 05, 06<br><strong>Mask:</strong> FF, FF, FF, FF, FF, FF<br>Checks for an exact match</li>
+
+
+
+<li><strong>Blob:</strong> 01, 02, 03, 04, 05, 00<br><strong>Mask:</strong> FF, FF, FF, FF, FF, 00<br>Checks for an exact match of the first 5 bytes and ignores the 6th</li>
+
+
+
+<li><strong>Blob: </strong>01, 02, 03, 04, 05, 06<br><strong>Mask:</strong> FF, FF, FF, FF, FF, 00<br>Does not appear to match anything</li>
+</ul>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">In Summary</h2>
+
+
+
+<p>Apple’s iOS 18 AccessorySetupKit framework introduces powerful improvements to how BLE devices are discovered, paired, and bonded. The ability to manage BLE bonds programmatically and streamline device discovery without system prompts is a game-changer for BLE-based applications. As AccessorySetupKit evolves, we’ll continue to provide new insights and updates to ensure that developers are well-informed about its full capabilities.</p>
+
+
+
+<p>We hope this article has deepened your understanding of how AccessorySetupKit can enhance your application and clarified some of the framework’s finer details that may not be fully covered in the official documentation. If you need expert guidance on solving BLE connectivity challenges or building next-generation IoT solutions, the Punch Through team is here to help. <a href="https://punchthrough.com/contact/">Let’s work together</a> to bring your vision to life.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Architecting iOS and Android Apps for IoT BLE Systems</title>
+		<link>https://punchthrough.com/architecting-ble-ios-android-apps/</link>
+		
+		<dc:creator><![CDATA[Gretchen Walker]]></dc:creator>
+		<pubDate>Fri, 05 Aug 2022 17:05:58 +0000</pubDate>
+				<category><![CDATA[Mobile Apps]]></category>
+		<category><![CDATA[Android BLE]]></category>
+		<category><![CDATA[BLE Architecture]]></category>
+		<category><![CDATA[BLE Connection Management]]></category>
+		<category><![CDATA[Core Bluetooth (iOS)]]></category>
+		<category><![CDATA[Mobile App Development]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[System Architecture]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/architecting-ios-and-android-apps-for-iot-ble-systems/</guid>
+
+					<description><![CDATA[Learn how to architect cross-platform BLE apps for iOS and Android. This guide covers organizing code, managing connections, and structuring reusable logic for scalable Bluetooth development.]]></description>
+										<content:encoded><![CDATA[
+<p>When you buy a Fitbit, you’re not just paying for the wearable hardware. You’re buying a key that unlocks access to a greater integrated system. Before you can even start using the device, you must first download the app, pair it with your phone, and create a user login.&nbsp;</p>
+
+
+
+<p>Even a decade ago, it might’ve been completely untenable to require users to have an expensive smartphone to use a product. But today’s wireless devices take advantage of the fact that nearly everyone has a full-fledged Bluetooth Low Energy (BLE) and Internet of Things (IoT) bridge device somewhere on their bodies.&nbsp;</p>
+
+
+
+<p>Of course, while those who are developing connected products have more tools at their disposal than ever before, implementing such a system is far from simple. Let’s take a look at some crucial considerations when designing a system that relies on mobile phones as a data bridge between BLE devices and the cloud.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Design for iOS first</h2>
+
+
+
+<p>iOS has more built-in barriers than Android, so it’s important to learn ahead of time what these are and take them into account when designing your system requirements and architecture. For instance, when your app is not actively in use, iOS will usually put it into a suspended or even terminated state. Certain triggers, such as BLE connection events and notifications, can temporarily relaunch the app into the background to perform short tasks, but iOS will soon put the app back to sleep.</p>
+
+
+
+<p>iOS may also choose to terminate the app entirely, and apps that regularly hog resources in the background will be prioritized for termination. Therefore, IoT bridge apps are common candidates for frequent termination. To accomodate, your iOS app may need to take measures to store certain data and state information in non-volatile memory.</p>
+
+
+
+<p>Android’s quite a bit easier in this regard. For an app that needs to stay alive while the user isn’t interacting with it, the app simply needs to launch a foreground service. This usually keeps the app running indefinitely unless the user force-kills it. It also eliminates a lot of the complexity of repeatedly reawakening or relaunching your app that is present in iOS.&nbsp;</p>
+
+
+
+<p>However, Android is not without its own IoT concerns. Android runs on an exponentially more diverse array of hardware than the singularly owned iOS. This presents some unique challenges for BLE apps in particular, as certain functionalities such as BLE bonding can be unreliable or downright contradictory from one brand or model to another. Therefore, we recommend selecting ahead of time a reasonable subset for which to target full support, based on user demographics. In the US, this often includes all Google and most Samsung devices; apps targeting other regions may need to test on Xiaomi, OnePlus, Vivo, and other OEM devices.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Interruptions in connectivity are not edge cases</h2>
+
+
+
+<p>When designing any system, it’s natural to start with the happy path — data is transferred from point A to point Z in one smooth assembly line, and error handling is just details to be worked out later. But with each wirelessly connected component you introduce into your system, the probability that all the key data-carrying elements will be alive and able to communicate with each other at the same time drops significantly.&nbsp;</p>
+
+
+
+<p>You must assume from the start that, at any time, the BLE peripheral will go out of range of the phone and stay there, the app will be killed, or the phone will lose internet connection. Set realistic expectations of what your product will be able to do and design your requirements and protocols to be as adaptive as possible to these common scenarios.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Repackage your data as needed, and aim to be asynchronous</h2>
+
+
+
+<p>Given that interruptions are guaranteed, don’t focus on how to get data from point A to point Z in one go. What works best for BLE transfers (peripheral to phone) may not be the same for HTTP transfers (phone to cloud), both in terms of packaging data and timing.</p>
+
+
+
+<p>It’s obvious that the more data you need to send over the air, the longer it will take and the more risk of interruption. And of course, it’s important to design your data transfer protocol to reduce overhead. But at the end of the day, you may still find yourself needing to move<strong> a lot</strong> of data along the pipeline.&nbsp;</p>
+
+
+
+<p>So, how should you package bulk data?&nbsp;</p>
+
+
+
+<p>In the case of a mobile app IoT bridge, you need to optimize both for the BLE transfer from peripheral to phone, and the HTTPS bridge from phone to cloud.&nbsp;</p>
+
+
+
+<p>Depending on the BLE stacks of the phone and peripheral, your ATT packet size over BLE might be limited to anywhere between <a href="https://punchthrough.com/maximizing-ble-throughput-part-4-everything-you-need-to-know/" data-type="post" data-id="6883">23 and 512 bytes</a>. On the networking side, sticking to that same packet size would be <em>incredibly</em> inefficient. Furthermore, unlike with BLE, iOS networking APIs do not have the power to keep your app alive longer than the Apple-guaranteed 10 seconds.</p>
+
+
+
+<p>In fact, Apple specifically recommends that you chunk bulk networking transfers in as few requests as possible, and has APIs that support scheduling a large request to run in the background at iOS’s discretion to optimize resource use. Upon request completion, your app will be relaunched in the background to perform its next steps. Try to take advantage of this by designing your system to chunk received BLE data and upload to the cloud in fewer networking requests.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">iOS BLE bulk data transfer in the background — it can be done!</h2>
+
+
+
+<p>Assuming your iOS app is usually in a backgrounded or suspended state, you can <a href="https://developer.apple.com/documentation/technotes/tn3115-bluetooth-state-restoration-app-relaunch-rules" target="_blank" rel="noopener">wake your app up with a BLE notification</a> (or a connection event). Once your app is reawakened, Apple documentation states you have about 10 seconds to perform any actions before being resuspended.&nbsp;</p>
+
+
+
+<p>While we’ve found this to be true, we’ve also had success keeping the app alive longer using repeated notifications or indications, either to directly send data to the phone or else as a heartbeat that allows your app to perform custom data-fetch commands. Though we’ve utilized this design to transfer data over BLE in the background for up to a couple of hours at a time, it’s NOT a guaranteed behavior and Apple could decide to crack down on this in future versions of iOS.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">If security is a concern, then it’s one of the biggest concerns</h2>
+
+
+
+<p>Depending on the level of security your product requires, it may amount to more than just a simple encryption layer you can add on top of your existing system. Security requirements may drastically shape your architecture decisions, and you may find that some tradeoffs in performance are inevitable when security must be prioritized above all else.&nbsp;</p>
+
+
+
+<p>For instance, if you’re designing a medical device that deals with sensitive patient data, HIPPA concerns mean that not only will the default encryption provided by BLE and TLS probably not suffice, but you may not even be able to store said data directly in the app’s non-volatile memory. This means your asynchronous IoT bridge needs to be redesigned as more of a live, secure tunnel.&nbsp;</p>
+
+
+
+<p>Given all the concerns and recommendations we’ve discussed so far, this does indeed present a far greater challenge. It <em>is</em> doable, however.</p>
+
+
+
+<p>&nbsp;Using the notification heartbeat technique mentioned earlier, we’ve been able to successfully and reliably keep the app alive in the background long enough to perform custom security handshakes at both the BLE and networking levels. During these security handshakes, the app can then transfer bulk data synchronously and securely from BLE peripheral to phone to cloud.</p>
+
+
+
+<p>If you’re implementing any custom encryption layers, even simple ones, your encryption algorithm choices need to be evaluated at a systems level as well. Some embedded System on Chips (SoCs) support certain calculation types faster than others. On the mobile side, not all algorithms are natively supported, and finding trustworthy and reliable third-party libraries for <em>both </em>iOS and Android to do the job instead can be difficult.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Hacks are not solutions</h2>
+
+
+
+<p>If, deep into development, you find out your system requirements were based on false assumptions about what mobile operating systems will allow, it’s tempting to look for hacks and workarounds. Restricted or unrelated APIs can certainly do the trick, keeping your app alive longer.</p>
+
+
+
+<p><em>Don’t do this</em>.&nbsp;</p>
+
+
+
+<p>Yes, Apple’s Core Location may be able to wake your app from the dead under circumstances that Core Bluetooth cannot. Yes, you may also be able to disguise your intent cleverly enough that you <em>could</em> sneak it through the Apple review process.&nbsp;</p>
+
+
+
+<p>But it’s not a risk you want to bet your entire product on, and every new app and OS update will threaten to stop your product in its tracks. Even Google is increasingly cracking down on these kinds of practices in Android, which was previously much more lenient in this regard.&nbsp;</p>
+
+
+
+<p>Instead, be upfront with your user. Be clear in the permissions alerts why you need certain services. Educate them about why they shouldn’t force-kill your app.&nbsp;</p>
+
+
+
+<p>While you may assume that most users can’t be educated out of bad practices, and to an extent, you’re right, it’s more effective than you might think. It’s also simple and cost-effective. And in the end, accept that some users are inevitably going to get in the way of their own best user experience. As long as you’ve made reasonable mitigation efforts, that’s okay.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Testing comes first…and last…and in the middle</h2>
+
+
+
+<p>In a multi-component system such as this, testing is inherently more complex. Budget ahead for the fact that system components <strong>will</strong> <strong>not</strong> be completed at the same time. Think carefully about how intra-systems testing will work, both before and after all components are in place.&nbsp;</p>
+
+
+
+<p>For each core system component, you’ll want to build testing tools to mock interactions with external components. For BLE peripheral firmware, we often build Windows-based testing suites in Python. For mobile apps, we may mock both the BLE peripheral and the cloud directly in the app project code and integrate these layers into unit tests and live tests.&nbsp;</p>
+
+
+
+<p>Mind you, these tools themselves need to be validated. QA testing will continue to become longer and more complex, but it’s critically important. And of course, connectivity-independent logic such as protocol message creation and parsing can and should be unit tested.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">With great power consumption, comes great user disappointment</h2>
+
+
+
+<p>Battery life is a common concern when designing a system like this. From the mobile perspective, we’ve fortunately found that there is more leeway with battery life of modern day smartphones than, say, embedded devices. Even for apps that do relatively heavy data transfer and processing, the OS often does a pretty good job of accommodating.&nbsp;</p>
+
+
+
+<p>Of course a big part of this, on iOS especially, is that the more your app tries to dominate the phone’s resources from the background, the more the OS may try to restrict your app from operating. That said, you should always aim to avoid unnecessary BLE operations.&nbsp;</p>
+
+
+
+<p>For instance, iOS and Android provide BLE APIs to automatically reconnect to a known device when it’s next detected that is far more efficient than actively scanning from the app. Also, keep in mind that older phones may be more susceptible to poor battery life in general, and you may notice more variation in performance across the many brands and models of Android phones.&nbsp;</p>
+
+
+
+<p>From the BLE peripheral perspective, there are standard practices that can help your device conserve power when possible, such as increasing latency and allowing the device to “sleep” when idle. </p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Mobile Developer&#8217;s Advice for Implementing Device Firmware Updates (DFU)</title>
+		<link>https://punchthrough.com/dfu-experience-on-mobile/</link>
+		
+		<dc:creator><![CDATA[Julian Hays]]></dc:creator>
+		<pubDate>Fri, 10 Jul 2020 06:00:50 +0000</pubDate>
+				<category><![CDATA[Mobile Apps]]></category>
+		<category><![CDATA[BLE Connection Management]]></category>
+		<category><![CDATA[BLE Software Development]]></category>
+		<category><![CDATA[Mobile App Development]]></category>
+		<category><![CDATA[Software Best Practices]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/mobile-developers-advice-for-implementing-device-firmware-updates/</guid>
+
+					<description><![CDATA[Explore what it takes to support Device Firmware Updates (DFU) on mobile. Learn technical, UX, and Bluetooth considerations for building a reliable DFU experience in connected products.]]></description>
+										<content:encoded><![CDATA[
+<p>When developing mobile apps for connected devices, handling device firmware updates (DFU) is a common task we need to tackle. Device firmware updating is the process of installing new programming onto an embedded device. By leveraging BLE communication, we can use mobile phones to initiate a DFU mode and transmit the new firmware to the embedded device. However, in order to accomplish this, the embedded device must have support for performing the DFU transfer via BLE. Ultimately, we’ll want to hide this whole process underneath the hood, so that the end user of the application has a quick and easy experience when updating firmware on their connected device.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What is a Device Firmware Update (DFU)?</h2>
+
+
+
+<p>When designing software (or firmware), it’s important to provide a way to update it. We’re all very familiar with updating apps on our phone or computer. With a connected device, whether it’s some new gadget, wearable, or medical device, the method of updating the program running on that device is a little more complicated. Some devices, such as a smart plug or lightbulb, may have Wifi connectivity and could be programmed to fetch and install firmware updates automatically. Other devices may rely only on BLE connectivity, and do not have a direct connection to the web. There are also devices that we would only want to update when explicitly told to do so, such as a medical device.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Common Components that Need Updates</h2>
+
+
+
+<p>There may be multiple components that need to be updated on an embedded device. This could include the bootloader, the application, or the BLE stack (known as SoftDevice in Nordic nomenclature). The update process may take multiple steps. There may be memory constraints as the embedded device can only handle storing a small amount of data during the process. The bootloader might need an update, and after that completes, the application update process would begin. In the end, most of these details are not relevant to the end user, so it&#8217;s important to design an experience that feels smooth and easy when creating this functionality in a mobile app.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Two Ways to Perform a Firmware Update</h2>
+
+
+
+<p>In order to perform a device firmware update, embedded devices often must be placed into a “DFU mode.” This instructs the device to go into a state where it’s ready to accept the firmware transfer. Frequently, this is handled in one of two ways: either a “button initiated,” or “buttonless.” A buttonless approach would utilize communication via BLE to initiate the DFU mode. This might be a special byte or packet written to a specific BLE characteristic, or communication on a specific DFU BLE service. Once the device receives that packet, it would reboot in DFU mode. When a device has entered DFU mode, it’s ready for the update.&nbsp;</p>
+
+
+
+<p>The process for performing the update can vary. It’ll depend on the device architecture, the hardware involved, and how the firmware was designed. If a Nordic chip is being used, it provides a documented method of providing a DFU service as part of the BLE GATT profile. Nordic also provides frameworks for both <a href="https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library" target="_blank" rel="noopener">iOS</a> and <a href="https://github.com/NordicSemiconductor/Android-DFU-Library" target="_blank" rel="noopener">Android</a> that help facilitate the firmware update transfer. In other cases, the process may be a bit more custom-designed. A device may have firmware that provides a UART interface over BLE. In this case, there may be a special packet that the mobile device can send to inform the device that a firmware transfer is about to begin. Determining how to configure the communication protocol for this transfer process may require some communication between mobile developers and firmware developers working on the project.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Designing a DFU Experience on Mobile</h2>
+
+
+
+<p>When designing a DFU experience for a hardware device that communicates with a mobile device, one important aspect is <strong>simplicity</strong>. The end user of the mobile app most likely does not want to deal with the device update, they just want to use their device. The user also likely does not want to be interrupted. The update experience should be easy to initiate, and be designed to be as robust as possible so that any issues that arise can be resolved by the app automatically. The complexity of any recovery scenarios can be hidden from the user so they see the update process as a simple experience.&nbsp;</p>
+
+
+
+<p>The firmware update process might require multiple stages, such as updating the bootloader and following that with an application update. From the end user’s perspective these details can be kept under the hood. The app could be designed to show a single progress bar and limits the info provided to the user, so all they see is a simple update experience. This depends on the target audience as well. A device that is more likely used by tinkerers or engineers may want to design the update process to be more transparent, and provide exact details of what’s going on with each step of the update process.&nbsp;</p>
+
+
+
+<h3 class="wp-block-heading">Bug Fix or Additional Feature?</h3>
+
+
+
+<p>Depending on the nature of the firmware update, the process from the mobile app could be forced or optional. If the firmware update is addressing some critical bug that impacts the functionality of the device, it may be deemed necessary. In this case, it may make sense to force the user into the update process the next time they open the app or connect to their device. On the other hand, if a firmware update is adding some additional functionality with a newer version, but does not impact the current functionality of the device, it may make sense to present the update within the mobile app as an optional update. There’s also the possibility of striking a balance between these options. The app could be designed to prompt the user of an available update, and warn them that they need to perform the update soon. Perhaps after the third time opening the app or connecting to their device, the update could then be prompted as required. These are business decisions that should be determined before implementing DFU support in a mobile app for a connected device.</p>
+
+
+
+<p class="has-background" style="background-color:#f8f8f8"><strong>Important tip: </strong>If your firmware update is altering or adding any BLE services or characteristics, it’s important to ensure your firmware is sending an indication on the Service Changed characteristic of the <a href="https://www.bluetooth.com/xml-viewer/?src=https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Services/org.bluetooth.service.generic_attribute.xml" target="_blank" rel="noopener">Generic Attribute Service</a>. Your mobile apps may also need to re-discover services, as they may have cached the GATT table. Read more about this <a href="https://ptddev.wpengine.com/attribute-caching-in-ble-advantages-and-pitfalls/" target="_blank" rel="noopener">here</a>.</p>
+
+
+
+<h3 class="wp-block-heading">Ensuring a Recovery Path</h3>
+
+
+
+<p>When designing the experience of DFU within a mobile app, it’s very important to cover all scenarios. The app should minimize any potential that a customer could end up with a device that cannot update successfully or becomes “bricked.” If you’re using Nordic components, and utilizing their mobile frameworks, they provide some extra safety to prevent bricking a device. If you’re using a more custom solution, you’ll want to ensure a path to recover should anything get interrupted or go wrong during an update.. When adding DFU support in an app, you’ll be adding the ability to update the device from a functional state. But, you should also add support for recovering a device that is currently already stuck in the DFU state.</p>
+
+
+
+<h3 class="wp-block-heading">Advertising in DFU Mode</h3>
+
+
+
+<p>In some cases, a BLE device in DFU mode will advertise a specific service UUID that’s different from the device’s normal service. A device in DFU mode may also advertise with a different name. In the case of Nordic devices, they may use a name such as “DfuTest” or “DfuTarg.” One strategy to ensure your mobile app is capable of detecting and recovering a device in DFU mode is to alter the app’s BLE scan logic. An app designed to work with a BLE connected device will have scan logic in place to find and establish a connection to the device. By changing this scan logic to alternate between looking for the device in its expected state, and a device in the DFU state, you can ensure the app is able to handle either scenario. For example, the app could be configured to scan for the expected service UUID of the device for 10 seconds. If after that time no device is found, the scan could be stopped and a new scan looking for the DFU service or name could then run. By repeating this scan loop, the app will be able to find a device in either state. If a device is found in DFU mode, the app can then attempt to initiate a firmware update to bring the DFU device back to a functional state.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Designing Firmware Update UI</h2>
+
+
+
+<p>When it comes to creating the UI for a firmware update, typically you can keep it simple. Some text informing the user what’s happening, and a progress bar indicating the progress through the firmware transfer should suffice. Depending on the target audience, you can opt to display additional information. For an app meant to be used by engineers, it may make sense to show more details. The app could display what stage the update is in (if it’s a multi-stage update), the speed of the transfer, or other details. But, when designing an app that works with a medical device peripheral that targets an older audience, the app should probably not display any technical details and keep the UI as simple as possible. If the update is doing a multi-stage update, such as a bootloader update followed by an application update, there is the option of only showing a single progress bar that fills between 0%–50% for the first stage, and 50%–100% for the second stage. This helps reduce the info shown to the user and keeps the UI very simple.</p>
+
+
+
+<p>In any case, it would be a good idea to show some text that informs the user to keep the phone near the device throughout the update. It would also be wise to ensure the update can only begin if the phone has plenty of battery (perhaps &gt;50%) or is plugged in to power. If anything goes wrong during the update, the app’s DFU logic could be configured to try again a few times before surfacing the error to the user. If after a few tries there is still a problem, at that point the UI can update to indicate there has been an error and provide some instructions on any other things the user could try, such as cycling power on their device, or reaching out to a support email or phone number for additional help.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Test Thoroughly</h2>
+
+
+
+<p>Testing your software is always important. But when implementing DFU features, it’s really important to thoroughly test the software to try and catch any issues before you release an update to users. A worst-case scenario could result in a bricked device, which will result in a very unhappy user! Make sure to test the process with real phones and real hardware across various phone models and OS versions. Spend some time trying to break your software &#8212; what happens if you turn off bluetooth in the middle of an update process? Or if you walk out of bluetooth range while an update is about to begin? Try to think of all the possible scenarios an end user could run into and test it out yourself.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Final Thoughts about Designing the DFU Experience</h2>
+
+
+
+<p>Utilizing the BLE capability of mobile phones is an efficient way to update firmware on connected devices. Updated firmware can be bundled in the app and included in an app update, or the mobile app can be programmed to check and download the latest software from the web. By having the ability to update firmware on a connected device, it allows better support and extended lifetime of connected devices.<br><br>For those that prefer, here is a <strong>tl;dr</strong>:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Device Firmware Update (DFU) is a mode that allows devices to receive updated programming.</li>
+
+
+
+<li>DFU can be facilitated by a mobile phone to a connected device via BLE.</li>
+
+
+
+<li>When designing the UI for DFU experience on a mobile device, in general, keep it simple.</li>
+
+
+
+<li>Make the mobile app DFU process robust by ensuring any issues that could occur are accounted for.</li>
+
+
+
+<li>Test your implementation thoroughly. </li>
+</ul>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>3 Reasons Native iOS and Android Apps are Better for Connected Products</title>
+		<link>https://punchthrough.com/3-reasons-native-ios-and-android-apps-are-better-for-connected-products/</link>
+		
+		<dc:creator><![CDATA[Punch Through]]></dc:creator>
+		<pubDate>Tue, 10 Dec 2019 06:00:33 +0000</pubDate>
+				<category><![CDATA[Mobile Apps]]></category>
+		<category><![CDATA[Android BLE]]></category>
+		<category><![CDATA[Core Bluetooth (iOS)]]></category>
+		<category><![CDATA[Cross-Platform BLE & Libraries]]></category>
+		<category><![CDATA[Mobile App Development]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Software Best Practices]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/3-reasons-native-ios-and-android-apps-are-better-for-connected-products/</guid>
+
+					<description><![CDATA[Hybrid apps may seem faster and cheaper, but native iOS and Android apps deliver better performance, easier BLE integration, and simpler maintenance for connected product development.]]></description>
+										<content:encoded><![CDATA[
+<p>One decision must be made before developing a mobile app: native or hybrid. For many developers, preconceived notions lead them down the hybrid route, believing it to be cheaper and more efficient with a &#8220;one-code-fits-all&#8221; approach. However, we’ve learned, from experience and other company’s stories, that this isn’t the case.&nbsp;</p>
+
+
+
+<p>It’s true; at first glance, hybrid apps appear simpler and cheaper. But this only applies to the initial phases of development, and eventually, difficulties arise from supporting three platforms instead of two and from integrating the app with hardware-reliant APIs like BLE.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Users have come to expect fast apps</h2>
+
+
+
+<p>Everyone wants fast results. Now that technology is at the tip of our fingers, “fast” is no longer a luxury; it’s an expectation. For mobile apps, in particular, end-users demand fast loading times, immediate responses to questions, and seamless updates that keep up with new technologies. It’s true, hybrid apps can produce quick results with a development team that’s familiar with the technologies, and UI’s can be quickly put together. While this is well-intentioned, it doesn’t foster long-term effectiveness.&nbsp;</p>
+
+
+
+<p>In 2018, <a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://www.airbnb.com/" target="_blank">Airbnb</a> learned this the hard way. They decided to rewrite their app from the ground up, abandoning React Native to <a href="https://medium.com/airbnb-engineering/sunsetting-react-native-1868ba28e30a" target="_blank" rel="noopener">write a fully native app</a>. They cited that <a href="https://medium.com/airbnb-engineering/react-native-at-airbnb-f95aa460be1c" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">the top reason</a> for choosing to build a hybrid app was because it was the fastest approach, which created later challenges. Lesson learned.</p>
+
+
+
+<p>It should be noted that supporting separate designs that follow the <a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://developer.apple.com/design/human-interface-guidelines/ios/overview/themes/" target="_blank">Human Interface Guidelines</a> and <a href="https://developer.android.com/design/" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">Material Design Guidelines</a> prepared by Apple and Google take more time. Native app development can be sped up by referencing native libraries and third-party frameworks for potential solutions. And, with technological advances like new tools and languages, native app development is easier than ever. Going beyond basic functionality found on standard websites becomes problematic, and development can slow to a crawl.&nbsp;</p>
+
+
+
+<p>An example of successful native app development can be seen by <a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://www.lyft.com/" target="_blank">Lyft</a>. In 2015, the San Fransico-based ridesharing company <a href="https://www.fastcompany.com/3050266/lyft-goes-swift-how-and-why-it-rewrote-its-app-from-scratch-in-apples-new-lang" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">rewrote its entire iOS app</a> using Apple’s native language, Swift. It did so while supporting and building onto the older production app, eventually catching up to that product with Swift’s new version.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Adding Integrated Features can be a Slog </h2>
+
+
+
+<p>The difficulty and timeframe for this process in hybrid apps are much higher than native apps. Examples of integrated features include accessibility support, Bluetooth Low Energy (BLE) support, and optimizing framerates on long-scrolling lists, to name a few.&nbsp;</p>
+
+
+
+<p>Let’s dive into BLE a bit deeper. Built-in BLE functionality is more commonplace in app development, and implementations for hybrid apps sometimes lack basic BLE configuration options from cross-platform frameworks, requiring a built-from-scratch approach. This can turn a “write once” ideal into a “write-three” nightmare, often causing frustration and lost time. </p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">App Maintenance is a lot Easier</h2>
+
+
+
+<p>It’s hard to keep up with the rapid OS and hardware advancements, and new phones with new versions of BLE support are released frequently. With hybrid apps, unless the cross-platform framework adds support, new features and updates won’t be implemented. Fixing bugs and crashes adds another layer of complexity and often takes much more time with hybrid apps. The bug could be in the framework, or in the way the code interfaces with the framework, and it isn’t always self-evident. If the build breaks, it can be challenging to determine whether the issue lies within the framework, the code, or the layer in between that was added to support a new feature or solve a previous bug. </p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Native App Development for the Win</h2>
+
+
+
+<p>Users expect more from their apps like consistent updates and support and the latest operating system version. Developing hybrid apps can cause lingering bugs and unsupported features, driving users away, and introducing unwanted security risks. It also complicates Bluetooth development and increases the price, which is now standard in many mobile devices. Native development is the most effective long-term solution for app development when taking into account price, efficiency, and long-term stability.</p>
+
+
+
+<p></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Developing Cross Platform BLE Apps: Our Experience</title>
+		<link>https://punchthrough.com/developing-cross-platform-ble-apps-our-experience/</link>
+		
+		<dc:creator><![CDATA[Punch Through]]></dc:creator>
+		<pubDate>Fri, 30 Sep 2016 17:42:05 +0000</pubDate>
+				<category><![CDATA[Mobile Apps]]></category>
+		<category><![CDATA[BLE Interoperability]]></category>
+		<category><![CDATA[BLE Protocol Design]]></category>
+		<category><![CDATA[BLE Software Development]]></category>
+		<category><![CDATA[Cross-Platform BLE & Libraries]]></category>
+		<category><![CDATA[Mobile App Development]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/developing-cross-platform-ble-apps-our-experience/</guid>
+
+					<description><![CDATA[Avoid costly trial‑and‑error by applying lessons from building a desktop firmware loader with Node.js and Noble, taming BLE stack quirks on macOS, Windows, and Linux.
+]]></description>
+										<content:encoded><![CDATA[
+<p>Those who have successfully developed a connected product know it is a unique struggle. The idea of a product being one physical thing, where you build it, ship it, and move on, is over. Now the hardware is only one part of the puzzle, and often times, the smallest piece. For Bluetooth products supporting multiple platforms, the software tasks can be daunting.</p>
+
+
+
+<p>The LightBlue Bean is compatible with 5 platforms: iOS, Android, macOS, Windows, and Linux. Each platform has both a user-facing application as well as an associated SDK, that can be used to easily build an app to interface with the Bean. The apps and SDKs are tested and maintained separately, essentially bringing the number of software products we support to 10. Daunting.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Differences in Bluetooth Functionality</h2>
+
+
+
+<p>Interfacing with Bluetooth peripherals varies quite a bit between platforms. Each platform has it&#8217;s own Bluetooth stack and API, with unique capabilities, quirks, and bugs. This is a major point to consider when developing a Bluetooth product. These quirks will directly influence your approach to software, but also can influence your firmware architecture, and even in cases, your choice of silicon. For example, not all BLE system-on-chips can support the requirements of Apple&#8217;s HomeKit, or the increased security needs of Bluetooth 4.2.</p>
+
+
+
+<p>The evolving nature of the Bluetooth stacks on major platforms was the main reason we initially decided to build native versions of all of our loader applications. We launched the Bean in November 2013, at which point there weren’t many great cross platform options. With cross-platform BLE support maturing, now is a great time to explore some cross platform solutions; QT v5.5+ and Apache Cordova are both well supported and support BLE either out of the box or with community plugins.</p>
+
+
+
+<p>However, one of our primary considerations was replacing our native Windows loader. Microsoft hasn&#8217;t accepted the move to handle Bluetooth LE differently from Bluetooth 2, like Apple and Google have. In Windows, users must still connect through Control Panel / Settings. This experience feels like going back in time and installing sound card drivers.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Node.js + Noble</h2>
+
+
+
+<p>With Windows support required, our software developer Steve Stack convinced us to spend a week exploring a different path. He built a proof of concept demo with Node.js along with a project called Noble which is a cross-platform BLE library that supports Windows, Linux and OS X. After only a week he was able to update firmware on Beans, and we decided to move forward. With emerging front-end frameworks and GUI toolkits such as React (from Facebook), React Native and Electron.js (from GitHub), a JavaScript solution seemed to fit the bill. This approach is already used by several industry leading apps, such as Slack and Github&#8217;s Atom Editor.&nbsp;For anyone developing a Bluetooth app that will need to run on desktop OSes, Node.JS and Noble make for a great option.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Our new cross-platform Bean loader app</h2>
+
+
+
+<p>This week we announced our new cross platform loader app. Well done, <a href="https://github.com/swstack" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">@swstack</a>! For Bean users, this brings some great updates. First, it means greatly improved support in Windows. By using Node and Noble, we can bypass Window’s Bluetooth process and maintain BLE connections and interactions inside of our app. We were also able to support Linux for the first time, with almost no added work. The same codebase was used, with the only difference being the install process, testing and documentation.</p>
+
+
+
+<p>We are releasing a command line version at first, in order to release early and get feedback from users. It supports Mac, Windows, and Linux with one codebase, and represents our goal of providing better support and more frequent updates.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Mobile Considerations</h2>
+
+
+
+<p>For those targeting mobile devices, cross-platform solutions are in abundance, however, not surprisingly BLE support is still young. Each mobile OS have unique BLE interfaces, quirks and features such as Apple HomeKit. Currently there is no official support for Noble.js on mobile platforms but we will be working towards adding this support by writing native shim layers to maximize code reuse across desktop and mobile.</p>
+
+
+
+<p>This release of our cross platform loader is in many ways an experiment. It is our minimum viable product. It is command-line only, and the install process requires some extra steps. It is not a replacement of our existing Mac GUI Loader. As we collect feedback and build upon it, it may become our main codebase that will be used for all of our future Bean loaders.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

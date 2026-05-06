@@ -1,0 +1,1968 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:media="http://search.yahoo.com/mrss/" >
+
+<channel>
+	<title>Connected Medical Devices &#8211; Punch Through</title>
+	<atom:link href="https://punchthrough.com/resources/connected-medical-devices/feed/" rel="self" type="application/rss+xml" />
+	<link>https://punchthrough.com</link>
+	<description></description>
+	<lastBuildDate>Tue, 31 Mar 2026 16:51:47 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=6.9.4</generator>
+
+<image>
+	<url>https://punchthrough.com/wp-content/uploads/2025/02/favicon-punchthrough-logo.png</url>
+	<title>Connected Medical Devices &#8211; Punch Through</title>
+	<link>https://punchthrough.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+	<item>
+		<title>Connected Medical Device Cybersecurity: Why Deliverables Aren&#8217;t Enough</title>
+		<link>https://punchthrough.com/medical-device-cybersecurity-process/</link>
+		
+		<dc:creator><![CDATA[Matt Rengo]]></dc:creator>
+		<pubDate>Tue, 31 Mar 2026 16:51:44 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Device Security]]></category>
+		<category><![CDATA[Development Process]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<category><![CDATA[Risk Mitigation]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=14515</guid>
+
+					<description><![CDATA[Most teams don’t fail FDA cybersecurity review because they lack technical skill. They fail because security was treated as a deliverable instead of a system. Under QMSR, that distinction is no longer subtle and fixing it late is far more expensive than getting it right early.]]></description>
+										<content:encoded><![CDATA[
+<p>The FDA finalized its <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cybersecurity-medical-devices-quality-management-system-considerations-and-content-premarket" target="_blank" rel="noreferrer noopener">updated cybersecurity guidance</a> in February 2026, completing the transition to the <a href="https://www.fda.gov/medical-devices/postmarket-requirements-devices/quality-management-system-regulation-qmsr" target="_blank" rel="noreferrer noopener">QMSR framework</a>. For teams deep in regulatory operations, the change is largely procedural. But for teams earlier in the journey — building proof of concepts, designing first-generation connected devices, or scaling from prototype toward a commercial product — the underlying message is one teams need to be fully up to speed on. And if it isn&#8217;t already familiar territory, the time to catch up is now.</p>
+
+
+
+<p>The guidance reinforces something we see consistently in connected device development: </p>
+
+
+
+<p><strong>The difference between programs that move through FDA review cleanly and those that encounter friction usually isn&#8217;t technical capability. It&#8217;s whether cybersecurity was treated as an architecture decision early on or as a documentation exercise closer to submission.</strong></p>
+
+
+
+<p>Those two approaches produce programs that look similar on paper and function very differently in practice.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>What the Regulatory Framework Is Actually Asking For</strong></h2>
+
+
+
+<p>The QMSR framework (now the permanent regulatory foundation for medical device quality systems) is built around continuous process, not point-in-time compliance. For cybersecurity specifically, that means the FDA isn&#8217;t just asking whether you have the required deliverables. It&#8217;s asking whether your security posture is the output of a defined, repeatable process embedded in your quality operations.</p>
+
+
+
+<p>The distinction matters: an SBOM, a threat model, a vulnerability disclosure policy — these are deliverables. A <a href="https://punchthrough.com/build-fda-compliant-medical-devices-using-spdf/" target="_blank" data-type="link" data-id="https://punchthrough.com/build-fda-compliant-medical-devices-using-spdf/" rel="noreferrer noopener">Secure Product Development Framework (SPDF)</a> is the process that produces and maintains them across the lifecycle of the product. QMSR expects the latter. For teams earlier in development, understanding that distinction before the build is significantly less expensive than reconciling it during or after.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>The Decision That Gets Deferred and What It Costs</strong></h2>
+
+
+
+<p>Early-stage connected device teams face real competing priorities. Getting the device to work, validating clinical utility, securing the next funding round, so security architecture often lands on a list of things to address before submission, not things to design from the start. That&#8217;s understandable. It&#8217;s also where the problem begins.</p>
+
+
+
+<p>What we see happen is this, and often it starts a step further back than you might expect. On less experienced teams, engineering builds connectivity into the product and assumes security can be addressed later. It can&#8217;t, not cleanly. Retrofitting security into a system that wasn&#8217;t designed with the eventual security solution in mind creates significant technical debt, and it&#8217;s almost always more expensive than doing it right from the start.</p>
+
+
+
+<p>On more experienced teams, the failure mode is subtler: the security work itself is often good (strong encryption, proper authentication, thoughtful key management, etc.), but the process governing those decisions is missing. When threat modeling happens, what triggers a security review, how vulnerabilities are tracked and resolved, how security decisions are documented and traced back. This lives in engineering knowledge rather than in a defined process inside a quality system.</p>
+
+
+
+<p>The FDA can tell the difference. An SPDF-aligned program has a visible process logic that runs through its documentation. One that didn&#8217;t is harder to obscure than teams expect.</p>
+
+
+
+<p>When a quality system eventually gets built, security sits adjacent to it rather than inside it. The two functions reference each other but weren&#8217;t designed together. The SBOM exists, but it&#8217;s maintained manually, separately from the QMS cadence. Threat models were done, but they&#8217;re dated documents rather than living artifacts tied to design milestones. Security decisions were made well, but the record of why, and by what process, is thin.</p>
+
+
+
+<p>Retrofitting that integration later is time-consuming, disruptive, and often happens under the pressure of a submission timeline when there&#8217;s no good time to do it.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>What Getting It Right Early Actually Looks Like</strong></h2>
+
+
+
+<p>The implementation doesn&#8217;t need to be fully built out at the PoC stage. What does need to happen early is the architecture itself, designed intentionally, through an SPDF, so that the security process grows with the product and integrates naturally into the quality system as that system matures.</p>
+
+
+
+<p>In practice, that means a few things. Threat modeling isn&#8217;t a one-time activity before submission — it&#8217;s tied to design milestones from early development, lightweight at first and more rigorous as the product matures. Security decisions are documented as they&#8217;re made, in a form that can be absorbed into the design history file without reconstruction. The SPDF is defined early, even simply, so there&#8217;s a process to build on rather than a practice to formalize retroactively. </p>
+
+
+
+<p class="has-background" style="background-color:#bce6fd"><em>If you&#8217;re earlier in your security thinking, <a href="https://punchthrough.com/ble-security-where-to-begin/" data-type="link" data-id="https://punchthrough.com/ble-security-where-to-begin/">BLE Security: Where to Begin</a>, covers the foundational framework for how to approach connected device security design.</em></p>
+
+
+
+<p>None of this requires a large team or a dedicated security function. It requires treating security architecture the same way you treat any other foundational system decision: as something that&#8217;s much easier to get right at the start than to retrofit once the product (and the organization) has grown around a different approach.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Why This Matters Now</strong></h2>
+
+
+
+<p>QMSR being the permanent framework is what makes this the right moment to think about it. The regulatory environment is no longer in transition. Teams building connected devices today are building against a stable, process-oriented framework that will govern their submissions and their post-market obligations for the foreseeable future.</p>
+
+
+
+<p>The question worth asking early isn&#8217;t whether your cybersecurity deliverables will satisfy a submission checklist. It&#8217;s whether the process producing those deliverables is designed to live inside your quality system and whether you&#8217;re building that architecture now or planning to build it later.</p>
+
+
+
+<p>In our experience, later is always harder. And it&#8217;s almost always more expensive than it needed to be.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Ready To Go Deeper?</strong></h2>
+
+
+
+<p>Understanding the distinction between documentation and process is the first step. The second is execution.</p>
+
+
+
+<p>Henry Anfang <a href="https://punchthrough.com/build-fda-compliant-medical-devices-using-spdf/" target="_blank" data-type="link" data-id="https://punchthrough.com/build-fda-compliant-medical-devices-using-spdf/" rel="noreferrer noopener">breaks down exactly what that looks like in practice</a>: the seven artifacts the FDA expects, how to produce them at each development phase, and how to integrate them into your workflow from day one.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Is Your Connected Device Architecture Ready for Continuous Oversight?</title>
+		<link>https://punchthrough.com/continuous-oversight-connected-medical-devices/</link>
+		
+		<dc:creator><![CDATA[Punch Through]]></dc:creator>
+		<pubDate>Wed, 18 Mar 2026 21:23:26 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Development Process]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<category><![CDATA[System Architecture]]></category>
+		<category><![CDATA[Technical Strategy]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=14059</guid>
+
+					<description><![CDATA[FDA’s expanding TAP Program signals a shift toward continuous oversight for connected medical devices. That shift changes what teams need to design for: not just functionality, but architecture that can prove performance, traceability, and control across the product lifecycle.]]></description>
+										<content:encoded><![CDATA[
+<p>FDA has announced that its Total Product Lifecycle Advisory Program, or TAP Program, is scaling from 15 devices at launch to 325 by the end of FY2027. That&#8217;s a 20x expansion over the life of the program. When a regulatory agency scales a pilot program that aggressively, it&#8217;s worth asking what they&#8217;re actually building toward.</p>
+
+
+
+<p>We spend our days in the software, connectivity, and system architecture layers of connected medical device development. We&#8217;re not regulatory consultants, and this isn&#8217;t regulatory advice. But we&#8217;ve been watching this expansion alongside a few other recent FDA moves, and the pattern has direct implications for how connected devices get built. That&#8217;s the lens we&#8217;re bringing here.</p>
+
+
+
+<p>TAP is designed to reduce friction in the submission process and break down silos between manufacturers, providers, and payers, but the mechanism for doing that is structured, ongoing engagement with FDA across the product lifecycle, not just at submission. A few other recent moves point in the same direction and help clarify what that model looks like in practice:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong><a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cybersecurity-medical-devices-quality-management-system-considerations-and-content-premarket" target="_blank" rel="noreferrer noopener">Cybersecurity in Medical Devices guidance (2025)</a> </strong>— reinforces security as a lifecycle requirement: secure update mechanisms, vulnerability management, software bill of materials. Not a box you check at submission. We broke down <a href="https://punchthrough.com/new-fda-cybersecurity-rules/" target="_blank" rel="noreferrer noopener">what this means for software teams here.</a></li>
+
+
+
+<li><a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/predetermined-change-control-plans-medical-devices" target="_blank" rel="noreferrer noopener"><strong>Predetermined Change Control Plan (PCCP) guidance (2024)</strong></a> — enables FDA to authorize a framework for future software and AI updates under a controlled plan, supporting iterative change without treating the device as frozen after clearance.</li>
+
+
+
+<li><a href="https://www.fda.gov/news-events/press-announcements/fda-launches-tempo-first-its-kind-digital-health-pilot-expand-access-chronic-disease-technologies" target="_blank" rel="noreferrer noopener"><strong>TEMPO pilot for Digital Health Devices (2025)</strong></a> — pilots a pathway centered on real-world outcomes and performance, signaling increased reliance on ongoing evidence generation after deployment</li>
+</ul>
+
+
+
+<p>TAP participation is voluntary, and most teams building connected devices won&#8217;t enroll. But that&#8217;s beside the point. What these moves suggest, taken together, is a shift from &#8220;prove it once at submission&#8221; toward &#8220;demonstrate it throughout the lifecycle.&#8221;</p>
+
+
+
+<p>If that&#8217;s where oversight is headed, it has direct implications for the architecture decisions you&#8217;re making right now, whether you&#8217;re deep in regulatory planning or nowhere near that conversation yet. We can&#8217;t read FDA&#8217;s mind, and we&#8217;re not claiming this is their stated direction. But the pattern is clear enough that it&#8217;s worth thinking through what it means for the systems you&#8217;re building today.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">The Design Question Shifts: &#8220;Can We Do It?&#8221; to &#8220;Can We Prove It?&#8221;</h2>
+
+
+
+<p>If this shift is real, it changes what you&#8217;re fundamentally designing for.</p>
+
+
+
+<p>The old design question was binary: can our system do X? Does the firmware update? Does the device collect the right data? Does the connection stay stable? Those are still important questions. But they&#8217;re increasingly insufficient on their own.</p>
+
+
+
+<p>The new question is: can our system prove it&#8217;s doing X correctly both continuously and retrospectively? That&#8217;s a different question, and it requires a different architecture.</p>
+
+
+
+<h3 class="wp-block-heading">Three Questions Every Architecture Decision Should Answer</h3>
+
+
+
+<p>A useful way to think about this: every architecture decision for a critical component now needs to answer three questions.</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Continuous Demonstration:</strong> Can this component prove it&#8217;s operating as validated, ongoing, not just at the moment you checked?</li>
+
+
+
+<li><strong>Retrospective Reconstruction:</strong> Can we reconstruct this component&#8217;s exact state and behavior at any historical point in time?</li>
+
+
+
+<li><strong>Controlled Evolution:</strong> Can we update this component with full traceability and rollback capability?</li>
+</ul>
+
+
+
+<p>If your architecture can&#8217;t answer yes to all three for critical components, you&#8217;re likely designing for yesterday&#8217;s regulatory model. And importantly, this isn&#8217;t about adding features. It&#8217;s about building different foundational capabilities from the start.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Three Architecture Areas Where Requirements May Change</h2>
+
+
+
+<p>The clearest way to see what continuous oversight demands in practice is to look at where current architecture typically falls short. Three areas tend to surface the gap most sharply.</p>
+
+
+
+<h3 class="wp-block-heading">Software Update Architecture</h3>
+
+
+
+<p>Most teams design their update architecture around one question: can we reliably, securely and practically push firmware and software updates to devices in the field? The focus is functional. Does the OTA mechanism work, do updates deploy successfully, does the device come back up correctly?</p>
+
+
+
+<p>Continuous oversight asks a different question: can you prove that every update was authenticated, authorized, and deployed as intended, and maintain a complete audit trail of how every device in your fleet got to its current software state? Not just &#8220;did the update happen,&#8221; but &#8220;can you demonstrate the full history of how every device in your fleet got to its current software state?&#8221;</p>
+
+
+
+<p>Think about what happens when a device has an adverse event. FDA wants to know what firmware version was running, how the device got that version, what the deployment path was, and whether you could have rolled it back if you&#8217;d caught the problem in time. Your update mechanism works, but can you prove the deployment history?</p>
+
+
+
+<p>That&#8217;s where the architecture has to do more than most teams design for. Version control isn&#8217;t just a development tool, it&#8217;s regulatory infrastructure. Deployment logging isn&#8217;t optional, it&#8217;s evidence generation. Rollback isn&#8217;t a nice-to-have, it&#8217;s a safety requirement. These need to be built into the core update architecture from the start, not bolted on later. If you&#8217;re working through the implementation side of that like OTA mechanics, deployment flow, and rollback design, <a href="https://punchthrough.com/dfu-experience-on-mobile/" target="_blank" rel="noreferrer noopener">this breakdown is a useful next read.</a></p>
+
+
+
+<h3 class="wp-block-heading">Device State &amp; Performance Monitoring</h3>
+
+
+
+<p>Most teams design their telemetry around the data their device needs to function: sensor readings, battery state, connectivity status, algorithm inputs. The focus is operational: does our device have what it needs to do its job?</p>
+
+
+
+<p>Continuous oversight shifts the question to what data proves your device is operating within validated parameters? That&#8217;s a meaningfully different frame. Monitoring for functionality is not the same as monitoring for validated performance.</p>
+
+
+
+<p>Imagine FDA reviewing your device data and asking how you know the device was operating as validated. Your logs show it was powered on and connected. But can you prove it was calibrated correctly, processing data within spec, operating within validated environmental bounds? A CGM doesn&#8217;t just need glucose readings in the data record; it needs calibration state, sensor age, and the environmental conditions that affect validation claims.</p>
+
+
+
+<p>That gap is what the telemetry strategy has to close. You need to capture not just what&#8217;s happening, but whether what&#8217;s happening falls within validated parameters. Your monitoring data has to be designed to answer regulatory questions, not just operational ones.</p>
+
+
+
+<h3 class="wp-block-heading">System Traceability &amp; Reconstruction Capability</h3>
+
+
+
+<p>Most teams build logging for debugging and troubleshooting. The focus is reactive. Essentially, capture enough information to understand and fix problems when they occur.</p>
+
+
+
+<p>Continuous oversight requires something more demanding: the ability to reconstruct complete system state at any historical point. Not just &#8220;what&#8217;s happening now&#8221; but &#8220;what was the exact configuration, firmware version, data collection parameters, and user settings on this device six months ago?&#8221;</p>
+
+
+
+<p>Say an adverse event occurred six months ago and the FDA needs to understand the root cause. Can you reconstruct the full picture at that exact moment i.e., your firmware version, configuration state, update history, and environmental conditions? Most systems can tell you the current state with confidence, but very few can tell you the historical state with confidence.</p>
+
+
+
+<p>That reconstruction capability has to be designed across your entire stack from firmware to cloud backend, data pipeline, and user interface. Versioned, immutable state records, not just logs. Configuration history tied to device identity, not just current configuration. A complete audit trail of every significant action, not just errors. This isn&#8217;t one system&#8217;s responsibility; it cuts across every layer. The cloud backend layer in particular carries a lot of this burden; <a href="https://punchthrough.com/cloud-architecture-review-proces/" target="_blank" rel="noreferrer noopener">here&#8217;s how we approach that review process for regulated systems</a>.<br></p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Architecture Stage Determines Your Optionality</h2>
+
+
+
+<p>The reason to think about this now isn&#8217;t FDA pressure. It&#8217;s that architecture decisions have a natural window defined by where you are in development, not by any regulatory deadline.</p>
+
+
+
+<p>Early in development, the groundwork capabilities we&#8217;ve described cost relatively little to design in. They&#8217;re not features you add, they&#8217;re decisions about how your system works. Structuring your update architecture to generate deployment logs by default. Designing your telemetry to capture validation-relevant state alongside functional data. Building immutable records into your backend data model from the start. At this stage, these are architectural choices, not major engineering investments.</p>
+
+
+
+<p>Later, they&#8217;re retrofits to foundational infrastructure, which are expensive, disruptive, and often incomplete. It&#8217;s the same argument we make about firmware planning specifically: <a href="https://punchthrough.com/early-embedded-firmware-planning/" target="_blank" rel="noreferrer noopener">the decisions that cost least are the ones made earliest.</a></p>
+
+
+
+<h3 class="wp-block-heading">The Non-Regulatory Case for Building This Way</h3>
+
+
+
+<p>If you&#8217;re reading this while you&#8217;re still making core architecture decisions, you have optionality. If you&#8217;re 18 months into development with these systems already built, you have less of it. But that&#8217;s just the nature of building software systems, not a scare tactic.</p>
+
+
+
+<p>And honestly, the case for building these capabilities isn&#8217;t purely regulatory. Traceable, auditable, reconstructable systems are faster to debug, easier to root-cause, and more defensible to any stakeholder &#8211; investor, customer, or regulator alike. Whether or not FDA&#8217;s oversight posture shifts exactly as we&#8217;re reading it, teams that build these capabilities tend to end up with more robust systems regardless.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">The Question Your Regulatory Consultants Aren&#8217;t Hired to Answer</h2>
+
+
+
+<p>Regulatory consultants do essential work. They understand the submission process, the documentation requirements, and the evidence FDA needs to clear your device. They essentially work backwards from submission: what does FDA need to see, and how do you produce it?</p>
+
+
+
+<p>That&#8217;s a necessary question. But it&#8217;s not the same question as: does your architecture actually have the capability to generate that evidence — continuously, across the product lifecycle, in a way that holds up under review? That&#8217;s a system design question, and it&#8217;s typically not what regulatory consultants are hired to answer.</p>
+
+
+
+<h3 class="wp-block-heading">The System Design Question</h3>
+
+
+
+<p>If this framing is useful, it&#8217;s because it gives you a way to evaluate your own architecture choices before those choices are locked in from the system forward, rather than from submission backwards.</p>
+
+
+
+<p>TAP&#8217;s expansion, and the pattern of FDA moves around it, tells you something about where connected device oversight appears to be headed. The question isn&#8217;t just whether you&#8217;re compliant at submission. The question is whether your system was designed to prove what it&#8217;s doing over time, in the field, in a way that holds up. That&#8217;s a technical question. And it&#8217;s worth asking now.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Building Secure, FDA-Compliant Medical Devices with the SPDF Framework</title>
+		<link>https://punchthrough.com/build-fda-compliant-medical-devices-using-spdf/</link>
+		
+		<dc:creator><![CDATA[Henry Anfang]]></dc:creator>
+		<pubDate>Fri, 19 Dec 2025 15:19:31 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Device Security]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[ISO 14971]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=12641</guid>
+
+					<description><![CDATA[If you’re a medical device engineer, you’ve likely noticed the ground shifting beneath your feet. With the FDA&#8217;s latest cybersecurity guidance released in 2025, the expectations for device security have become more stringent than ever, especially for what the agency calls a &#8220;cyber device.&#8221; The definition is broad: if your product includes software and can [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p>If you’re a medical device engineer, you’ve likely noticed the ground shifting beneath your feet. With the <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cybersecurity-medical-devices-quality-system-considerations-and-content-premarket-submissions" target="_blank" rel="noreferrer noopener">FDA&#8217;s latest cybersecurity guidance</a> released in 2025, the expectations for device security have become more stringent than ever, especially for what the agency calls a &#8220;cyber device.&#8221; The definition is broad: if your product includes software and can connect to a network, it qualifies.&nbsp;</p>
+
+
+
+<p>For these devices, the question is no longer <em>if</em> you need a secure architecture, but <em>how</em> you can definitively prove it to regulators. And proof doesn’t come from intentions or high-level plans, it comes from the engineering evidence you produce throughout your development process.</p>
+
+
+
+<p class="has-background" style="background-color:#bce6fd">If you’re still getting up to speed on what’s changed, we’ve covered the high-level implications of the new guidance <a href="https://punchthrough.com/new-fda-cybersecurity-rules/" target="_blank" rel="noreferrer noopener">in this article.</a> That piece outlines what the FDA’s updates mean for software teams and why these changes matter for the industry as a whole.</p>
+
+
+
+<p>In this article, we&#8217;ll break down the FDA&#8217;s recommended Secure Product Development Framework (SPDF) into a phased plan that shows exactly how to generate the necessary evidence at each stage of your project.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Adopting a Secure Product Development Framework (SPDF)</h2>
+
+
+
+<h3 class="wp-block-heading">Defining the Framework</h3>
+
+
+
+<p>The SPDF isn&#8217;t a new, standalone process you bolt onto your existing work. It&#8217;s an end-to-end discipline that integrates security risk management directly into your Quality Management System (QMS) and software development lifecycle (SDLC).</p>
+
+
+
+<h3 class="wp-block-heading">The Cultural Shift&nbsp;</h3>
+
+
+
+<p>The goal isn&#8217;t to add a mountain of extra tasks at the end of a project, but to make security an integral part of every development stage, just like unit testing or code reviews. This shift requires more than just new processes, it demands a cultural change, where security becomes a shared responsibility across teams, rather than the job of a single person or isolated group.</p>
+
+
+
+<h3 class="wp-block-heading">Why the FDA Cares&nbsp;</h3>
+
+
+
+<p>The FDA&#8217;s focus on the SPDF stems from its ability to provide clear, objective evidence that security is a managed, intentional process. It gives you a defensible path to satisfying the new regulations while reducing the risk of last-minute surprises during submission.</p>
+
+
+
+<h3 class="wp-block-heading">The Practical Reality&nbsp;</h3>
+
+
+
+<p>The key is to make documentation a natural byproduct of your development work, rather than a separate, painful task you save for the end. At first glance, this might feel like additional overhead. But by integrating these practices from the start, you will save significant time and resources, avoiding the costly redesigns and frantic documentation work that delay submissions.</p>
+
+
+
+<h3 class="wp-block-heading">The Roadmap Ahead&nbsp;</h3>
+
+
+
+<p>What follows is a phased approach that maps SPDF requirements to your actual development workflow. We&#8217;ll break it into three phases (Design &amp; Architecture, Implementation &amp; Verification, and Release &amp; Maintenance) and show you exactly which artifacts to produce at each stage.&nbsp;</p>
+
+
+
+<p>By the end, you&#8217;ll have a clear picture of how to generate the seven core pieces of evidence the FDA expects: threat models, risk analysis, security architecture documentation, traceability matrices, test reports, SBOMs with vulnerability management, and post-market cybersecurity plans.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Phase 1:</strong> Design &amp; Architecture (The Foundation of Trust)</h2>
+
+
+
+<p>This is the phase where you lay the foundation for a resilient, secure device. Getting it right here means you&#8217;re building security <em>in</em>, not trying to bolt it on later. The goal is to be proactive, not reactive, creating the artifacts that prove your system is secure by design and treating them as living documents that mature with your product.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #1: </strong>Threat Model &amp; Data Flow Diagrams (DFDs)</h3>
+
+
+
+<p>You should show regulators that you&#8217;ve systematically identified potential cybersecurity threats to your entire medical device system. An actionable way to start is by creating a set of Data Flow Diagrams (DFDs).&nbsp;</p>
+
+
+
+<p>A DFD is essentially a visual map, a diagram that illustrates the security architecture of your system. Think of it as the &#8220;security contract&#8221; for your design; it should be detailed enough that any significant implementation changes automatically trigger a review of the threat model.&nbsp;</p>
+
+
+
+<p>For example, the DFD for a smart infusion pump system would be a diagram showing boxes representing the pump, the clinician&#8217;s programming tablet, and the backend cloud server. Arrows connecting these boxes would represent every data flow (like commands, alerts, and patient data uploads) and would clearly show where data crosses trust boundaries, like from the secure device to the potentially hostile hospital Wi-Fi network.</p>
+
+
+
+<h4 class="wp-block-heading">From DFDs to Threat Modeling</h4>
+
+
+
+<p>Once you have your DFDs, you can apply a structured framework like STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) to analyze them. Looking at our infusion pump DFD, a STRIDE analysis would force us to ask questions like: &#8220;Could an attacker <em>spoof</em> commands to the pump?&#8221; or &#8220;Could they <em>tamper</em> with the firmware update data in transit?&#8221;&nbsp;</p>
+
+
+
+<p>To make this process efficient and repeatable, consider turning it into a checklist-based review by leveraging established threat libraries like AAMI TIR57 or the MITRE ATT&amp;CK framework. The output is your formal Threat Model, a living document that serves as your first key artifact. It should, at a minimum, contain a log of identified threats, their potential causes, and your proposed mitigations.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #2:</strong> Cybersecurity Risk Analysis Report</h3>
+
+
+
+<p>Once you’ve identified threats, you should establish a rational, and a documented process for evaluating their risk. This is where you connect cybersecurity risk to patient safety. A practical approach is to use <a href="https://www.mitre.org/news-insights/publication/rubric-applying-cvss-medical-devices" target="_blank" rel="noreferrer noopener">MITRE&#8217;s rubric for applying the Common Vulnerability Scoring System (CVSS)</a> to medical devices. This generates a technical exploitability score, which you then combine with a patient harm analysis aligned with ISO 14971 to produce a holistic cybersecurity risk score.</p>
+
+
+
+<h4 class="wp-block-heading">Right Sizing the Effort</h4>
+
+
+
+<p>However, a key part of managing this process is &#8220;right-sizing&#8221; the effort. Not all threats warrant a deep-dive analysis. We recommend agreeing as a team to perform the full, detailed scoring analysis <em>only for threats that could plausibly result in a Severity rating of Serious, Critical, or Catastrophic</em>.</p>
+
+
+
+<p>For lower-severity threats, you can accept the risk with a brief, documented rationale. For instance, a threat of unauthorized access to a non-clinical diagnostic log on the device might be accepted, while a threat that could alter a drug dosage calculation would demand the most rigorous analysis. This allows you to focus your finite engineering resources where they matter most, demonstrating a mature, risk-based approach.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #3:</strong> Security Architecture &amp; Control Catalog</h3>
+
+
+
+<p>The FDA guidance makes it clear that your security architecture is the direct, tangible response to your threat model. An effective way to organize this is to create a Security Control Catalog.&nbsp;</p>
+
+
+
+<p>This document becomes the central repository that defines each mitigation with a unique identifier and a clear, testable statement (e.g., &#8220;SC-047: All firmware updates SHALL be cryptographically signed using ECDSA P-256&#8221;). It creates the critical link in your traceability chain, connecting a specific risk to the control that mitigates it and the requirement that will be used for verification. This catalog should be version-controlled right alongside your source code.</p>
+
+
+
+<h4 class="wp-block-heading">Security Architecture Views</h4>
+
+
+
+<p>Your Security Architecture Views are the visual proof of these controls in action. Instead of relying on a single, high-level block diagram, consider providing focused views that highlight different aspects of your security architecture:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Global System View:</strong><strong> </strong>Shows the device within its entire operational ecosystem, highlighting all trust boundaries (e.g., between the device, a mobile app, and a cloud server) and network interfaces.</li>
+
+
+
+<li><strong>Updateability/Patchability View:</strong> This dedicated diagram illustrates the secure software update mechanism from end-to-end, detailing every step from image signing on a secure build server, establishing a root of trust on the device, and on-device validation before the update is applied.</li>
+
+
+
+<li><strong>Multi-Patient Harm View:</strong><strong> </strong>Illustrates the specific controls (e.g., network segmentation, device-level firewalls, encryption of data-at-rest) that prevent a compromise on one device from propagating across the hospital network and causing widespread patient harm.</li>
+</ul>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Phase 2: </strong>Implementation &amp; Verification (Generating Objective Evidence)</h2>
+
+
+
+<p>In this phase, the focus shifts from design to execution and proof. The goal is to build the controls you’ve designed and generate objective evidence that proves they work as intended. This is about creating documented evidence that your design wasn&#8217;t just theoretical, but was implemented correctly and functions as expected from a security perspective.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #4: </strong>Requirements Traceability Matrix</h3>
+
+
+
+<p>To satisfy regulators, it&#8217;s important to show a clear connection between the risks you identified, the controls you designed, and the tests that verify those controls.&nbsp; This means providing objective evidence that connects every security risk to a specific architectural control, the code that implements it, and the test that verifies its effectiveness.&nbsp;</p>
+
+
+
+<p>An FDA reviewer should be able to follow this &#8220;thread&#8221; from start to finish without gaps. This is where the Security Control Catalog you created in Phase 1 becomes invaluable.</p>
+
+
+
+<p>A Traceability Matrix is the most straightforward way to present this linkage. Modern requirements management tools, like Jira with specialized plugins or platforms, can automate much of this linking process, making it a continuous part of your development workflow rather than a separate task.&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Why It’s More Than Just Documentation</h4>
+
+
+
+<p>This matrix is far more than just a table for regulators; it’s a vital project management tool that ensures no security requirement is accidentally dropped during implementation. The matrix maps the unique ID for each security control to system/software requirements, the code modules that implement them, and finally, the test case IDs that prove they function correctly. By keeping this matrix up to date throughout development, this artifact demonstrates that security is an active, integrated part of your workflow.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #5:</strong> Verification Test Reports &amp; Penetration Test Report</h3>
+
+
+
+<p>Once your controls are implemented, you should prove empirically that they are effective and your device is resilient, which requires empirical evidence. This requires rigorous verification testing that goes beyond happy-path scenarios to actively challenge the system..&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Verification Testing</h4>
+
+
+
+<p>For every security control in your catalog, we recommend creating a corresponding test protocol designed to prove its effectiveness. For example, if your control states that &#8220;<em>firmware updates must be cryptographically signed,</em>&#8221; your test report should show evidence that you verified the device explicitly rejects a maliciously crafted, unsigned update. The test log should show the device receiving the bad image, attempting the update, logging a signature validation failure, and safely reverting to the last known good state. This type of evidence leaves no doubt that the control performs as intended under real-world conditions.</p>
+
+
+
+<h4 class="wp-block-heading">Independent Penetration Testing</h4>
+
+
+
+<p>Another critical artifact from this phase is an unredacted Report from an Independent Penetration Test. The FDA requires a comprehensive, objective assessment of your device&#8217;s resilience from a third party. To make this test effective, we recommend providing the testers with your threat model and architecture diagrams. This allows them to move beyond black-box testing and focus on the areas of highest risk.&nbsp;</p>
+
+
+
+<p>Your submission should also include your detailed remediation plan for every single finding, regardless of severity. Even minor issues should be addressed, showing regulators that you have a proactive, transparent process for managing vulnerabilities and continuously improving device security.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Phase 3:</strong> Release &amp; Maintenance (Preparing for the Real World)</h2>
+
+
+
+<p>Shipping your device is a major milestone, but your engineering responsibility doesn&#8217;t end there. For cyber devices, this final phase is mandatory and shifts the focus from initial development to long-term lifecycle management. The core task is to prepare your device for a world of evolving, real-world threats, ensuring that security remains robust even after the product is in the field.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #6:</strong> SBOM, VEX, and Vulnerability Management Process</h3>
+
+
+
+<p>The FDA now mandates complete transparency into your software composition via a Software Bill of Materials (SBOM). The most effective approach is to treat the SBOM as a living document, rather than a one-time deliverable.&nbsp;&nbsp;</p>
+
+
+
+<p>By integrating SBOM generation tools like Syft directly into your CI/CD pipeline, you can transform the SBOM into the foundational artifact for your entire vulnerability management process. This means your build pipeline can be configured to fail if a developer introduces a new library with a known critical vulnerability, forcing a security review before the code is even merged.</p>
+
+
+
+<p>This creates a closed-loop system for ongoing security management. When your automated pipeline generates a new SBOM and a scan reveals a new security vulnerability in one of your dependencies, that CVE becomes a new input into your Cybersecurity Risk Assessment. This feeds both design-level and component-level threats into the same rationalized triage process.</p>
+
+
+
+<h4 class="wp-block-heading">Prioritizing Vulnerabilities with VEX</h4>
+
+
+
+<p>However, in systems with many dependencies, this can lead to a daunting number of CVEs. This is where a Vulnerability Exploitability eXchange (VEX) document becomes essential. A VEX allows you to efficiently document your analysis of flagged CVEs, allowing you to distinguish between issues that require action and those that don’t.</p>
+
+
+
+<p>For example, a flagged vulnerability might be labeled as <code>not_affected</code> with a rationale (e.g., &#8220;the vulnerable function in libcurl relates to FTP, which is not compiled into our binary&#8221;) or as <code>affected</code> and in need of mitigation. This process keeps remediation efforts focused only on vulnerabilities that pose a genuine risk, rather than overwhelming your team with noise.&nbsp;</p>
+
+
+
+<p>Third-party binary components introduce an additional challenge. If you are using these, you should request an SBOM from the supplier. If they cannot provide one, the FDA expects a documented justification for its absence and an analysis of the associated risks. This transparency ensures that even external components are accounted for in your security posture.</p>
+
+
+
+<h3 class="wp-block-heading"><strong>Artifact #7:</strong> Post-Market Cybersecurity Management Plan</h3>
+
+
+
+<p>Even after your device is in the field, you are responsible for monitoring, responding to, and managing cybersecurity risks. The FDA requires this to take the form of a formal Cybersecurity Management Plan.</p>
+
+
+
+<p>The plan should detail how you&#8217;ll monitor for new vulnerabilities (e.g., subscribing to CISA alerts, specific vendor advisories, and monitoring services). It should also clearly assign roles and responsibilities, naming the individuals or teams accountable for ongoing monitoring and response activities.&nbsp;</p>
+
+
+
+<p>In addition, the plan should also contain your policy for coordinated vulnerability disclosure (CVD). This policy outlines how you will work with researchers, customers, and other stakeholders when vulnerabilities are discovered.&nbsp; It should also include defined timelines and SLAs for analyzing issues, triaging their severity, and delivering patches to customers.</p>
+
+
+
+<p>By treating post-market security as a continuous, structured process rather than an afterthought, you demonstrate to both regulators and customers that your commitment to device safety extends well beyond the launch date.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>Making SPDF Standard Practice</strong></h2>
+
+
+
+<p>By following this phased approach (identifying threats, assessing risk, architecting controls, proving effectiveness, and planning for post-market management) you systematically generate the evidence the FDA expects. More importantly, you build devices that are genuinely prepared for evolving threats.</p>
+
+
+
+<p>The shift requires upfront investment. Threat modeling takes time. Traceability matrices need maintenance. Penetration tests cost money. But teams who integrate these practices early consistently report faster submissions, fewer last-minute architecture changes, and more confident responses to post-market vulnerabilities. The documentation becomes a natural byproduct of disciplined engineering rather than a painful pre-submission scramble.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading"><strong>The Bottom Line</strong></h2>
+
+
+
+<p>Connected medical devices need systematic security evidence from day one. When threat models, traceability, and post-market planning are built into your development process rather than added at submission time, you get both regulatory approval and devices that can respond to real-world threats. That&#8217;s what the FDA&#8217;s 2025 guidance demands.</p>
+
+
+
+<p>At Punch Through, we build connected medical devices with this SPDF process built in. Every project generates these seven artifacts systematically. If you need that engineering capability for your device, <a href="https://punchthrough.com/contact/" target="_blank" rel="noreferrer noopener">let&#8217;s talk.</a></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>FDA Cybersecurity Rules Raise the Stakes for Medical Device Software Teams</title>
+		<link>https://punchthrough.com/new-fda-cybersecurity-rules/</link>
+		
+		<dc:creator><![CDATA[Punch Through]]></dc:creator>
+		<pubDate>Mon, 14 Jul 2025 19:43:50 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Device Security]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<category><![CDATA[Risk Mitigation]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/?p=11424</guid>
+
+					<description><![CDATA[FDA’s new cybersecurity rules raise the bar for how medical devices are designed, updated, and maintained. This article breaks down what’s changed, what software teams need to show, and how to avoid common compliance pitfalls.]]></description>
+										<content:encoded><![CDATA[
+<p><em>The new guidance doesn’t change what connected medical product teams already know and it formalizes what many have been doing out of necessity. But it does raise the bar on how security must be demonstrated across the product lifecycle.</em></p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">FDA Cybersecurity Expectations Are Now Law</h2>
+
+
+
+<p>In June, 2025, FDA finalized its guidance on <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cybersecurity-medical-devices-quality-system-considerations-and-content-premarket-submissions" target="_blank" rel="noopener">Cybersecurity in Medical Devices: Quality System Considerations and Content of Premarket Submissions</a>, replacing the 2023 version and putting <a href="https://www.federalregister.gov/documents/2023/09/27/2023-20955/cybersecurity-in-medical-devices-quality-system-considerations-and-content-of-premarket-submissions" target="_blank" rel="noopener">Section 524B</a> of the FD&amp;C Act into full effect.</p>
+
+
+
+<p>The document outlines what FDA expects in terms of secure design, labeling, and documentation expected in premarket submissions for devices with cybersecurity risk. Its aim is to promote consistency, support efficient review, and ensure that connected medical devices are resilient to real-world cybersecurity threats.</p>
+
+
+
+<p>For most engineering teams, the expectations won’t be surprising, but they are now legally enforceable. Cybersecurity practices are no longer just “strongly recommended.” They are required, and FDA will expect clear, traceable evidence that secure design, update mechanisms, and postmarket response are built into your system architecture.</p>
+
+
+
+<p>Here’s what the guidance now explicitly calls for:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Ongoing lifecycle management of cybersecurity, including secure update mechanisms, vulnerability response, and postmarket monitoring</li>
+
+
+
+<li>Alignment with <a href="https://array.aami.org/doi/10.2345/0899-8205-57.2.40" target="_blank" rel="noreferrer noopener">ANSI/AAMI SW96</a> as a recognized standard for software security risk management</li>
+
+
+
+<li>Documentation that supports system-level traceability</li>
+</ul>
+
+
+
+<p>This update doesn’t shift the direction of regulation, rather it catches up to what many connected device teams have already been doing. For years, software teams have had to make these decisions without consistent regulatory direction, often relying on internal best practices or tech industry norms. This final move brings long-needed clarity and gives structure to what secure development should look like across embedded, app, and cloud systems in the medical space.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Cybersecurity Is Now a Software Architecture Problem</h2>
+
+
+
+<p>FDA’s updated guidance makes it clear that security isn’t something you test for at the end. It has to be designed into the system and FDA now wants to see how those decisions are made, executed, and maintained over time.</p>
+
+
+
+<p class="has-background" style="background-color:#bce6fd"><em>“Manufacturers must design, develop, and maintain devices with cybersecurity in mind to ensure device safety and effectiveness.” — FDA Guidance, Section I.A</em></p>
+
+
+
+<p>FDA now expects your architecture to support security across the product’s lifecycle and not just at launch. That includes secure update mechanisms, system-level traceability, and coordination across embedded, mobile, and cloud layers. It&#8217;s no longer sufficient to build security features; your system must show it can maintain them over time, under real-world conditions.</p>
+
+
+
+<p>Specifically, your system needs to:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Detect emerging threats</li>
+
+
+
+<li>Respond without compromising safety or function</li>
+
+
+
+<li>Document how those risks are evaluated and addressed across the stack</li>
+</ul>
+
+
+
+<p>This puts pressure on how your embedded, mobile, and cloud systems are architected together. Disconnects often surface in the seams between those platforms, especially where coordination was never fully tested. We&#8217;ve seen update flows that worked in isolation but failed under integration. BLE app logic that assumed perfect connection timing. Cloud infrastructure that could handle telemetry but couldn’t revoke access or deploy security updates without manual workarounds.</p>
+
+
+
+<p>These aren’t small edge cases. Under this guidance, they become signs of a system that wasn’t built with lifecycle security in mind. It’s not enough to implement security mechanisms. You need to demonstrate how your architecture enables ongoing risk management with traceability, predictability, and coordinated ownership across the product ecosystem.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Where Teams Tend to Miss the Mark</h2>
+
+
+
+<p>The challenges this guidance brings into focus aren’t new, but the bar for how clearly they’re addressed has changed. We’ve worked with teams navigating all of the following, and under the new guidance, each becomes more consequential.</p>
+
+
+
+<ul class="wp-block-list">
+<li>Patchability and update readiness: Firmware update strategies that previously “worked” may now raise flags if they lack rollback support, coordinated timing across platforms, or documentation showing how updates are managed postmarket.</li>
+
+
+
+<li>Traceability gaps: Security features that function correctly but lack alignment to risk documentation or update planning now create exposure. Regulators want to see how controls were implemented and not just that they exist.</li>
+
+
+
+<li>Disjointed ownership: When decisions around security, updates, or architecture live in separate teams, it shows up as inconsistency in planning, coordination, and lifecycle coverage. This is exactly what FDA now wants addressed system-wide.</li>
+
+
+
+<li>Unclear security posture: Controls without context or maintenance strategy may have passed before. Today, regulators expect a clear story of how security was defined, verified, and aligned to structured risk management practices like SW96.</li>
+</ul>
+
+
+
+<p>These exposures often start where systems were built in isolation without shared planning for updates, documentation, or risk response. We see this in update flows that don’t account for rollback, mobile apps that lack traceable security actions, and cloud systems that can’t respond to device-level incidents. These used to be operational challenges. Now, they’re compliance risks.</p>
+
+
+
+<p>What reviewers will look for is not just whether your system functions securely, but whether your architecture and process support security over time. That includes documented update mechanisms, defined workflows for vulnerability monitoring and response, and alignment with standards like SW96. You’ll need to show how those controls were planned, implemented, and maintained in a traceable, predictable way.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What This Means Now for Software Teams</h2>
+
+
+
+<p>What gets built and how it&#8217;s built now carries compliance weight. FDA isn&#8217;t just evaluating documentation. It&#8217;s assessing whether your system design, update strategy, and cross-platform execution show long-term control over cybersecurity risk.</p>
+
+
+
+<p>That means:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Architecture decisions should account for update flows, rollback handling, and cross-platform coordination, not just core functionality.</li>
+
+
+
+<li>Traceability isn’t just a documentation exercise. It must show how controls map to risks across firmware, mobile apps, and cloud systems.</li>
+
+
+
+<li>Update infrastructure should be designed with lifecycle risk in mind, not retrofitted post-launch or during submission prep.</li>
+</ul>
+
+
+
+<p>FDA doesn’t just want working systems. It wants systems that can demonstrate security resilience early, clearly, and throughout the entire lifecycle. That makes software architecture, documentation, and process alignment as critical as product features.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">The Value of Experience in Meeting Regulatory Demands</h2>
+
+
+
+<p>Designing for compliance with today’s FDA expectations means making the right technical decisions early—across embedded systems, mobile apps, and cloud infrastructure—and ensuring those decisions hold up under scrutiny months or years down the line.</p>
+
+
+
+<p>That’s difficult to do without prior exposure to what actually works. Experienced partners bring value by helping teams avoid common missteps, align on architecture decisions that support secure updates and traceability, and structure development around what regulators will expect to see without slowing delivery.</p>
+
+
+
+<p>We work alongside engineering and product teams to:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Build update mechanisms that integrate cleanly across the system, not just at the firmware level</li>
+
+
+
+<li>Identify gaps in architecture that could introduce compliance or integration risk later</li>
+
+
+
+<li>Align development workflows and documentation to regulatory expectations like IEC 62304 and SW96</li>
+
+
+
+<li>Support decision-making under real-world constraints (timelines, legacy systems, shifting requirements)</li>
+</ul>
+
+
+
+<p>This kind of support helps reduce uncertainty, bring clarity to decision-making, and accelerate the path to readiness when it matters most.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Where This Leaves Development Teams</h2>
+
+
+
+<p>For most teams, this guidance won’t introduce new concepts, but it does change what needs to be shown, how early it needs to be built in, and how closely systems will be scrutinized.</p>
+
+
+
+<p>Security decisions now have to be reflected in architecture, workflows, and documentation that hold up across the entire product lifecycle. That’s not just about meeting regulatory expectations. It’s about building systems that are ready for what happens after launch.</p>
+
+
+
+<p>Whether you’re assessing your update path, reviewing documentation strategy, or working through architectural tradeoffs, now is the time to make sure your development practices are aligned before those gaps become real blockers to approval, delivery, or trust.</p>
+
+
+
+<p>If you&#8217;re reevaluating your system architecture or software readiness, learn more about <a href="https://punchthrough.com/working-with-us/">how we work with teams building connected medical products</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Cryptographic Key Management: How To Secure Implantable Medical Devices</title>
+		<link>https://punchthrough.com/cryptographic-key-management/</link>
+		
+		<dc:creator><![CDATA[Brent Johnson]]></dc:creator>
+		<pubDate>Tue, 10 Oct 2023 08:38:00 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Device Authentication]]></category>
+		<category><![CDATA[Embedded Software]]></category>
+		<category><![CDATA[Privacy & Security]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/cryptographic-key-management-how-to-secure-implantable-medical-devices/</guid>
+
+					<description><![CDATA[Learn how to design secure cryptographic key management for implantable medical devices, from key generation and storage to usage and rotation, focused on firmware-level decisions within the implant itself.]]></description>
+										<content:encoded><![CDATA[
+<p class="has-background" style="background-color:#ececec"><em><strong>Article Scope: </strong>This article provides guidance on where to start and primary considerations when designing your cryptographic key management system for an implantable medical device. Keep in mind that the scope of this article will be focused on the implant itself, so that we will discuss microcontroller (MCU) and firmware flavors of key management rather than mobile or cloud-flavored key management.</em></p>
+
+
+
+<h2 class="wp-block-heading">Introduction</h2>
+
+
+
+<p>The Internet of Things (IoT) is taking over the world. Microwaves, lightbulbs, vacuum cleaners, and pretty much any everyday object with the word “smart” in front of it; all want to be wirelessly connected, whether it be through Wi-Fi or Bluetooth. Many of these innocuous devices are developed and produced with tight budgets, and unfortunately, one of the easiest things to cut out of a development budget is security infrastructure.</p>
+
+
+
+<p>There are quite a few articles out there that demonstrate just how easy it is to gain access to some of these smart devices. For example, in “<a href="https://mcuoneclipse.com/2019/05/26/reverse-engineering-of-a-not-so-secure-iot-device/" target="_blank" rel="noreferrer noopener">Reverse Engineering of a Not-so-Secure IoT Device</a>,” they break down a mysterious monitoring device that commits quite a few security sins — like transmitting a plaintext encryption key over serial lines.</p>
+
+
+
+<p>While the consequences of using these poorly secured IoT home devices can range from minimal to&nbsp; somewhat concerning — depending on the types of devices and the data they transmit — it is a very different story when it comes to connected medical devices in the Internet of Medical Things (IoMT).</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">The Need for Security in Implants</h2>
+
+
+
+<p>Imagine an IoMT device without security, personal medical data being spewed out over the 2.4 GHz spectrum for anyone to receive, or an implanted medical device giving complete control to any Bluetooth device that decided to connect. This situation is not just horrifying; it&#8217;s a matter of life and death.</p>
+
+
+
+<p>In implantable medical devices, there&#8217;s zero room for error — security isn&#8217;t optional, it&#8217;s essential. Unlike other products that can be returned if compromised, an implant can&#8217;t be easily removed without risking severe, irreversible harm to the patient. On top of that, failing to comply with critical regulations like HIPAA could result in severe penalties.</p>
+
+
+
+<p>So, how do we bridge the gap between the dire need for security in implantable medical devices and the technical solutions available? The answer lies in effective cryptographic key management. It&#8217;s not just about choosing the right algorithms. It&#8217;s about how you manage, store, and rotate these cryptographic keys that make or break the security infrastructure.</p>
+
+
+
+<p>A vast suite of cryptographic algorithms are available for authentication and confidentiality, and at the heart of many of them are cryptographic keys.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">What are Cryptographic Keys?</h2>
+
+
+
+<p>What exactly is a cryptographic key? Simply put, it&#8217;s a string of random data. This string is used to change readable data (plaintext) into a secret code (encrypted data). And it works the other way around, too. A key could be as basic as the word &#8220;hello&#8221; or as complex as a long string of characters and symbols. For example &#8220;YZICgJjXhZ7gHw1s8n5JKmaedpnWVucC/yqeNGHpcXy83cN/dR&#8221;.&nbsp;</p>
+
+
+
+<p>Think of it like a house key. Just as a physical key locks and unlocks your home, a cryptographic key encrypts and decrypts data. Only those with the correct key can access the information. But here&#8217;s the catch — what if you leave your house key under the doormat? It&#8217;s the same with data. You&#8217;re asking for trouble if you send the cryptographic key along with the encrypted data.</p>
+
+
+
+<p>Cryptographic Key Management is crucial when designing the security for an implantable medical device. It involves four main areas: the types of keys, how they&#8217;re created (key generation), where they&#8217;re stored (key storage), and how they&#8217;re used (key usage).</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Types of Cryptographic Keys</h2>
+
+
+
+<p>There are two kinds of cryptographic keys: symmetric and asymmetric.</p>
+
+
+
+<h3 class="wp-block-heading">Symmetric Keys</h3>
+
+
+
+<p>Symmetric keys are relatively straightforward. A key is used to encrypt a message, and that same key is used to decrypt the message. It is easy to grasp as a concept, but it can lead to some tricky challenges.&nbsp;</p>
+
+
+
+<p>Because one key is used for encryption and decryption, whoever needs to decrypt the message must have the same key. So, some secure transport method is necessary to get the key to the required parties. On top of that, instead of worrying about just storing one key securely (whoever is encrypting it), you need to worry about securely keeping keys on all the desired recipients.</p>
+
+
+
+<p>Despite these shortcomings, symmetric key encryption has some key advantages worth considering. <strong>Symmetric key encryption tends to be much faster and less resource-intensive than asymmetric key encryption.</strong> These advantages go far in a resource and power-constrained environment such as a battery-powered implant.&nbsp;</p>
+
+
+
+<p>Symmetric keys are also the primary output of common key exchange/agreement algorithms, allowing session keys to be designed into the security architecture. Session keys are ephemeral, meaning they have a shelf life or expiration. The shelf life of a session key is flexible and can be almost anything.&nbsp;</p>
+
+
+
+<p>For example, the key could be single use, or it could last the length of a BLE connection, or it could have a set amount of encryption uses before it expires. The important thing is that session keys help limit the scope of damage that could be done if a particular session key is leaked. If one session key is leaked, it can only decrypt the messages sent within that session. This idea is called forward secrecy, meaning that any leaked session keys will not directly compromise the security of future session keys.&nbsp;</p>
+
+
+
+<h3 class="wp-block-heading">Asymmetric Keys</h3>
+
+
+
+<p>Asymmetric keys — also called asymmetric keypairs — have two parts: a public key and a private key. Their names hint at how they should be handled; a public key can be passed around to anyone and everyone, while the private key should be kept hidden. No one should have the private key outside of the owner. Algorithms that use asymmetric keys are also called public key algorithms.</p>
+
+
+
+<p>With public key algorithms, encryption is done with the public key, while the private key is used for decryption. This approach allows anyone with the public key to send encrypted messages, but only the private key owner can decrypt the message.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/BlogIllustrations_Brent-02-1024x826.png" alt="" class="wp-image-4754"/><figcaption class="wp-element-caption">Example of an asymmetric public key used for encryption and a corresponding private key used for decryption.</figcaption></figure>
+</div>
+
+
+<p>Asymmetric keys are also commonly used to create digital signatures. A private key can generate a unique signature over a piece of data, while the corresponding public key can verify the signature. Digital signatures do not provide any form of encryption or confidentiality, but they can provide forms of authentication and integrity of the data. Successfully verifying the signature proves that whoever sent the message has the private key (authenticity) and that the message was not tampered with (integrity), as the signature is unique to the message sent.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/BlogIllustrations_Brent-03-1024x826.png" alt="" class="wp-image-4753"/><figcaption class="wp-element-caption">Example of an asymmetric private key used for (signing) and the corresponding public key used for authentication.</figcaption></figure>
+</div>
+
+
+<h3 class="wp-block-heading">What Keys Should We Use?</h3>
+
+
+
+<p>This is a trick question! Use both!</p>
+
+
+
+<p>For the use case of streaming data from an implant to an external device, symmetric encryption is almost always going to be the ideal key type to use. The performance benefits are a must for the resource-constrained implant, the burden of having to establish the keys needed for communication is limited in a one-to-one scenario, and we maintain forward secrecy with proper session key expiration dates. Whenever possible, we should strive to use symmetric keys through the use of key agreement algorithms.</p>
+
+
+
+<p>However, encryption is not the only concern in security architecture. What good is locking up the data with a key if we are willing to give it to anyone asking for it? We need authentication to ensure anything that attempts to interact with the implant is legit and isn’t just pretending to be a device the implant wants to talk to.</p>
+
+
+
+<h4 class="wp-block-heading">Authentication Through Digital Certificates</h4>
+
+
+
+<p>Authentication is where asymmetric keys shine. We can take an asymmetric keypair and create a digital certificate, essentially just a collection of information about the device that owns the asymmetric keypair. Including the device’s public key within the certificate allows other parties to validate any signature created by the private key.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/BlogIllustrations_Brent-05-2-1024x372.png" alt="" class="wp-image-4760"/><figcaption class="wp-element-caption">Example of the content of a digital certificate.</figcaption></figure>
+</div>
+
+
+<p>The digital signature at the end of a certificate is generated using the private key owned by a Certificate Authority (CA). A CA is any entity or party that uses its private key to sign other entities&#8217; certificates, allowing the CA to &#8220;vouch&#8221; for the certification it signs. The certificate&#8217;s signature enables any party to check the certificate&#8217;s authenticity by using the CA&#8217;s public key to verify the signature on the certificate.&nbsp;</p>
+
+
+
+<p>The definition of a CA is relatively minimal and can come in many different forms. Many web hosting companies offer CA services to issue website certificates (with the Internet Security Research Group (ISRG) offering a nonprofit CA solution). Amazon Web Services (AWS) provides a CA service to integrate certificates and certificate signing into your potential cloud solutions. A CA can also be a custom-made device to sign certificates for your system (although a higher level of care is needed for this option).&nbsp;</p>
+
+
+
+<p>In practice, there is rarely just one CA in charge of signing all certificates. If a CA&#8217;s private key were to be leaked, the authenticity of all certificates it had ever signed would be at risk. Commonly, there is a root certificate CA who can sign and vouch for many other intermediate CAs. Those intermediate CAs can then sign other intermediate certificates or an end-user certificate. This process creates a chain of trust that can be traced back to the root certificate. Having the intermediate CAs sign end-user certificates helps minimize the chances of leaking the root key and minimizing the scope of damage if an intermediate CA private key were leaked.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/BlogIllustrations_Brent-04-2-1024x418.png" alt="" class="wp-image-4761"/><figcaption class="wp-element-caption">Example of a digital certificate chain and the chain of trust.</figcaption></figure>
+</div>
+
+
+<p>It can be a little much to wrap your head around, but this concept is the cornerstone of modern internet security. Have you ever been to a website whose URL starts with “http” and your browser gives you a scary warning? That is because the website did not provide the browser a certificate that can be traced back to a trusted and known root CA, meaning whatever website you are trying to access could be anything. It could be the website you want to access, or it could totally be lying. However, URLs with “https” are able to provide a certificate that traces back to a trusted CA. This ensures that the website you think you are talking to is actually the website you want to talk to. And it’s all based on asymmetric keys!</p>
+
+
+
+<p>In Google Chrome, it is pretty easy to view the certificate of the website you are currently on. To the left of the address bar is a little lock icon. Click on it, then click on “Connection is secure” -&gt; ”Certificate is valid”, and a window will pop up with information about the website’s certificate. If you do this on the Punch Through website, you can see its root CA comes from the ISRG!</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/image2-1.png" alt="" class="wp-image-4767"/><figcaption class="wp-element-caption">A screenshot of ptddev.wpengine.com&#8217;s digital certificate.</figcaption></figure>
+</div>
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Key Generation &amp; Distribution</h2>
+
+
+
+<h3 class="wp-block-heading">Entropy</h3>
+
+
+
+<p>The most important component in key generation is entropy. And no, we are not talking about thermodynamics and the heat death of the universe. Without getting into the nitty grittiness of it — and boy, can it get nitty gritty fast, check out the Wikipedia page for <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" target="_blank" rel="noreferrer noopener">entropy</a> — entropy in cryptography is a measurement of how random something is. We need good randomness for key generation so potential attackers can&#8217;t guess or figure out the key.</p>
+
+
+
+<p>Because computers are deterministic and only perform what they&#8217;re programmed to execute, nothing they generate can be completely random. This reason is why an external entropy source is needed. A great example of lousy entropy can be witnessed in this 1996 article on &#8220;<a href="https://people.eecs.berkeley.edu/~daw/papers/ddj-netscape.html" target="_blank" rel="noreferrer noopener">Randomness and the Netscape Browser</a>.&#8221; It outlines how Netscape derived encryption keys using the time of day, the process ID, and the parent process ID. Those three metrics are not random and are easy to figure out retroactively. Alternatively, Cloudflare famously uses a wall of 100 <a href="https://www.cloudflare.com/learning/ssl/lava-lamp-encryption/" target="_blank" rel="noreferrer noopener">lava lamps</a> as a good entropy source for their key generation.&nbsp;</p>
+
+
+
+<p>Many microcontrollers will have hardware peripherals that are used to generate random numbers. There are two kinds of random generators: True Random Number Generators (TRNG) and Pseudo Random Number Generators (PRNG). Suppose you will use a hardware peripheral to generate these random numbers. In that case, you need to be careful that they are providing the appropriate level of randomness and understand the differences between the two types.&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Pseudo-Random Number Generators (PRNG)</h4>
+
+
+
+<p>PRNGs are algorithms used to obtain a random number based on an initial input. They are considered “psuedo random” because they technically aren’t random, they just generate sequences of numbers that look random based on the input to the algorithm. This input is often called a seed when using RNG speak.&nbsp;</p>
+
+
+
+<p>The most important step in using a PRNG for key generation is seed selection. If an attacker were to obtain the seed used in the PRNG, and the output of the PRNG is used as a key, then the attacker would be able to calculate that same key. Remember the Netscape fiasco from a few paragraphs ago? That vulnerability was centered around Netscape choosing easily obtainable sources of information as seed for their PRNG used for generating encryption keys.&nbsp;</p>
+
+
+
+<p>Luckily, PRNG has a special flavor, a Cryptographically Secure Pseudorandom Number Generator (CSPRNG) — cryptography is not known for brevity. CSPRNGs are algorithms that are proven to be sufficiently random (they pass the <a href="https://en.wikipedia.org/wiki/Next-bit_test" target="_blank" rel="noreferrer noopener">next-bit test</a>) and are hardened against cryptographic attacks. CSPRNGs also do not require the user to explicitly set the seed, as they are often designed with hardware that provides sources of sufficient entropy to derive seeds.&nbsp;Long story short, look for PRNGs that are called CSPRNGs or are specifically designed for cryptographic uses. The <a href="https://infocenter.nordicsemi.com/index.jsp?topic=%2Fug_nrf52832_dk%2FUG%2Fdk%2Fintro.html" target="_blank" rel="noreferrer noopener">nRF52840 MCU from Nordic</a> is a good example of language to look for when determining if a PRNG is appropriate for generating keys. Phrases like “suitable for cryptographic purposes,” “based on internal thermal noise,” and “does not require a seed value” are all great qualities to have!</p>
+
+
+
+<h4 class="wp-block-heading">True Random Number Generators (TRNG)</h4>
+
+
+
+<p>While PRNGs are just algorithms (and are ultimately deterministic), TRNGs rely on hardware to provide an external source of randomness occurring in the physical world that is inherently unpredictable. Some common sources would be thermal noise, atmospheric noise, or even the radioactive decay of isotopes. What do you think is easier to include on a microcontroller? Yeah we probably don&#8217;t want to rely on radioactive decay as our source of randomness. Thermal noise on the other hand is present within all electronic circuits and is an easily accessible source of randomness.</p>
+
+
+
+<p>Many microcontrollers will offer both TRNGs and PRNGs, allowing the TRNG to generate a truly random seed for the PRNG. As mentioned above, this is exactly what the nRF52840 does with its RNG implementation.</p>
+
+
+
+<h4 class="wp-block-heading">National Cryptographic Specifications &amp; Standards</h4>
+
+
+
+<p>It is also best not to trust an RNG peripheral because it has the word &#8220;random&#8221; in it. Look at documentation to see if it lists any reputable standards it complies with. For example, the National Institute of Standards and Technology (NIST) has many detailed cryptographic specifications and standards to adhere to. A good example is looking for RNG peripherals compliant with:&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://csrc.nist.gov/pubs/sp/800/90/a/r1/final" target="_blank" rel="noreferrer noopener">NIST 800-90A: Recommendation for Random Number Generation Using Deterministic Random Bit Generators</a></li>
+
+
+
+<li><a href="https://csrc.nist.gov/pubs/sp/800/90/b/final" target="_blank" rel="noreferrer noopener">NIST 800-90B: Recommendation for the Entropy Sources Used for Random Bit Generation</a></li>
+</ul>
+
+
+
+<h3 class="wp-block-heading">Symmetric Keys</h3>
+
+
+
+<p>We discussed earlier how key distribution can be a tricky problem to solve with symmetric keys. If one party decides what key to use for encryption and decryption, how do we get it to the party who needs it?&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Diffie-Helman</h4>
+
+
+
+<p>The easiest way is to ensure one party is not in charge of generating the key and make it a joint venture. The <a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange" target="_blank" rel="noreferrer noopener">Diffie-Hellman</a> key exchange algorithm enables two parties to independently and concurrently derive a shared key. Both parties must generate an asymmetric keypair and send each other their public keys. Each party then combines its private key with the received public key, and then they will have a matching shared secret.&nbsp;</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><img decoding="async" src="https://punchthrough.com/wp-content/uploads/2025/04/BlogIllustrations_Brent-01-1024x927.png" alt="" class="wp-image-4755"/><figcaption class="wp-element-caption">Example of the components needed for a Diffie-Hellman exchange.</figcaption></figure>
+</div>
+
+
+<p>However, the shared secret generated from a Diffie-Hellman exchange does not contain the proper amount of entropy — mainly that the shared secret’s randomness is not guaranteed to be uniformly distributed — to be used directly in encryption algorithms. The generated shared secret can then be fed into a key derivation function to get a symmetric key with the proper entropy.&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Key Derivation Functions</h4>
+
+
+
+<p>Key Derivation Functions (KDFs) are algorithms that transform some form of keying material — like a shared secret, password, or other keys — into one or more keys. They can strengthen weak input keys and produce output keys that are longer or different in form. So, in a Diffie-Hellman exchange, both parties can independently feed their shared secret into a KDF to generate a common encryption key.</p>
+
+
+
+<h4 class="wp-block-heading">Key Derivation Keys</h4>
+
+
+
+<p>Key Derivation Keys (KDKs) are keys used as input to KDFs. These KDKs can be temporary keys obtained from a key exchange — like our Diffie-Hellman example — or pre-shared static keys. A pre-shared static key is beneficial for secure serial communication between two processors on the same circuit board, like an application processor talking to a networking co-processor. The KDK can be generated and shared at the time of manufacturing. Then, upon bootup in the field, the two processors can exchange random numbers, feed the shared KDK and these random numbers into a KDF, and secure all subsequent communication.</p>
+
+
+
+<p><strong>Important Note:</strong> If a key is designated as a KDK, it must <strong>NEVER</strong> be used directly in an encryption operation. KDKs are not guaranteed sufficient entropy to be used safely for encryption. If a KDK is used this way and gets leaked, all past and future encryptions using that key could be compromised. Instead, use the KDK only for deriving session encryption keys. This decreases the KDK’s exposure to a potential attacker, ensures sufficient entropy for encryption keys, and provides forward secrecy if the derived session keys are leaked.</p>
+
+
+
+<h3 class="wp-block-heading">Asymmetric Keys</h3>
+
+
+
+<p>Figuring out how to securely get symmetric keys to the right parties is tricky. This is not so much a problem for asymmetric keys due to asymmetric keys being split into private and public keys. In almost all situations, asymmetric keys should be generated on the device. This ensures that the private key does not ever have to leave the device, and the public key can be sent around freely.&nbsp;</p>
+
+
+
+<p>Just as with symmetric keys, a random number generator with a sufficient entropy source must be used to generate asymmetric keys. If no RNG is available on the device, then one option is to generate the key from an external source and send it to the device through some secure channel or process during manufacturing. However, this is <strong>NOT</strong> recommended. The best way to keep private keys secure is not to need to transmit them. If your device does not have sufficient RNG to generate keys securely, it cannot be trusted to execute cryptographic algorithms.&nbsp;</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Key Storage</h2>
+
+
+
+<p>Arguably, the most critical aspect of cryptographic key management is storage. We know the keys and how to get them, now how do we store them?</p>
+
+
+
+<h3 class="wp-block-heading">Use A Hardware Secure Module (HSM)</h3>
+
+
+
+<p>A hardware secure module (HSM) refers to any hardware or co-processor dedicated to storing secrets and carrying out cryptographic operations. Examples include Apple’s Secure Enclave (built into all Apple custom silicon), Microsoft’s Trusted Platform Module (TPM), and Arm’s CryptoCell.</p>
+
+
+
+<p>HSMs are designed to be tamper-resistant and are hardened against common hardware attacks like side-channel attacks and power glitching. On top of that, HSMs are isolated hardware components. This isolation complicates compromising keys through software-based attacks like a buffer overflow. HSMs also often can generate high-quality keys. If the HSM is also capable of storing these keys, then the key never really has to leave the HSM, heavily decreasing the risk of exposure.</p>
+
+
+
+<p>Along with all the security advantages, HSMs contain hardware-accelerated implementations of standard cryptographic algorithms. These implementations free the application processor from performing potentially frequent and expensive crypto operations and reduce the power needed to carry out those operations.</p>
+
+
+
+<p>Using an HSM is a no-brainer for implantable medical devices and should be prioritized when selecting a microcontroller. Hopefully, you are coming across this guide before the hardware designs are finalized!&nbsp;</p>
+
+
+
+<h4 class="wp-block-heading">Common Microcontrollers With HSM</h4>
+
+
+
+<h5 class="wp-block-heading">Nordic’s nRFX series</h5>
+
+
+
+<p>Nordic’s most popular line of BLE microcontrollers have cryptographic accelerators of various capabilities.&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://www.nordicsemi.com/Products/Development-hardware/nRF52-DK/Development-Tools?lang=en" target="_blank" rel="noreferrer noopener">Nordic nRF52840</a> contains an Arm CryptoCell 310 for cryptographic hardware acceleration but does not have dedicated hardware secure storage for keys.&nbsp;</li>
+
+
+
+<li><a href="https://www.nordicsemi.com/products/nrf5340" target="_blank" rel="noreferrer noopener">Nordic nRF5340</a> includes an Arm CryptoCell 312 for hardware acceleration and a dedicated key management unit (KMU).&nbsp;</li>
+
+
+
+<li><a href="https://www.nordicsemi.com/Products/nRF54H20" target="_blank" rel="noreferrer noopener">Nordic nRF54</a> is their newest chip and has not yet been released, but they promise to provide more security than ever with their past microcontrollers. However, at the time of writing, no specific details about the nRF54s’ security capabilities are publicly available.&nbsp;</li>
+</ul>
+
+
+
+<h5 class="wp-block-heading">ST Microcontrollers</h5>
+
+
+
+<p>ST has an enormous amount of microcontrollers available. It can be overwhelming to sift through. It can get even more confusing when considering security.&nbsp;</p>
+
+
+
+<ul class="wp-block-list">
+<li>If you are set on utilizing an HSM included within an ST microcontroller, then your only option is the <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32wb-series.html" target="_blank" rel="noreferrer noopener">STM32WB</a> series. They provide hardware secure storage through their customer key storage (CKS) peripherals.&nbsp;</li>
+
+
+
+<li>If you are open to using an external HSM, ST’s ultra-low-power offerings may suit your implantable device. Some examples are the <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32l4-series.html" target="_blank" rel="noreferrer noopener">STM32L4</a>, <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32l5-series.html" target="_blank" rel="noreferrer noopener">STM32L5</a>, and <a href="https://www.st.com/en/microcontrollers-microprocessors/stm32u5-series.html" target="_blank" rel="noreferrer noopener">STM32U5</a> series.</li>
+</ul>
+
+
+
+<h4 class="wp-block-heading">External HSM Solutions</h4>
+
+
+
+<p>Maybe you don’t have any flexibility in your microcontroller selection, which is okay too! Luckily there are dedicated Integrated Circuits (ICs) that you can interface with your microcontroller to gain the advantages of an HSM.</p>
+
+
+
+<h5 class="wp-block-heading">Microchip ATECC608</h5>
+
+
+
+<p>Microchip’s <a href="https://www.microchip.com/en-us/product/ATECC608B" target="_blank" rel="noreferrer noopener">ATECC608</a> IC provides all the goodies of an integrated HSM (low power, dedicated key storage hardware, etc.) in a very small form factor, easy to squeeze into any existing hardware design. Being MCU agnostic, the ATECC608 is able to interface with any microcontroller over I2C, but a single-wire protocol is also available if the GPIO is tight on the microcontroller.&nbsp;</p>
+
+
+
+<h5 class="wp-block-heading">ST STSAFE-A110</h5>
+
+
+
+<p>ST’s <a href="https://www.st.com/en/secure-mcus/stsafe-a110.html" target="_blank" rel="noreferrer noopener">STSAFE-A110 series</a> is another external IC that can be used as an HSM. Very similar in functionality to the ATECC608, but not as power and space-efficient. It is also MCU agnostic and is interfacable through I2C.</p>
+
+
+
+<p>Both ICs recommended above utilize I2C serial lines to facilitate communication with the MCU. But what happens if an attacker gains physical access to the device? It would be trivial to hook up a logic analyzer to the I2C lines and eavesdrop on all the juicy secrets being exchanged between them. Luckily, both ICs can &#8220;pair&#8221; with an MCU at manufacture time. This capability allows data exchanged over the I2C lines to be encrypted and authenticated, preventing potential bad guys from getting meaningful information.&nbsp;</p>
+
+
+
+<h3 class="wp-block-heading">Verify, Verify, Verify!</h3>
+
+
+
+<p>When working with a potential HSM, from design through development, it is imperative to investigate where the keys are stored. Documentation and datasheets can all claim that things are secure, but some due diligence goes a long way.&nbsp;</p>
+
+
+
+<p>This due diligence has saved us in the past. We were working with an nRF5340 microcontroller and were playing around with Nordic’s plethora of security samples that exercise the integrated Arm CryptoCell co-processor. A Nordic example, “<a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrf/samples/crypto/persistent_key_usage/README.html" target="_blank" rel="noreferrer noopener">Crypto: Persistent Key Storage</a>,” demonstrates how to generate and store a persistent key. We took the sample, threw it onto a dev kit, saw that it worked, and decided to integrate those findings into our application. Further down the road, we decided to take action to investigate where those keys were being stored.</p>
+
+
+
+<p>It was straightforward to find where they were stored. All we did was read the flash contents of the microcontroller and search for the ASCII string “PSA KEY,” and there it was. Yep, it was that easy.&nbsp;</p>
+
+
+
+<p>Thankfully, we could pivot to using the nRF5340’s Key Management Unit (KMU) to store those keys and keep them out of flash securely, but the process was a precious lesson. Just because documentation and datasheets throw out desirable words like “secure” and “cryptography” does not mean that they will perform to your desired level of security. It is essential to know where and how your keys are stored down to the lowest level possible.</p>
+
+
+
+<h3 class="wp-block-heading">Alternatives To HSMs</h3>
+
+
+
+<p>What if hardware designs are already finalized? Can&#8217;t we stick the key in flash memory?</p>
+
+
+
+<p>Storing keys in a Flash is one of the easiest ways to leak or compromise a key. Almost all microcontrollers have Flash read protection, protecting against anyone connecting a debugger to the MCU and reading flash contents. Flash read protection is NOT enough. If a potential attacker is motivated enough, has deep pockets, and has physical access to the device, they could pull the keys out of Flash. On top of that, software-based attacks that target vulnerabilities in the FW could cause the device to divulge information from Flash.</p>
+
+
+
+<h4 class="wp-block-heading">Making Flash More Secure</h4>
+
+
+
+<p>If you are still set on storing keys in Flash, there are some steps you can take to make it more secure.&nbsp;</p>
+
+
+
+<ol class="wp-block-list">
+<li><strong>Enable read protection.</strong> We talked about how it is easy to work around but still worth it. Let&#8217;s make them work for it.</li>
+
+
+
+<li><strong>Use a Trusted Execution Environment (TEE).</strong> A TEE is an isolated execution environment separate from the main application in which trusted applications can operate on sensitive data. These distinct environments can reduce the attack surface available through the main FW application.&nbsp;</li>
+
+
+
+<li><strong>Encrypt the key at rest using a key encryption key (KEK).</strong> If someone could compromise the stored key, they would be unable to do anything with it unless they had access to the KEK. However, this introduces a chicken and egg problem. Where do we store the KEK? Ideally, the KEK would not have to be stored. A KDF could be used to derive the KEK using some known secret as input, like a hardware ID from the MCU — as long as the hardware ID is not accessible through external means.</li>
+</ol>
+
+
+
+<p>Even after taking these precautions, storing keys in a dedicated HSM is many times more secure than keeping it in Flash.</p>
+
+
+
+<p>Even if hardware designs are finalized, I recommend re-considering the finality of the design. The FDA will be skeptical of any device submitted for approval that does not clearly outline its key storage methods. Utilizing an HSM that has already been certified by respected security groups will help ease that skepticism. The potential costs of a hardware re-design will be more than offset by the saved development/administrative time and the saved cost of avoiding a potential security breach.&nbsp;</p>
+
+
+
+<p>So, you&#8217;ve navigated the maze of key storage options and landed on a secure and FDA-friendly solution. Awesome! But let&#8217;s not pop the champagne just yet. Storing your keys is just the first step; now, you&#8217;ve got to use them effectively.</p>
+
+
+
+<h3 class="wp-block-heading">Key Usage</h3>
+
+
+
+<p>Now, we&#8217;ll break down the four pillars of effective cryptographic key management: Defining your keys&#8217; roles, documenting their usage, rotating them to keep things fresh, and tracking their activity. Because, let&#8217;s face it, a key is only as good as how well you manage it.</p>
+
+
+
+<h4 class="wp-block-heading">Define Your Keys</h4>
+
+
+
+<p>Keys should have narrow and well-defined uses. The analogy of house keys works particularly well here. You wouldn&#8217;t want your car key to be the same key you use to get into your house, right? If that key gets stolen, your car and your home will be at risk instead of just your car. The same idea applies to cryptographic keys.</p>
+
+
+
+<h4 class="wp-block-heading">Document Your Keys</h4>
+
+
+
+<p>When designing a security architecture, creating and updating a glossary of all keys used in the system is extremely useful. Including information like the kind of key (e.g., symmetric/asymmetric), the algorithm it&#8217;s used for (ECDSA, AES-GCM, etc.), and a description of what it&#8217;s used for (session encryption key, key encryption key, key derivation key, etc.) will help your teammates understand what is being referenced when they are caught in the throes of semantic satiation.</p>
+
+
+
+<p>Ensuring your team is on the same page with key terminology and their uses will help ensure that keys are used only for their intended purpose.</p>
+
+
+
+<h4 class="wp-block-heading">Rotate Your Keys</h4>
+
+
+
+<p>While using derived session scope keys for encryption is considered the best practice, it is still not infallible. It is possible for session keys to be leaked, and it is possible for a session key to get leaked while the session is still valid. The consequences of this leak may take time to be apparent. One way to limit the damage is to rotate your keys — derive new session keys — regularly.&nbsp;</p>
+
+
+
+<p>Rotating your session keys as often as possible would technically be the most secure, but you need to balance security with usability. While negotiating new session keys is not necessarily an intense process, it temporarily interrupts the ability to transmit encrypted data. The metric you can use to decide when to reroll keys can be flexible. It can be after a set amount of encryption operations, based on a unit of time (1 hour, one day, one week, etc.), or after a change of state (like a device going to sleep).</p>
+
+
+
+<h4 class="wp-block-heading">Track Your Keys</h4>
+
+
+
+<p>If you write firmware, you are probably used to dealing with all of the pitfalls of memory management, like making sure you free any malloced memory or staying away from dangling pointers. It can be helpful to employ that same kind of awareness when handling keys inside the firmware you write.</p>
+
+
+
+<p>Just as you free-allocated memory as soon as you are done using it, key handles should only exist as long as they are still actively used. This approach applies particularly to ephemeral keys. An example would be an ephemeral asymmetric keypair generated for a Diffie-Hellman exchange. That key must be destroyed as soon as that exchange has been successfully completed. Key handles usually reference keys stored inside an HSM and should be treated as pointers. When a key is destroyed, the corresponding key handle should be set to a known sentinel value (most likely zero or NULL) to avoid accidentally referring to a no longer existing key. If handling a key outside of an HSM, then the memory location must be zeroized.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Takeaways</h2>
+
+
+
+<p>As you continue to design the security architecture for your implantable medical device, the importance of incorporating a Hardware Security Module (HSM) cannot be overstated. It&#8217;s the most reliable solution for key storage and offers efficient cryptographic processing. However, cryptographic key management is just one facet of a multi-layered security strategy. Remember to:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Expect to use both asymmetric keys (most likely for authentication) and symmetric keys (most likely for encryption) in your security solution.&nbsp;</li>
+
+
+
+<li>Prioritize generating or deriving keys only on the device that needs them. Avoid having to transmit keys over communication channels.</li>
+
+
+
+<li>Verify everything! Know where your keys are stored within hardware, down to the lowest level possible.&nbsp;</li>
+
+
+
+<li>Only use keys for their narrowly defined purpose. Much like chips and dip at a party, avoid double dipping.</li>
+</ul>
+
+
+
+<p></p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>What to Consider Before Building a Mobile Medical App</title>
+		<link>https://punchthrough.com/mobile-medical-apps/</link>
+		
+		<dc:creator><![CDATA[Alec Letourneau]]></dc:creator>
+		<pubDate>Mon, 04 May 2020 06:00:00 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Mobile App Development]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/what-to-consider-before-building-a-mobile-medical-app/</guid>
+
+					<description><![CDATA[Explore key considerations for building mobile medical apps that connect to medical devices. Learn how to navigate BLE, data handling, compliance, and real-world challenges in regulated environments.]]></description>
+										<content:encoded><![CDATA[
+<p>So, you want to build a mobile app for use in medical or health applications and believe that it may fall under government regulations? Getting regulatory approval is no small task, but focusing on building a great product will significantly increase your ability to succeed.</p>
+
+
+
+<p>Many mobile medical apps fail. Some fail because they don’t solve a problem or aren’t better than existing solutions. Others fail because they’re too challenging or tedious to use. Then there are those that get shut down for failing to follow <a href="https://www.fda.gov/medical-devices/digital-health-center-excellence/device-software-functions-including-mobile-medical-applications" target="_blank" data-type="link" data-id="https://www.fda.gov/medical-devices/digital-health-center-excellence/device-software-functions-including-mobile-medical-applications" rel="noreferrer noopener">FDA</a>, <a href="https://www.hhs.gov/hipaa/for-professionals/index.html" target="_blank" data-type="link" data-id="https://www.hhs.gov/hipaa/for-professionals/index.html" rel="noreferrer noopener">HIPAA</a>, or <a href="https://www.hhs.gov/hipaa/for-professionals/special-topics/hitech-act-enforcement-interim-final-rule/index.html" target="_blank" data-type="link" data-id="https://www.hhs.gov/hipaa/for-professionals/special-topics/hitech-act-enforcement-interim-final-rule/index.html" rel="noreferrer noopener">HITECH</a> regulations.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Do One Thing and Do it Well</h2>
+
+
+
+<p>The first step on the path to building a great mobile medical app is solving a real problem. As declared in Unix Philosophy, software must do one thing and do it well.&nbsp;</p>
+
+
+
+<p>Start by defining a plan to solve the problem. Consult experts in the field and your expected user base to confirm that your approach will solve a real problem or significantly improve upon an existing solution. Involve mobile software engineers early on in the planning phase; they’ll be able to tell you when something is impossible or impractical to implement.</p>
+
+
+
+<p>&nbsp;If you’re involved in decisions regarding monetization of the app, research monetization strategies and decide on your approach from the beginning. Architecting for subscriptions, in-app purchases, advertisements, or a watered-down free version of the app upfront will save time during development and lead to a cleaner implementation of your chosen strategy.</p>
+
+
+
+<p>Begin developing your app. Focus on creating an MVP (Minimum Viable Product). The sooner your app has basic functionality, the sooner you can start testing and refining the app’s core.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Usability Matters</h2>
+
+
+
+<p>Now that your app solves a problem, you need to make people want to use it. In the case where your app may be prescribed to users as a treatment, making the app easier to use will increase the chances that the app is used as designed and that the treatment is successful. Consider your expected user base and use case. For example, some things to consider:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Are they naturally proficient at using smartphones?
+<ul class="wp-block-list">
+<li>If not, you’ll want to trade icons and gestures for buttons with text descriptions.&nbsp;</li>
+</ul>
+</li>
+
+
+
+<li>Are they expected to have poor vision or poor fine-motor skills?
+<ul class="wp-block-list">
+<li>In these cases, you’ll want to take advantage of the phone’s accessibility settings to improve their user experience (UX).</li>
+</ul>
+</li>
+
+
+
+<li>Are there risks associated with accidental misuse of the app?
+<ul class="wp-block-list">
+<li>If so, you’ll need to make sure your user interface (UI) is clear and explicit. You’ll also want to take extra steps to minimize the chances of accidental misuse.</li>
+</ul>
+</li>
+</ul>
+
+
+
+<p>Your use case and user base affect how your user interface should look to foster a positive user experience. A UX designer can be a huge help here. You should seriously consider getting one if your budget allows.&nbsp;</p>
+
+
+
+<p>Performing usability testing with your target demographic will provide the best insights on how to improve. Keep testing and iterating on your UI until you are happy with your user’s feedback. Don’t be afraid to go back to the drawing board and try new things. Being usable is not enough; successful apps engage users.</p>
+
+
+
+<p>That doesn’t mean that your mobile medical app needs to be the same as what users are familiar with. Users can and should learn how to use your app. Many apps are designed based on insights from a small board of doctors. These apps tend to break from standard app UX in favor of being familiar to the stakeholders. Your app should help these users to transition towards what is standard. This way, they are not forever stuck in the same ideas of what an app should look like.</p>
+
+
+
+<p>Once you have an app that solves a problem and has an engaging user experience, then you can focus on preparing the app for regulatory approval.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Your Not Just Building An App</h2>
+
+
+
+<p>If your app connects to a medical device, it&#8217;s not just a front-end interface — it&#8217;s part of a larger, regulated system.It may interact with embedded firmware, transfer clinical data to the cloud, or serve as the primary user interface for therapy or diagnostics.</p>
+
+
+
+<p>Decisions you make in your mobile app — like how BLE connections are handled, when data syncs, or how errors are surfaced — can affect regulatory compliance, patient outcomes, and clinical workflows.&nbsp;You’re building something that must function reliably under real-world conditions, across platforms, and over time.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Preparing Your Mobile Medical App for Regulatory Submissions</h2>
+
+
+
+<p>Regulatory submissions can be quite a challenge. It often takes a team months to create a submission. Submissions generally require full documentation of software and proper document revision control. Due to the scope of this subject, we’ll only be focusing on the parts most applicable during the design phase: Human Factors and HIPAA Compliance.</p>
+
+
+
+<p>If you haven’t yet, determine whether your app is classified as a Mobile Medical App and whether the FDA intends to exercise enforcement discretion, as this will affect your approach to achieve regulatory compliance. You can find FDA guidance <a href="https://www.fda.gov/medical-devices/digital-health/device-software-functions-including-mobile-medical-applications" target="_blank" rel="noopener">here</a>.</p>
+
+
+
+<h3 class="wp-block-heading">Human Factors</h3>
+
+
+
+<p>Human factors and usability engineering study how users interact with a medical device. The results of the study are used to validate that the app will be used safely and effectively. Like most design processes, usability engineering is iterative, consisting of multiple rounds of testing, improvement, and validation.</p>
+
+
+
+<p>The interaction between user and device consists of the way users:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Perceive information from the device</li>
+
+
+
+<li>Interpret that information and decide how to proceed</li>
+
+
+
+<li>Perform actions on the device</li>
+</ul>
+
+
+
+<p>This interaction also consists of how devices:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Receive user input</li>
+
+
+
+<li>Respond to input and provide feedback about the action taken.</li>
+</ul>
+
+
+
+<p>The FDA provides guidance on their expectations for human factors and usability engineering, which you can find <a href="https://www.fda.gov/medical-devices/device-advice-comprehensive-regulatory-assistance/human-factors-and-medical-devices" target="_blank" rel="noopener">here</a>. Understanding the expectations for your submission’s human factors testing before you start on your UX design will help prevent you from having to redo aspects of your Usability testing.</p>
+
+
+
+<h3 class="wp-block-heading">HIPAA Compliance</h3>
+
+
+
+<p>Health Insurance Portability and Accountability Act (HIPAA) is a set of regulations enforcing the privacy and security of certain health information. This health information, referred to as (electronic) Protected Health Information (PHI or ePHI), includes any healthcare information that can be linked back to a specific individual. If your app handles any data that may qualify as PHI, then these regulations apply. Compliance generally consists of 4 principles:</p>
+
+
+
+<ul class="wp-block-list">
+<li><strong>Access Control:</strong> Who can access the data? Are there rules in place about who is given access to PHI and are steps taken to prevent unauthorized access?</li>
+
+
+
+<li><strong>Audit Control: </strong>Who accessed PHI data and when? Can you tell who accessed PHI data and what PHI data they accessed?</li>
+
+
+
+<li><strong>Integrity Control:</strong> Who can modify PHI Data? Are modifications covered by Audit Control? Can the data become corrupted?</li>
+
+
+
+<li><strong>Transmission Control: </strong>How is PHI data transferred, and how is the data kept secure during transport?</li>
+</ul>
+
+
+
+<p>The way that these questions are answered should give you a basic idea of whether or not your app will be HIPAA compliant.</p>
+
+
+
+<p>HIPAA is America’s answer to health privacy, and other countries have their own equivalents. GDPR (EU) and PIPEDA (Canada) are just a few such regulations. Electronic privacy is becoming a growing concern throughout the world, and with the increasing penalties for violations, you need to be sure that your app handles patient data responsibly for all regions where it is in use.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Plan for What Comes After Launch</h2>
+
+
+
+<p>Mobile OS updates, deprecations, and changes to BLE behavior can quietly break critical functionality.&nbsp;Without a long-term support plan, even compliant apps risk falling out of date—or failing entirely.</p>
+
+
+
+<p>Beyond technical maintenance, consider how your app will integrate with evolving versions of the connected device, backend system, or clinician dashboard. Stability isn’t just about uptime—it’s about managing complexity across an entire product ecosystem.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Work With a Partner Who Knows the Landscape</h2>
+
+
+
+<p>Building a mobile app for a connected medical device isn’t just about software — it’s about system thinking. You need to understand hardware limitations, data flow constraints, regulatory boundaries, and user expectations, all at once.</p>
+
+
+
+<p>The technical decisions you make — how BLE connections are handled, how background behavior is managed, how permissions are requested — have broader implications: for regulatory compliance, patient safety, and long-term product viability.</p>
+
+
+
+<p>And the complexity doesn’t stop at the mobile app. You’re likely working within an ecosystem that includes embedded firmware, cloud infrastructure, and data pipelines that all need to work seamlessly together.</p>
+
+
+
+<p>That’s why it’s critical to work with a team that understands not just mobile development, but connected medical systems as a whole. You need a partner who knows how to design for compliance, build for reliability, and navigate the unique constraints of regulated environments, without slowing you down.</p>
+
+
+
+<p>Punch Through helps companies build mobile apps that are secure, reliable, and built for the full complexity of connected health ecosystems. If that’s the kind of partner you’re looking for, we should talk.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>How to Use Agile Frameworks in the Medical Device Industry</title>
+		<link>https://punchthrough.com/agile-and-medical-device-industry/</link>
+		
+		<dc:creator><![CDATA[Amanda Christiansen]]></dc:creator>
+		<pubDate>Tue, 05 Nov 2019 06:00:12 +0000</pubDate>
+				<category><![CDATA[Connected Medical Devices]]></category>
+		<category><![CDATA[Connected Medical Ecosystems]]></category>
+		<category><![CDATA[Development Process]]></category>
+		<category><![CDATA[Planning & Strategy]]></category>
+		<category><![CDATA[Regulatory Compliance]]></category>
+		<guid isPermaLink="false">https://punchthrough.com/how-to-use-agile-frameworks-in-the-medical-device-industry/</guid>
+
+					<description><![CDATA[Despite regulatory hesitation, agile frameworks like Scrum improve software quality, predictability, and collaboration in medical device development when applied with care, structure, and the right support.]]></description>
+										<content:encoded><![CDATA[
+<p>“If it’s not broken, don’t fix it” is a widespread mindset in highly regulated industries. While change aversion has its place in preventing unnecessary risks, it also impedes progress and innovation in the development of life-sustaining devices, such as insulin pumps and pacemakers.&nbsp;</p>
+
+
+
+<p>Having spent the majority of my career in medical device development, I’ve been told time and again that I must follow specific processes or use particular tools. The reasons range from “that’s how it has always been done,” to “it ensures we’re compliant with the FDA,” or “if there were a better way, we would have figured it out by now.” Reluctance to refactor functional code to prevent bug introduction is reasonable, but the resistance towards utilizing well-known and effective agile frameworks is stifling innovation in an industry that desperately needs it.&nbsp;</p>
+
+
+
+<p>If agile frameworks are known to increase productivity, foster predictability, and improve software quality (all of which are highly valued in medical device development), why aren’t many medical device companies changing their processes to take advantage of such frameworks? Many people in the medical device industry argue that agile frameworks don’t fit well with regulated product development, unlike consumer products and services developed by tech giants, such as Google, Apple, Amazon, and Microsoft. However, the principles behind the Agile Manifesto align with software development in medical device industries more closely than most people think.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Principles Behind the Agile Manifesto and Medical Device Development</h2>
+
+
+
+<p>The <a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://agilemanifesto.org/" target="_blank">Agile Manifesto</a>, based on a series of <a href="https://agilemanifesto.org/principles.html" target="_blank" rel="noreferrer noopener" aria-label=" (opens in a new tab)">principles</a>, emphasizes satisfying customers, delivering working software frequently, encouraging collaboration, and empowering individuals to get work done. Medical device companies echo these values, but at first glance, the manifesto may seem to contradict some values in medical device industries.&nbsp;</p>
+
+
+
+<p>The Agile Manifesto states the following:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Individuals and interactions over processes and tools</li>
+
+
+
+<li>Working software over comprehensive documentation</li>
+
+
+
+<li>Customer collaboration over contract negotiation</li>
+
+
+
+<li>Responding to change over following a plan</li>
+</ul>
+
+
+
+<p>However, this isn&#8217;t to say agile frameworks don’t value processes, tools, documentation, contract negotiation, and following a plan. Instead, it means that when a conflict in values arise, individuals and interactions, working software, customer collaboration, and responding to change come first.&nbsp;</p>
+
+
+
+<p>For example, it encourages us to do what makes sense, instead of doing things “because that’s how they’ve always been done.” It also requires us to deliver the proof in the pudding and hold ourselves accountable by frequently providing working software.&nbsp;</p>
+
+
+
+<p>Besides, delivering working software early and often allows testers to work in parallel with developers, creating a feedback loop to find bugs early and fix them as they’re discovered. Many medical device engineers claim that they’re in it for the benefit of the patients, and the Agile Manifesto ensures customer feedback is incorporated into the product.&nbsp;</p>
+
+
+
+<p>Most importantly, agile frameworks enable the product team to respond to changes throughout development. Any engineer would be naive to think it’s ever perfect the first time.</p>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<h2 class="wp-block-heading">Applying the Agile Methodology in the Medical Device Industry</h2>
+
+
+
+<p>Of course, this all sounds intuitive, but is it practical? If you haven’t completely disregarded the idea of applying agile frameworks in medical device development, you’re likely and understandably brimming with questions and concerns.&nbsp;</p>
+
+
+
+<p>Here are just a few that I’ve come across when pushing to use agile frameworks at previous companies:</p>
+
+
+
+<h3 class="wp-block-heading">Don’t medical devices require up-front requirements definitions?&nbsp;</h3>
+
+
+
+<p>To some extent, yes. Defining requirements up front is acceptable, primarily to accommodate tasks such as risk analysis, and agile frameworks don’t disallow you to do so. On the contrary, agile frameworks support embracing changes to requirements as they come and ensure you’ve planned for a change.&nbsp;</p>
+
+
+
+<p>Avoid the analysis paralysis that results from trying to perfect requirements the first time around. Spoiler: they won’t be anyway! Design and implementation early in the development process will help you identify flaws and challenges earlier in the process and allow you to pivot accordingly.</p>
+
+
+
+<p>How many times have you followed the waterfall process without having to loop back to a previous step? I’d be willing to bet not many.</p>
+
+
+
+<h3 class="wp-block-heading">Doesn’t the FDA require extensive documentation during product submissions and audits?&nbsp;</h3>
+
+
+
+<p>Most definitely. As I touched on earlier, agile frameworks don’t disregard documentation; they just value working software more. Simply put, ensuring your work is documented and traceable is required, but generating documents to create more documentation is not.</p>
+
+
+
+<h3 class="wp-block-heading">I know someone whose organization tried going “agile” and failed miserably&#8230; I don’t want to make the same mistake!</h3>
+
+
+
+<p>I, too, have heard of many teams that were unsuccessful in their attempts to deploy agile frameworks. I’ve been a part of such a team. I found that in many cases, the groups that fall short are those that pick and choose bits and pieces of agile frameworks to employ.&nbsp;</p>
+
+
+
+<p>For example, a mix between waterfall and agile, sometimes known as “agile-fall,” is a common direction for many teams transitioning from traditional waterfall processes. The inherent danger in cherry-picking is ending up with a process that allows you to reap a few agile benefits and, instead, gain overhead and/or challenges. Agile frameworks are effective if employed appropriately. If your organization is looking to transition to an agile framework, it would be wise to invest in an agile coach to ensure your success.</p>
+
+
+
+<h3 class="wp-block-heading">There are so many agile frameworks to choose from! Where do I start?</h3>
+
+
+
+<p>This is something that is up to you and your team to decide. Fortunately, there are many online resources to describe XP, Kanban, Scrum, and other agile frameworks. Scrum is the most popular agile framework, as it’s the most natural to transition to from a traditional waterfall process, but every team is different. I encourage you to try one or more of these processes and see what works for your team! As mentioned previously, if you need a little more guidance, invest in an agile coach to help you get started.</p>
+
+
+
+<p>While I’m sure there are many other questions and concerns, I can only speak to my research, observations, and experiences. Having worked with many teams in several divisions of some of the most well-known medical companies in the country, I have experienced teams that refused to change, teams that tried and failed, and, of course, teams that have succeeded and continue to reap the benefits of improving their processes to become agile. Now, as a consultant, I have the privilege to assist client teams (many of which are medical device companies) transition to using Scrum and watching it transform the way their team works for the better.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

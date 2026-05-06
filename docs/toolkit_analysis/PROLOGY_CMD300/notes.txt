@@ -1,0 +1,41 @@
+PROLOGY CMD 300 - Project Notes
+============================
+
+Date: 2026-04-25
+
+CURRENT STATUS:
+- ESP32 successfully connects to PROLOGY_BLE
+- Volume notifications parsed correctly (c0 00 03 90 01 XX)
+- BLE library issues with esp32:esp32 core 3.3.8
+- Flash partition issues resolved by using huge_app scheme
+
+PROBLEMS:
+1. ESP32 flash fails with "No bootable app partitions" 
+   - Fixed by: erase_flash then reflash
+2. Bluetooth library core 3.3.8 crashes on BLE operations
+   - Solution: use arduino:esp32 core 2.0.17 instead
+3. esptool fails on reset (RTS pin)
+   - Workaround: --before no_reset --after no_reset
+
+SOLUTIONS:
+- Use Arduino IDE instead of arduino-cli for stability
+- Partition scheme: huge_app or custom CSV
+- Manual EN button press after flash
+
+DISCOVERED:
+- Volume control is working (100% confirmed)
+- Handle 0x0009 = Command (Write)
+- Handle 0x000b = Notify
+- Service UUID = 0xAE00
+
+FILES:
+- /home/mi/Arduino/Sketches/PROLOGY_BLE_GATT_Client/ - Main sketch
+- /home/mi/Arduino/Sketches/ESP32_BLE_Proxy/ - Proxy (broken)
+- /home/mi/bt_lab/ - BLE packet captures
+- /home/mi/recover_esp32.sh - Recovery script
+
+NEXT STEPS:
+1. Map all commands using nRF Connect
+2. Parse full status packets (0x27, 0x38)
+3. Fix ESP32 BLE Proxy compilation
+4. Build complete control application
