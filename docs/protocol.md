@@ -1,0 +1,133 @@
+# Prology BLE Protocol Documentation
+
+## Overview
+Prology car audio systems communicate via Bluetooth Low Energy (BLE). This document describes the protocol observed from the original APK analysis.
+
+## Service UUIDs
+
+| Service | UUID | Purpose |
+|---------|------|---------|
+| **CMD Service** | `0000AE00-0000-1000-8000-00805F9B34FB` | Send commands |
+| **Notify Service** | `0000AF00-0000-1000-8000-00805F9B34FB` | Receive notifications |
+
+## Characteristic UUIDs
+
+| Characteristic | UUID | Property |
+|--------------|------|----------|
+| **CMD Char** | `0000AE01-0000-1000-8000-00805F9B34FB` | Write |
+| **Notify Char** | `0000AF01-0000-1000-8000-00805F9B34FB` | Notify |
+
+## Packet Structure
+
+```
+[F0] [00] [LEN] [A0 10 0E] [CMD_CODE] [DATA...] [CHECKSUM]
+```
+
+- **Header**: `F0 00`
+- **Length**: Number of bytes after length field
+- **Fixed**: `A0 10 0E` (observed in all commands)
+- **Command Code**: Varies by function
+- **Data**: Parameter bytes
+- **Checksum**: XOR 0x94 over all data bytes (excluding F0 00 and checksum itself)
+
+## Command Reference
+
+### Initialization
+```
+[F0 00 03 01 05 00 09]
+```
+Sent on connection.
+
+### Volume Control
+```
+[F0 00 05 A0 10 0E 18] [value: 0-28] [CS]
+```
+- Range: 0-28
+- Set volume to `value`
+
+### Input Source Selection
+```
+[F0 00 05 A0 10 0E 24] [code] [CS]
+```
+
+| Source | Code |
+|--------|------|
+| RADIO | 0x01 |
+| USB | 0x02 |
+| SD | 0x03 |
+| BT | 0x04 |
+| AUX | 0x05 |
+| DISC | 0x06 |
+| GPS | 0x07 |
+| SXM | 0x08 |
+| AV IN | 0x09 |
+
+### Bass Control
+```
+[F0 00 05 A0 10 0E 24] [value+0x10] [CS]
+```
+- Range: -10..+10
+- Send `value + 0x10` (e.g., 0x10 = 0, 0x1A = +10)
+
+### Treble Control
+```
+[F0 00 05 A0 10 0E 24] [value+0x20] [CS]
+```
+- Range: -10..+10
+- Send `value + 0x20`
+
+### Balance Control
+```
+[F0 00 06 A0 10 0E 2A 03] [value+0x10] [CS]
+```
+- Range: -10..+10
+
+### Fader Control
+```
+[F0 00 06 A0 10 0E 20 01] [value+0x10] [CS]
+```
+- Range: -10..+10
+
+### EQ Presets
+```
+[F0 00 06 A0 10 0E 26 01] [preset] [CS]
+```
+
+| Preset | Code |
+|-------|------|
+| Preset 1 | 0x08 |
+| Preset 2 | 0x03 |
+| Preset 3 | 0x04 |
+| Preset 4 | 0x09 |
+| Preset 5 | 0x0A |
+| Preset 6 | 0x05 |
+| Preset 7 | 0x06 |
+
+## Notification Structure
+
+Notifications received on `AF01` characteristic:
+
+```
+[C0] [00] [LEN] [TYPE] [DATA...]
+```
+
+### Notification Types
+
+| Type | Len | Data | Description |
+|------|-----|------|-------------|
+| 0x90 | 0x03 | `[?] [?] [volume]` | Volume update |
+| 0x91 | 0x04 | `[?] [bass+0x10] [treble+0x20]` | Bass/Treble update |
+| 0x92 | 0x05 | `[?] [?] [balance+0x10] [fader+0x10]` | Balance/Fader update |
+| 0x93 | 0x03 | `[?] [?] [source_code]` | Input source update |
+
+## TODO: Extended Audio Settings
+
+The following features were found in APK but exact protocol bytes are TBD:
+
+- **Loudness**: On/off, level, center frequency
+- **Subwoofer**: Level, cutoff frequency, phase
+- **X-Over**: Crossover type, frequencies
+- **Time Alignment**: Speaker delay settings
+- **EQ Plus**: Parametric EQ with Q-factor
+
+When exact protocol is reverse-engineered, update the command bytes above.

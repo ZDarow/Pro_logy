@@ -1,0 +1,19 @@
+{
+  "dart.flutterSdkPath": "/home/mi/development/flutter",
+  "dart.lineLength": 80,
+  "dart.enableSdkFormatter": true,
+  "editor.formatOnSave": true,
+  "editor.rulers": [
+    80
+  ],
+  "files.exclude": {
+    "**/.git": false,
+    "**/.DS_Store": true,
+    "**/*.lock": true
+  },
+  "search.exclude": {
+    "**/build": true,
+    "**/.dart_tool": true
+  },
+  "idf.currentSetup": "/home/mi/.espressif/v6.0/esp-idf"
+}
