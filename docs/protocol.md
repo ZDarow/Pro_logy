@@ -139,10 +139,42 @@ Notifications received on `AF01` characteristic:
 
 The following features were found in APK but exact protocol bytes are TBD:
 
-- **Loudness**: On/off, level, center frequency
-- **Subwoofer**: Level, cutoff frequency, phase
-- **X-Over**: Crossover type, frequencies
-- **Time Alignment**: Speaker delay settings
-- **EQ Plus**: Parametric EQ with Q-factor
+### Loudness (implemented with assumed bytes)
+```
+[F0 00 07 A0 10 0E 30] [on/off] [level] [freq] [CS]
+```
+- on/off: 1 = on, 0 = off
+- level, freq: TBD (currently assumed)
+
+### Subwoofer (implemented with assumed bytes)
+```
+[F0 00 08 A0 10 0E 40] [level] [freq] [phase] [CS]
+```
+- level: 0-100
+- freq: cutoff frequency
+- phase: 0/1
+
+### X-Over (implemented with assumed bytes)
+```
+[F0 00 06 A0 10 0E 50] [type] [freq] [CS]
+```
+- type: 0=2-way, 1=3-way
+- freq: crossover frequency
+
+### Time Alignment (implemented with assumed bytes)
+```
+[F0 00 07 A0 10 0E 60] [speaker] [delay] [CS]
+```
+- speaker: 0-6 (FL, FR, RL, RR, SW, Tweeter)
+- delay: 0-200 (milliseconds?)
+
+### EQ Plus (implemented with assumed bytes)
+```
+[F0 00 09 A0 10 0E 70] [band] [freq] [gain] [q] [CS]
+```
+- band: 0-8 (frequency band index)
+- freq: center frequency
+- gain: -12 to +12 dB
+- q: Q-factor
 
 When exact protocol is reverse-engineered, update the command bytes above.
