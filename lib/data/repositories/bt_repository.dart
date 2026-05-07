@@ -393,6 +393,29 @@ class BtRepository {
     return await sendCommand(cmd);
   }
 
+  Future<bool> radioSeekUp() async {
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x80];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    return await sendCommand(cmd);
+  }
+
+  Future<bool> radioSeekDown() async {
+    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x81];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    return await sendCommand(cmd);
+  }
+
+  Future<bool> radioSetFreq(double freq, bool isFm) async {
+    int freqCode = isFm ? (freq * 10).toInt() : freq.toInt();
+    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, isFm ? 0x82 : 0x83, freqCode >> 8, freqCode & 0xFF];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    return await sendCommand(cmd);
+  }
+
   void parseNotification(List<int> data) {
     if (data.length < 4) return;
     if (data[0] != 0xC0) return;

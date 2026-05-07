@@ -301,6 +301,36 @@ class BtProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> radioSeekUp() async {
+    if (isDemo) return true;
+    try {
+      return await _repository?.radioSeekUp() ?? false;
+    } catch (e) {
+      debugPrint('Radio seek up error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> radioSeekDown() async {
+    if (isDemo) return true;
+    try {
+      return await _repository?.radioSeekDown() ?? false;
+    } catch (e) {
+      debugPrint('Radio seek down error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> radioSetFreq(double freq, bool isFm) async {
+    if (isDemo) return true;
+    try {
+      return await _repository?.radioSetFreq(freq, isFm) ?? false;
+    } catch (e) {
+      debugPrint('Radio set freq error: $e');
+      return false;
+    }
+  }
+
   Future<bool> playPause() async {
     if (isDemo) return true;
     try {
