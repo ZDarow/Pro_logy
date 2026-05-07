@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import '../data/repositories/bt_repository.dart';
@@ -14,6 +15,7 @@ class BtProvider extends ChangeNotifier {
   int _demoBalance = 0;
   int _demoFader = 0;
   bool _demoConnected = false;
+  Timer? _demoTimer;
 
   BtProvider({BtRepository? repository, this.isDemo = false}) 
       : _repository = repository {
@@ -22,8 +24,21 @@ class BtProvider extends ChangeNotifier {
         notifyListeners();
       });
     }
+    if (isDemo) {
+      _startDemoSimulation();
+    }
   }
   
+  void _startDemoSimulation() {
+    _demoTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      final rand = Random();
+      _demoVolume = (_demoVolume + (rand.nextBool() ? 1 : -1)).clamp(0, 40);
+      _demoBass = (_demoBass + (rand.nextBool() ? 1 : -1)).clamp(-10, 10);
+      _demoTreble = (_demoTreble + (rand.nextBool() ? 1 : -1)).clamp(-10, 10);
+      notifyListeners();
+    });
+  }
+
   BtConnectionStatus get status {
     if (isDemo) return _demoConnected ? BtConnectionStatus.connected : BtConnectionStatus.disconnected;
     return _repository?.status ?? BtConnectionStatus.disconnected;
@@ -363,6 +378,7 @@ class BtProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _demoTimer?.cancel();
     _stateSubscription?.cancel();
     _repository?.dispose();
     super.dispose();
