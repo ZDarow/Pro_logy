@@ -34,7 +34,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.skip_previous, size: 48),
-                  onPressed: bt.isConnected ? () {} : null,
+                  onPressed: bt.isConnected ? () => bt.prevTrack() : null,
                 ),
                 const SizedBox(width: 20),
                 IconButton(
@@ -42,14 +42,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   onPressed: bt.isConnected
                       ? () {
                           setState(() => isPlaying = !isPlaying);
-                          // Play/Pause handled by input source
+                          bt.playPause();
                         }
                       : null,
                 ),
                 const SizedBox(width: 20),
                 IconButton(
                   icon: const Icon(Icons.skip_next, size: 48),
-                  onPressed: bt.isConnected ? () {} : null,
+                  onPressed: bt.isConnected ? () => bt.nextTrack() : null,
                 ),
               ],
             ),

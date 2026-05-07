@@ -301,6 +301,36 @@ class BtProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> playPause() async {
+    if (isDemo) return true;
+    try {
+      return await _repository?.playPause() ?? false;
+    } catch (e) {
+      debugPrint('Play/Pause error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> nextTrack() async {
+    if (isDemo) return true;
+    try {
+      return await _repository?.nextTrack() ?? false;
+    } catch (e) {
+      debugPrint('Next track error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> prevTrack() async {
+    if (isDemo) return true;
+    try {
+      return await _repository?.prevTrack() ?? false;
+    } catch (e) {
+      debugPrint('Prev track error: $e');
+      return false;
+    }
+  }
+
   @override
   void dispose() {
     _stateSubscription?.cancel();

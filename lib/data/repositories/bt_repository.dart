@@ -371,6 +371,28 @@ class BtRepository {
     return await sendCommand(cmd);
   }
 
+  Future<bool> playPause() async {
+    // Data from LEN to DATA: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x01];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    return await sendCommand(cmd);
+  }
+
+  Future<bool> nextTrack() async {
+    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x02];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    return await sendCommand(cmd);
+  }
+
+  Future<bool> prevTrack() async {
+    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x03];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    return await sendCommand(cmd);
+  }
+
   void parseNotification(List<int> data) {
     if (data.length < 4) return;
     if (data[0] != 0xC0) return;
