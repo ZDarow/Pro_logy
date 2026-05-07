@@ -16,7 +16,7 @@ class BleService {
   Future<List<ScanResult>> scanDevices() async {
     List<ScanResult> results = [];
     try {
-      await FlutterBluePlus.startScan(timeout: Duration(seconds: 5));
+      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
       await for (var event in FlutterBluePlus.scanResults) {
         results = event
             .where((r) =>
