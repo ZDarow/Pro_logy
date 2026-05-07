@@ -30,7 +30,7 @@ class SourceItem {
 }
 
 final sources = <SourceItem>[
-  SourceItem(
+  const SourceItem(
     name: 'Radio',
     icon: Icons.radio,
     iconColor: Colors.orange,
@@ -38,7 +38,7 @@ final sources = <SourceItem>[
     command: 'RADIO',
     appSource: AppSource.radio,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'BT Music',
     icon: Icons.bluetooth,
     iconColor: Colors.blue,
@@ -46,7 +46,7 @@ final sources = <SourceItem>[
     command: 'BT',
     appSource: AppSource.btMusic,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'USB',
     icon: Icons.usb,
     iconColor: Colors.teal,
@@ -54,7 +54,7 @@ final sources = <SourceItem>[
     command: 'USB',
     appSource: AppSource.usb,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'SD Card',
     icon: Icons.sd_card,
     iconColor: Colors.green,
@@ -62,7 +62,7 @@ final sources = <SourceItem>[
     command: 'SD',
     appSource: AppSource.sdCard,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'Disc',
     icon: Icons.album,
     iconColor: Colors.purple,
@@ -70,7 +70,7 @@ final sources = <SourceItem>[
     command: 'DISC',
     appSource: AppSource.disc,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'AUX',
     icon: Icons.headphones,
     iconColor: Colors.grey,
@@ -78,7 +78,7 @@ final sources = <SourceItem>[
     command: 'AUX',
     appSource: AppSource.aux,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'GPS',
     icon: Icons.location_on,
     iconColor: Colors.red,
@@ -86,7 +86,7 @@ final sources = <SourceItem>[
     command: 'GPS',
     appSource: AppSource.gps,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'SXM',
     icon: Icons.satellite_alt,
     iconColor: Colors.indigo,
@@ -94,15 +94,15 @@ final sources = <SourceItem>[
     command: 'SXM',
     appSource: AppSource.sxm,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'AV IN',
     icon: Icons.cable,
     iconColor: Colors.brown,
-    screen: const AvInScreen(),
+    screen: AvInScreen(),
     command: 'AVIN',
     appSource: AppSource.avIn,
   ),
-  SourceItem(
+  const SourceItem(
     name: 'BT Scan',
     icon: Icons.bluetooth_searching,
     iconColor: Colors.blue,
@@ -112,4 +112,4 @@ final sources = <SourceItem>[
   ),
 ];
 
-final settingsScreen = SettingsScreen();
+const settingsScreen = SettingsScreen();

@@ -7,15 +7,18 @@ class AvInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('AV IN')),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(Icons.cable, size: 80, color: Colors.grey),
             SizedBox(height: 20),
             Text('AV IN Input', style: TextStyle(fontSize: 24)),
             SizedBox(height: 10),
-            Text('Analog video/audio input', style: TextStyle(color: Colors.grey)),
+            Text(
+              'Analog video/audio input',
+              style: TextStyle(color: Colors.grey),
+            ),
           ],
         ),
       ),

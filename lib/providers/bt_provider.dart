@@ -18,7 +18,7 @@ class BtProvider extends ChangeNotifier {
   BtProvider({BtRepository? repository, this.isDemo = false}) 
       : _repository = repository {
     if (!isDemo && _repository != null) {
-      _stateSubscription = _repository!.stateStream.listen((_) {
+      _stateSubscription = _repository.stateStream.listen((_) {
         notifyListeners();
       });
     }
