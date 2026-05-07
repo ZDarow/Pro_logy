@@ -29,9 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('PROLOGY Controller'),
         actions: [
           IconButton(
-            icon: Icon(Provider.of<BleService>(context).currentState.connected
-                ? Icons.bluetooth_connected
-                : Icons.bluetooth),
+            icon: Icon(
+              Provider.of<BleService>(context).currentState.connected
+                  ? Icons.bluetooth_connected
+                  : Icons.bluetooth,
+            ),
             onPressed: () => _showDeviceList(context),
           ),
         ],
@@ -41,26 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Main',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.equalizer),
-            label: 'EQ',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Main'),
+          BottomNavigationBarItem(icon: Icon(Icons.equalizer), label: 'EQ'),
           BottomNavigationBarItem(
             icon: Icon(Icons.filter_alt),
             label: 'X-Over',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timer),
-            label: 'Time',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.speaker),
-            label: 'Bass',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Time'),
+          BottomNavigationBarItem(icon: Icon(Icons.speaker), label: 'Bass'),
         ],
       ),
     );
@@ -81,14 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: devices
-                  .map((d) => ListTile(
-                        title: Text(d.device.platformName),
-                        subtitle: Text(d.device.remoteId.str),
-                        onTap: () {
-                          ble.connectToDevice(d.device);
-                          Navigator.pop(context);
-                        },
-                      ))
+                  .map(
+                    (d) => ListTile(
+                      title: Text(d.device.platformName),
+                      subtitle: Text(d.device.remoteId.str),
+                      onTap: () {
+                        ble.connectToDevice(d.device);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
                   .toList(),
             );
           },
@@ -105,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _MainControlTab extends StatelessWidget {
-  const _MainControlTab({super.key});
+  const _MainControlTab();
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +113,11 @@ class _MainControlTab extends StatelessWidget {
               state.connected ? Icons.check_circle : Icons.error,
               color: state.connected ? Colors.green : Colors.red,
             ),
-            title: Text(state.connected
-                ? 'Connected: ${state.deviceAddress}'
-                : 'Not connected'),
+            title: Text(
+              state.connected
+                  ? 'Connected: ${state.deviceAddress}'
+                  : 'Not connected',
+            ),
             subtitle: Text('Volume: ${state.muted ? "MUTED" : state.volume}'),
           ),
         ),
@@ -145,7 +139,9 @@ class _MainControlTab extends StatelessWidget {
                     Text(
                       state.muted ? 'MUTED' : '${state.volume}',
                       style: const TextStyle(
-                          fontSize: 32, fontWeight: FontWeight.bold),
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(width: 20),
                     IconButton(
@@ -172,8 +168,10 @@ class _MainControlTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('EQ Presets',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  'EQ Presets',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
@@ -244,8 +242,10 @@ class _MainControlTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Input Source',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Input Source',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
@@ -267,7 +267,7 @@ class _MainControlTab extends StatelessWidget {
 }
 
 class _EQTab extends StatelessWidget {
-  const _EQTab({super.key});
+  const _EQTab();
 
   @override
   Widget build(BuildContext context) {
@@ -283,16 +283,20 @@ class _EQTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('EQ Curves',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  'EQ Curves',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
                 DropdownButton<int>(
                   value: state.selectedCurve,
-                  items: List.generate(state.eqCurves.length,
-                      (i) => DropdownMenuItem(
-                            value: i,
-                            child: Text(state.eqCurves[i].name),
-                          )),
+                  items: List.generate(
+                    state.eqCurves.length,
+                    (i) => DropdownMenuItem(
+                      value: i,
+                      child: Text(state.eqCurves[i].name),
+                    ),
+                  ),
                   onChanged: (value) {
                     if (value != null) {
                       ble.sendCurveCommand(value);
@@ -321,15 +325,19 @@ class _EQTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('EQ Bands (25-band)',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  'EQ Bands (25-band)',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
-                Container(
+                SizedBox(
                   height: 200,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: List.generate(25, (i) {
-                      int value = i < state.eqBands.length ? state.eqBands[i] : 0;
+                      int value = i < state.eqBands.length
+                          ? state.eqBands[i]
+                          : 0;
                       return Expanded(
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -341,7 +349,9 @@ class _EQTab extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text('Band values: ${state.eqBands.take(10).map((v) => v.toRadixString(16).padLeft(2, '0').toUpperCase()).join(', ')}...'),
+                Text(
+                  'Band values: ${state.eqBands.take(10).map((v) => v.toRadixString(16).padLeft(2, '0').toUpperCase()).join(', ')}...',
+                ),
               ],
             ),
           ),
@@ -352,7 +362,7 @@ class _EQTab extends StatelessWidget {
 }
 
 class _XOverTab extends StatelessWidget {
-  const _XOverTab({super.key});
+  const _XOverTab();
 
   @override
   Widget build(BuildContext context) {
@@ -368,8 +378,10 @@ class _XOverTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('X-Over Filters',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  'X-Over Filters',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
                 ...state.xOverItems.asMap().entries.map((entry) {
                   int index = entry.key;
@@ -397,21 +409,15 @@ class _XOverTab extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Expanded(
-                            child: Text('Freq: ${item.freq} Hz'),
-                          ),
-                          Expanded(
-                            child: Text('Gain: ${item.gain}'),
-                          ),
-                          Expanded(
-                            child: Text('Slope: ${item.slope} dB/oct'),
-                          ),
+                          Expanded(child: Text('Freq: ${item.freq} Hz')),
+                          Expanded(child: Text('Gain: ${item.gain}')),
+                          Expanded(child: Text('Slope: ${item.slope} dB/oct')),
                         ],
                       ),
                       const SizedBox(height: 8),
                     ],
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),
@@ -422,7 +428,7 @@ class _XOverTab extends StatelessWidget {
 }
 
 class _TimeAlignmentTab extends StatelessWidget {
-  const _TimeAlignmentTab({super.key});
+  const _TimeAlignmentTab();
 
   @override
   Widget build(BuildContext context) {
@@ -438,8 +444,10 @@ class _TimeAlignmentTab extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Time Alignment',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Time Alignment',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 8),
                 ...state.timeAlignmentItems.asMap().entries.map((entry) {
                   int index = entry.key;
@@ -450,25 +458,27 @@ class _TimeAlignmentTab extends StatelessWidget {
                       Text('Channel ${item.channel}'),
                       Row(
                         children: [
-                          Expanded(
-                            child: Text('Delay: ${item.delay} samples'),
-                          ),
+                          Expanded(child: Text('Delay: ${item.delay} samples')),
                           IconButton(
                             icon: const Icon(Icons.add),
                             onPressed: () => ble.sendTimeAlignmentCommand(
-                                index, item.delay + 10),
+                              index,
+                              item.delay + 10,
+                            ),
                           ),
                           IconButton(
                             icon: const Icon(Icons.remove),
                             onPressed: () => ble.sendTimeAlignmentCommand(
-                                index, (item.delay - 10).clamp(0, 700)),
+                              index,
+                              (item.delay - 10).clamp(0, 700),
+                            ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                     ],
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),
@@ -479,7 +489,7 @@ class _TimeAlignmentTab extends StatelessWidget {
 }
 
 class _BassBoostTab extends StatelessWidget {
-  const _BassBoostTab({super.key});
+  const _BassBoostTab();
 
   @override
   Widget build(BuildContext context) {
@@ -494,13 +504,15 @@ class _BassBoostTab extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Text('Bass Boost',
-                    style: Theme.of(context).textTheme.titleMedium),
+                Text(
+                  'Bass Boost',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 SwitchListTile(
                   title: const Text('Enable Bass Boost'),
                   value: state.bassBoostEnabled,
-                  onChanged: (value) => ble.sendBassBoostCommand(
-                      value, state.bassBoostLevel),
+                  onChanged: (value) =>
+                      ble.sendBassBoostCommand(value, state.bassBoostLevel),
                 ),
                 const SizedBox(height: 16),
                 Text('Bass Boost Level: ${state.bassBoostLevel}'),
@@ -509,7 +521,9 @@ class _BassBoostTab extends StatelessWidget {
                   min: 0,
                   max: 10,
                   onChanged: (v) => ble.sendBassBoostCommand(
-                      state.bassBoostEnabled, v.round()),
+                    state.bassBoostEnabled,
+                    v.round(),
+                  ),
                 ),
               ],
             ),

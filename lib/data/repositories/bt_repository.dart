@@ -18,8 +18,8 @@ class BtRepository {
   static const String targetName = 'PROLOGY_BLE';
   static const String serviceUuid = '0000ae00-0000-1000-8000-00805f9b34fb';
   static const String cmdCharUuid = '0000ae01-0000-1000-8000-00805f9b34fb';
-  static const String notifyServiceUuid = '0000af00-0000-1000-8000-00805f9b34fb';
-  static const String notifyCharUuid = '0000af01-0000-1000-8000-00805f9b34fb';
+  static const String notifyServiceUuid = '0000ae00-0000-1000-8000-00805f9b34fb';
+  static const String notifyCharUuid = '0000ae02-0000-1000-8000-00805f9b34fb';
 
   BluetoothDevice? _device;
   BluetoothCharacteristic? _cmdCharacteristic;
@@ -167,12 +167,18 @@ class BtRepository {
     await sendCommand([0xf0, 0x00, 0x03, 0x01, 0x05, 0x00, 0x09]);
   }
 
-  int _calcChecksum(List<int> data) {
-    int cs = 0x94;
-    for (int b in data) {
-      cs ^= b;
-    }
-    return cs;
+  /// TX checksum: (sum(data) + 0x10) & 0xFF
+  /// data = bytes from LEN to DATA (excluding SYNC, RES, CHECK)
+  int _calcChecksumTx(List<int> data) {
+    int sum = data.fold(0, (prev, element) => prev + element);
+    return (sum + 0x10) & 0xFF;
+  }
+
+  /// RX checksum: (sum(data) + 0x40) & 0xFF
+  /// data = bytes from LEN to DATA (excluding SYNC, RES, CHECK)
+  int _calcChecksumRx(List<int> data) {
+    int sum = data.fold(0, (prev, element) => prev + element);
+    return (sum + 0x40) & 0xFF;
   }
 
   Future<bool> volumeUp() async {
@@ -186,7 +192,10 @@ class BtRepository {
   Future<bool> volumeSet(int value) async {
     if (value < 0) value = 0;
     if (value > 28) value = 28;
-    final cmd = [0xf0, 0x00, 0x05, 0xa0, 0x10, 0x0e, 0x18, value, _calcChecksum([value])];
+    // Data from LEN to DATA: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x18, value];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _state.volume = value;
@@ -332,7 +341,16 @@ class BtRepository {
 
   void parseNotification(List<int> data) {
     if (data.length < 4) return;
-    if (data[0] != 0xc0) return;
+    if (data[0] != 0xC0) return;
+
+    // RX checksum: sum(LEN..DATA) + 0x40
+    final payload = data.sublist(2, data.length - 1); // LEN to DATA
+    final calc = _calcChecksumRx(payload);
+    final recv = data.last;
+    if (calc != recv) {
+      debugPrint('RX checksum error: calc=0x${calc.toRadixString(16)}, recv=0x${recv.toRadixString(16)}');
+      return;
+    }
 
     final len = data[2];
     final type = data[3];
