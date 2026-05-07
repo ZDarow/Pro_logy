@@ -36,7 +36,6 @@ dependencies:
   flutter_bloc: ^9.1.1
   equatable: ^2.0.5
   path_provider: ^2.1.4
-  audio_service: ^0.18.18
   flutter_blue_plus: ^1.36.8
 
 dev_dependencies:

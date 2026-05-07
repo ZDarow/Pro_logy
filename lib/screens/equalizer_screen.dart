@@ -23,10 +23,23 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
     '16 kHz': 0,
   };
 
+  final Map<String, int> _freqToBand = {
+    '32 Hz': 0,
+    '64 Hz': 1,
+    '125 Hz': 2,
+    '250 Hz': 3,
+    '500 Hz': 4,
+    '1 kHz': 5,
+    '2 kHz': 6,
+    '4 kHz': 7,
+    '16 kHz': 8,
+  };
+
   void _sendCommand(String freq, double value) {
     final bt = context.read<BtProvider>();
     if (bt.isConnected) {
-      bt.sendCommand('EQ$freq:${value.toInt()}'.codeUnits);
+      final band = _freqToBand[freq] ?? 0;
+      bt.setEqPlus(band: band, gain: value.toInt());
     }
   }
 
