@@ -83,5 +83,30 @@ void main() {
       final repo = BtRepository();
       expect(() => repo.prevTrack(), returnsNormally);
     });
+
+    test('setLoudness sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.setLoudness(true), returnsNormally);
+    });
+
+    test('setSubwoofer sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.setSubwoofer(), returnsNormally);
+    });
+
+    test('setXOver sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.setXOver(), returnsNormally);
+    });
+
+    test('setTimeAlignment sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.setTimeAlignment(), returnsNormally);
+    });
+
+    test('setEqPlus sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.setEqPlus(), returnsNormally);
+    });
   });
 }

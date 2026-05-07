@@ -333,6 +333,7 @@ class BtRepository {
 
   Future<bool> setLoudness(bool enabled, {int level = 0, int freq = 0}) async {
     // Payload: [LEN, TYPE, ...DATA]
+    // Assuming: 0x30 = Loudness command, DATA[0] = on/off, DATA[1] = level, DATA[2] = freq
     final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x30, enabled ? 1 : 0, level, freq];
     final checksum = _calcChecksumTx(payload);
     final cmd = <int>[0xf0, 0x00, ...payload, checksum];
@@ -341,6 +342,7 @@ class BtRepository {
 
   Future<bool> setSubwoofer({int level = 0, int freq = 0, int phase = 0}) async {
     // Payload: [LEN, TYPE, ...DATA]
+    // Assuming: 0x40 = Subwoofer command
     final payload = <int>[0x08, 0xa0, 0x10, 0x0e, 0x40, level, freq, phase];
     final checksum = _calcChecksumTx(payload);
     final cmd = <int>[0xf0, 0x00, ...payload, checksum];
@@ -349,6 +351,7 @@ class BtRepository {
 
   Future<bool> setXOver({int type = 0, int freq = 0}) async {
     // Payload: [LEN, TYPE, ...DATA]
+    // Assuming: 0x50 = X-Over command
     final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x50, type, freq];
     final checksum = _calcChecksumTx(payload);
     final cmd = <int>[0xf0, 0x00, ...payload, checksum];
@@ -357,6 +360,7 @@ class BtRepository {
 
   Future<bool> setTimeAlignment({int speaker = 0, int delay = 0}) async {
     // Payload: [LEN, TYPE, ...DATA]
+    // Assuming: 0x60 = Time Alignment command
     final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x60, speaker, delay];
     final checksum = _calcChecksumTx(payload);
     final cmd = <int>[0xf0, 0x00, ...payload, checksum];
