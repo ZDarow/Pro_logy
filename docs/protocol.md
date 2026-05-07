@@ -38,6 +38,21 @@ Prology car audio systems communicate via Bluetooth Low Energy (BLE). This docum
 ```
 Sent on connection.
 
+### Playback Control
+```
+[F0 00 04 A0 10 0E 01] [CS]  # Play/Pause
+[F0 00 04 A0 10 0E 02] [CS]  # Next track
+[F0 00 04 A0 10 0E 03] [CS]  # Previous track
+```
+
+### Radio Control
+```
+[F0 00 04 A0 10 0E 80] [CS]  # Seek up
+[F0 00 04 A0 10 0E 81] [CS]  # Seek down
+[F0 00 05 A0 10 0E 82] [freq_high] [freq_low] [CS]  # Set FM freq (freq = value * 10)
+[F0 00 05 A0 10 0E 83] [freq_high] [freq_low] [CS]  # Set AM freq
+```
+
 ### Volume Control
 ```
 [F0 00 05 A0 10 0E 18] [value: 0-28] [CS]

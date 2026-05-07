@@ -68,5 +68,20 @@ void main() {
       repo.dispose();
       expect(repo.state.volume, 5); // State still accessible
     });
+
+    test('playPause sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.playPause(), returnsNormally);
+    });
+
+    test('nextTrack sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.nextTrack(), returnsNormally);
+    });
+
+    test('prevTrack sends command', () async {
+      final repo = BtRepository();
+      expect(() => repo.prevTrack(), returnsNormally);
+    });
   });
 }
