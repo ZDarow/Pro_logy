@@ -8,7 +8,7 @@
 ## Stack
 - **Flutter** (Dart SDK ^3.11.5).
 - **State Management**: `flutter_bloc`, `provider`.
-- **Hardware**: `flutter_blue_plus` (Bluetooth), `audio_service`.
+- **Hardware**: `flutter_blue_plus` (Bluetooth).
 
 ## Architecture
 - `BtRepository` — работа с BLE (команды + уведомления через `AF01`).

@@ -12,7 +12,7 @@
 ## Стек
 - **Flutter** (Dart SDK ^3.11.5)
 - **State Management**: `flutter_bloc`, `provider`
-- **Hardware**: `flutter_blue_plus` (Bluetooth), `audio_service`
+- **Hardware**: `flutter_blue_plus` (Bluetooth)
 
 ## Быстрый старт
 ```bash

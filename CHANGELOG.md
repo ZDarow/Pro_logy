@@ -1,5 +1,25 @@
 # Changelog
 
+## [Unreleased] - 2026-05-08
+
+### Added
+- **flutter_bloc** upgraded 8→9 (commit deb28df)
+- **Playback controls**: play/pause, next/prev track (commit 2685936, 891331f)
+- **Radio controls**: seek up/down, set frequency (commit 891331f)
+- **Demo mode** simulation with timer (commit 0e98843)
+- **Extended audio settings** commands (loudness, subwoofer, xover, time alignment, eq plus) (commit e7948cb)
+- **UI for extended audio settings** (subwoofer level, xover type, time alignment dialog) (commit caa6658)
+- **Tests**: 16/16 passed (added playback, radio, extended settings tests)
+
+### Removed
+- **audio_service** dependency (unused) (commit 2685936)
+
+### Changed
+- **Protocol docs** updated with extended audio settings commands (assumed bytes)
+- **README.md**, **AGENTS.md** updated (removed audio_service references)
+
+---
+
 ## [Unreleased] - 2026-05-06
 
 ### Added
