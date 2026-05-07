@@ -164,7 +164,11 @@ class BtRepository {
   }
 
   Future<void> _sendInit() async {
-    await sendCommand([0xf0, 0x00, 0x03, 0x01, 0x05, 0x00, 0x09]);
+    // Init: [F0 00 03 01 05 00 09]
+    final payload = <int>[0x03, 0x01, 0x05, 0x00]; // LEN + TYPE + DATA
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    await sendCommand(cmd);
   }
 
   /// TX checksum: (sum(data) + 0x10) & 0xFF
@@ -238,7 +242,10 @@ class BtRepository {
       default:
         inputCode = 0x01;
     }
-    final cmd = [0xf0, 0x00, 0x05, 0xa0, 0x10, 0x0e, 0x24, inputCode, _calcChecksum([inputCode])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, inputCode];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _state.inputSource = input.toUpperCase();
@@ -250,7 +257,10 @@ class BtRepository {
   Future<bool> setBass(int value) async {
     if (value < -10) value = -10;
     if (value > 10) value = 10;
-    final cmd = [0xf0, 0x00, 0x05, 0xa0, 0x10, 0x0e, 0x24, value + 0x10, _calcChecksum([value + 0x10])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, value + 0x10];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _state.bass = value;
@@ -262,7 +272,10 @@ class BtRepository {
   Future<bool> setTreble(int value) async {
     if (value < -10) value = -10;
     if (value > 10) value = 10;
-    final cmd = [0xf0, 0x00, 0x05, 0xa0, 0x10, 0x0e, 0x24, value + 0x20, _calcChecksum([value + 0x20])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, value + 0x20];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _state.treble = value;
@@ -274,7 +287,10 @@ class BtRepository {
   Future<bool> setBalance(int value) async {
     if (value < -10) value = -10;
     if (value > 10) value = 10;
-    final cmd = [0xf0, 0x00, 0x06, 0xa0, 0x10, 0x0e, 0x2a, 0x03, value + 0x10, _calcChecksum([value + 0x10])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x2a, 0x03, value + 0x10];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _state.balance = value;
@@ -286,7 +302,10 @@ class BtRepository {
   Future<bool> setFader(int value) async {
     if (value < -10) value = -10;
     if (value > 10) value = 10;
-    final cmd = [0xf0, 0x00, 0x06, 0xa0, 0x10, 0x0e, 0x20, 0x01, value + 0x10, _calcChecksum([value + 0x10])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x20, 0x01, value + 0x10];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _state.fader = value;
@@ -298,7 +317,10 @@ class BtRepository {
   Future<bool> setEqPreset(int preset) async {
     final presets = [0x08, 0x03, 0x04, 0x09, 0x0a, 0x05, 0x06];
     if (preset < 0 || preset >= presets.length) return false;
-    final cmd = [0xf0, 0x00, 0x06, 0xa0, 0x10, 0x0e, 0x26, 0x01, presets[preset], _calcChecksum([presets[preset]])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x26, 0x01, presets[preset]];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     final result = await sendCommand(cmd);
     if (result) {
       _updateState();
@@ -310,32 +332,42 @@ class BtRepository {
   // TODO: Update cmd bytes when exact protocol is documented
 
   Future<bool> setLoudness(bool enabled, {int level = 0, int freq = 0}) async {
-    // Placeholder: [F0 00 07 A0 10 0E 30] [enabled] [level] [freq] [CS]
-    final cmd = [0xf0, 0x00, 0x07, 0xa0, 0x10, 0x0e, 0x30, enabled ? 1 : 0, level, freq, _calcChecksum([enabled ? 1 : 0, level, freq])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x30, enabled ? 1 : 0, level, freq];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     return await sendCommand(cmd);
   }
 
   Future<bool> setSubwoofer({int level = 0, int freq = 0, int phase = 0}) async {
-    // Placeholder: [F0 00 08 A0 10 0E 40] [level] [freq] [phase] [CS]
-    final cmd = [0xf0, 0x00, 0x08, 0xa0, 0x10, 0x0e, 0x40, level, freq, phase, _calcChecksum([level, freq, phase])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x08, 0xa0, 0x10, 0x0e, 0x40, level, freq, phase];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     return await sendCommand(cmd);
   }
 
   Future<bool> setXOver({int type = 0, int freq = 0}) async {
-    // Placeholder: [F0 00 06 A0 10 0E 50] [type] [freq] [CS]
-    final cmd = [0xf0, 0x00, 0x06, 0xa0, 0x10, 0x0e, 0x50, type, freq, _calcChecksum([type, freq])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x50, type, freq];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     return await sendCommand(cmd);
   }
 
   Future<bool> setTimeAlignment({int speaker = 0, int delay = 0}) async {
-    // Placeholder: [F0 00 07 A0 10 0E 60] [speaker] [delay] [CS]
-    final cmd = [0xf0, 0x00, 0x07, 0xa0, 0x10, 0x0e, 0x60, speaker, delay, _calcChecksum([speaker, delay])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x60, speaker, delay];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     return await sendCommand(cmd);
   }
 
   Future<bool> setEqPlus({int band = 0, int freq = 0, int gain = 0, int q = 0}) async {
-    // Placeholder: [F0 00 09 A0 10 0E 70] [band] [freq] [gain] [q] [CS]
-    final cmd = [0xf0, 0x00, 0x09, 0xa0, 0x10, 0x0e, 0x70, band, freq, gain, q, _calcChecksum([band, freq, gain, q])];
+    // Payload: [LEN, TYPE, ...DATA]
+    final payload = <int>[0x09, 0xa0, 0x10, 0x0e, 0x70, band, freq, gain, q];
+    final checksum = _calcChecksumTx(payload);
+    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
     return await sendCommand(cmd);
   }
 
