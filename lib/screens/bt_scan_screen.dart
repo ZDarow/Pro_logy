@@ -14,25 +14,55 @@ class _BtScanScreenState extends State<BtScanScreen> {
   List<ScanResult> devices = [];
   bool isScanning = false;
   String? errorMessage;
+  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
 
   @override
   void initState() {
     super.initState();
-    FlutterBluePlus.scanResults.listen((results) {
-      setState(() => devices = results);
+    FlutterBluePlus.adapterState.listen((state) {
+      if (mounted) setState(() => _adapterState = state);
     });
+    FlutterBluePlus.scanResults.listen((results) {
+      if (mounted) setState(() => devices = results);
+    });
+    Future.delayed(Duration.zero, () => _startScan());
   }
 
-  void _startScan() {
+  Future<void> _startScan() async {
     setState(() {
       devices.clear();
       isScanning = true;
       errorMessage = null;
     });
-    FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
-    Future.delayed(const Duration(seconds: 6), () {
+
+    try {
+      if (await FlutterBluePlus.isSupported == false) {
+        setState(() {
+          errorMessage = 'BLE не поддерживается';
+          isScanning = false;
+        });
+        return;
+      }
+
+      if (await FlutterBluePlus.adapterState.first == BluetoothAdapterState.off) {
+        await FlutterBluePlus.turnOn();
+      }
+
+      await FlutterBluePlus.startScan(
+        timeout: const Duration(seconds: 15),
+        androidUsesFineLocation: true,
+      );
+
+      await Future.delayed(const Duration(seconds: 16));
       if (mounted) setState(() => isScanning = false);
-    });
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          errorMessage = 'Ошибка сканирования: $e';
+          isScanning = false;
+        });
+      }
+    }
   }
 
   Future<void> _connect(ScanResult r) async {
@@ -48,9 +78,25 @@ class _BtScanScreenState extends State<BtScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('BT Devices')),
+      appBar: AppBar(
+        title: const Text('BT Devices'),
+        actions: [
+          if (_adapterState != BluetoothAdapterState.on)
+            IconButton(
+              icon: const Icon(Icons.bluetooth_disabled),
+              onPressed: () => FlutterBluePlus.turnOn(),
+            ),
+        ],
+      ),
       body: Column(
         children: [
+          if (_adapterState != BluetoothAdapterState.on)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              color: Colors.orange.shade100,
+              child: const Text('Bluetooth выключен'),
+            ),
           if (errorMessage != null)
             Container(
               width: double.infinity,
@@ -59,21 +105,25 @@ class _BtScanScreenState extends State<BtScanScreen> {
               child: Text(errorMessage!),
             ),
           Expanded(
-            child: ListView.builder(
-              itemCount: devices.length,
-              itemBuilder: (context, i) {
-                final d = devices[i].device;
-                return ListTile(
-                  leading: const Icon(Icons.bluetooth),
-                  title: Text(d.platformName.isNotEmpty ? d.platformName : 'Unknown'),
-                  subtitle: Text(d.remoteId.str),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.link),
-                    onPressed: () => _connect(devices[i]),
+            child: devices.isEmpty && !isScanning
+                ? const Center(child: Text('Устройства не найдены'))
+                : ListView.builder(
+                    itemCount: devices.length,
+                    itemBuilder: (context, i) {
+                      final d = devices[i].device;
+                      return ListTile(
+                        leading: const Icon(Icons.bluetooth),
+                        title: Text(d.platformName.isNotEmpty
+                            ? d.platformName
+                            : 'Unknown'),
+                        subtitle: Text(d.remoteId.str),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.link),
+                          onPressed: () => _connect(devices[i]),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

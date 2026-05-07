@@ -6,14 +6,13 @@ void main() {
 }
 
 class PrologyApp extends StatelessWidget {
+  const PrologyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PROLOGY Flutter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       home: HomeScreen(),
     );
   }
@@ -56,9 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PROLOGY Controller'),
-      ),
+      appBar: AppBar(title: const Text('PROLOGY Controller')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -68,9 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 state.connected ? Icons.check_circle : Icons.error,
                 color: state.connected ? Colors.green : Colors.red,
               ),
-              title: Text(state.connected
-                  ? 'Connected: ${state.deviceAddress}'
-                  : 'Not connected'),
+              title: Text(
+                state.connected
+                    ? 'Connected: ${state.deviceAddress}'
+                    : 'Not connected',
+              ),
               subtitle: Text('Volume: ${state.muted ? "MUTED" : state.volume}'),
             ),
           ),
@@ -80,7 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Text('Volume', style: Theme.of(context).textTheme.titleMedium),
+                  Text(
+                    'Volume',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -92,7 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         state.muted ? 'MUTED' : '${state.volume}',
                         style: const TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(width: 20),
                       IconButton(
@@ -119,8 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('EQ Presets',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'EQ Presets',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,

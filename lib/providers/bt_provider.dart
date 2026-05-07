@@ -4,31 +4,71 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import '../data/repositories/bt_repository.dart';
 
 class BtProvider extends ChangeNotifier {
-  final BtRepository _repository;
+  final BtRepository? _repository;
+  final bool isDemo;
   StreamSubscription? _stateSubscription;
 
-  BtProvider({BtRepository? repository}) : _repository = repository ?? BtRepository() {
-    _stateSubscription = _repository.stateStream.listen((_) {
-      notifyListeners();
-    });
+  int _demoVolume = 20;
+  int _demoBass = 0;
+  int _demoTreble = 0;
+  int _demoBalance = 0;
+  int _demoFader = 0;
+  bool _demoConnected = false;
+
+  BtProvider({BtRepository? repository, this.isDemo = false}) 
+      : _repository = repository {
+    if (!isDemo && _repository != null) {
+      _stateSubscription = _repository!.stateStream.listen((_) {
+        notifyListeners();
+      });
+    }
+  }
+  
+  BtConnectionStatus get status {
+    if (isDemo) return _demoConnected ? BtConnectionStatus.connected : BtConnectionStatus.disconnected;
+    return _repository?.status ?? BtConnectionStatus.disconnected;
   }
 
-  BtConnectionStatus get status => _repository.status;
-  String? get errorMessage => _repository.errorMessage;
-  bool get isConnected => _repository.isConnected;
-  PrologyState get state => _repository.state;
+  String? get errorMessage => _repository?.errorMessage;
+  
+  bool get isConnected {
+    if (isDemo) return _demoConnected;
+    return _repository?.isConnected ?? false;
+  }
 
-  int get volume => _repository.state.volume;
-  int get bass => _repository.state.bass;
-  int get treble => _repository.state.treble;
-  int get balance => _repository.state.balance;
-  int get fader => _repository.state.fader;
+  PrologyState get state {
+    if (isDemo) {
+      final s = PrologyState();
+      s.volume = _demoVolume;
+      s.bass = _demoBass;
+      s.treble = _demoTreble;
+      s.balance = _demoBalance;
+      s.fader = _demoFader;
+      s.inputSource = 'RADIO';
+      return s;
+    }
+    return _repository?.state ?? PrologyState();
+  }
 
-  Stream<BluetoothConnectionState> get connectionState => _repository.connectionState;
+  int get volume => isDemo ? _demoVolume : _repository?.state.volume ?? 0;
+  int get bass => isDemo ? _demoBass : _repository?.state.bass ?? 0;
+  int get treble => isDemo ? _demoTreble : _repository?.state.treble ?? 0;
+  int get balance => isDemo ? _demoBalance : _repository?.state.balance ?? 0;
+  int get fader => isDemo ? _demoFader : _repository?.state.fader ?? 0;
+
+  Stream<BluetoothConnectionState> get connectionState {
+    if (isDemo) return Stream.value(BluetoothConnectionState.disconnected);
+    return _repository?.connectionState ?? Stream.value(BluetoothConnectionState.disconnected);
+  }
 
   Future<bool> connect(BluetoothDevice device) async {
+    if (isDemo) {
+      _demoConnected = true;
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.connect(device);
+      final result = await _repository?.connect(device) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -39,8 +79,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<void> disconnect() async {
+    if (isDemo) {
+      _demoConnected = false;
+      notifyListeners();
+      return;
+    }
     try {
-      await _repository.disconnect();
+      await _repository?.disconnect();
     } catch (e) {
       debugPrint('Disconnect error: $e');
     } finally {
@@ -49,8 +94,9 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> sendCommand(List<int> data) async {
+    if (isDemo) return true;
     try {
-      return await _repository.sendCommand(data);
+      return await _repository?.sendCommand(data) ?? false;
     } catch (e) {
       debugPrint('Send command error: $e');
       return false;
@@ -58,8 +104,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> volumeUp() async {
+    if (isDemo) {
+      _demoVolume = (_demoVolume + 1).clamp(0, 40);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.volumeUp();
+      final result = await _repository?.volumeUp() ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -70,8 +121,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> volumeDown() async {
+    if (isDemo) {
+      _demoVolume = (_demoVolume - 1).clamp(0, 40);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.volumeDown();
+      final result = await _repository?.volumeDown() ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -82,8 +138,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> volumeSet(int value) async {
+    if (isDemo) {
+      _demoVolume = value.clamp(0, 40);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.volumeSet(value);
+      final result = await _repository?.volumeSet(value) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -94,8 +155,12 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setInput(String input) async {
+    if (isDemo) {
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.setInput(input);
+      final result = await _repository?.setInput(input) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -106,8 +171,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setBass(int value) async {
+    if (isDemo) {
+      _demoBass = value.clamp(-10, 10);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.setBass(value);
+      final result = await _repository?.setBass(value) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -118,8 +188,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setTreble(int value) async {
+    if (isDemo) {
+      _demoTreble = value.clamp(-10, 10);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.setTreble(value);
+      final result = await _repository?.setTreble(value) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -130,8 +205,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setBalance(int value) async {
+    if (isDemo) {
+      _demoBalance = value.clamp(-10, 10);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.setBalance(value);
+      final result = await _repository?.setBalance(value) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -142,8 +222,13 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setFader(int value) async {
+    if (isDemo) {
+      _demoFader = value.clamp(-10, 10);
+      notifyListeners();
+      return true;
+    }
     try {
-      final result = await _repository.setFader(value);
+      final result = await _repository?.setFader(value) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -154,8 +239,9 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setEqPreset(int preset) async {
+    if (isDemo) return true;
     try {
-      final result = await _repository.setEqPreset(preset);
+      final result = await _repository?.setEqPreset(preset) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -165,10 +251,10 @@ class BtProvider extends ChangeNotifier {
     }
   }
 
-  // Extended Audio Settings
   Future<bool> setLoudness(bool enabled, {int level = 0, int freq = 0}) async {
+    if (isDemo) return true;
     try {
-      return await _repository.setLoudness(enabled, level: level, freq: freq);
+      return await _repository?.setLoudness(enabled, level: level, freq: freq) ?? false;
     } catch (e) {
       debugPrint('Set loudness error: $e');
       return false;
@@ -176,8 +262,9 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setSubwoofer({int level = 0, int freq = 0, int phase = 0}) async {
+    if (isDemo) return true;
     try {
-      return await _repository.setSubwoofer(level: level, freq: freq, phase: phase);
+      return await _repository?.setSubwoofer(level: level, freq: freq, phase: phase) ?? false;
     } catch (e) {
       debugPrint('Set subwoofer error: $e');
       return false;
@@ -185,8 +272,9 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setXOver({int type = 0, int freq = 0}) async {
+    if (isDemo) return true;
     try {
-      return await _repository.setXOver(type: type, freq: freq);
+      return await _repository?.setXOver(type: type, freq: freq) ?? false;
     } catch (e) {
       debugPrint('Set x-over error: $e');
       return false;
@@ -194,8 +282,9 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setTimeAlignment({int speaker = 0, int delay = 0}) async {
+    if (isDemo) return true;
     try {
-      return await _repository.setTimeAlignment(speaker: speaker, delay: delay);
+      return await _repository?.setTimeAlignment(speaker: speaker, delay: delay) ?? false;
     } catch (e) {
       debugPrint('Set time alignment error: $e');
       return false;
@@ -203,8 +292,9 @@ class BtProvider extends ChangeNotifier {
   }
 
   Future<bool> setEqPlus({int band = 0, int freq = 0, int gain = 0, int q = 0}) async {
+    if (isDemo) return true;
     try {
-      return await _repository.setEqPlus(band: band, freq: freq, gain: gain, q: q);
+      return await _repository?.setEqPlus(band: band, freq: freq, gain: gain, q: q) ?? false;
     } catch (e) {
       debugPrint('Set EQ Plus error: $e');
       return false;
@@ -214,7 +304,7 @@ class BtProvider extends ChangeNotifier {
   @override
   void dispose() {
     _stateSubscription?.cancel();
-    _repository.dispose();
+    _repository?.dispose();
     super.dispose();
   }
 }
