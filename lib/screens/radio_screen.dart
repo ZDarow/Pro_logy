@@ -60,14 +60,20 @@ class _RadioScreenState extends State<RadioScreen> {
                 IconButton(
                   icon: const Icon(Icons.arrow_back, size: 48),
                   onPressed: bt.isConnected
-                      ? () => setState(() => frequency -= isFm ? 0.1 : 10)
+                      ? () {
+                          setState(() => frequency -= isFm ? 0.1 : 10);
+                          bt.radioSeekDown();
+                        }
                       : null,
                 ),
                 const SizedBox(width: 60),
                 IconButton(
                   icon: const Icon(Icons.arrow_forward, size: 48),
                   onPressed: bt.isConnected
-                      ? () => setState(() => frequency += isFm ? 0.1 : 10)
+                      ? () {
+                          setState(() => frequency += isFm ? 0.1 : 10);
+                          bt.radioSeekUp();
+                        }
                       : null,
                 ),
               ],
@@ -90,6 +96,7 @@ class _RadioScreenState extends State<RadioScreen> {
                           _selectedPreset = i;
                         });
                         bt.setInput('RADIO');
+                        bt.radioSetFreq(frequency, isFm);
                       }
                     : null,
                 child: Text(presets[i]),
