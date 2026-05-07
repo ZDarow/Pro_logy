@@ -389,11 +389,11 @@ class BtRepository {
     bool stateChanged = false;
 
     if (type == 0x90 && len == 0x03 && data.length >= 6) {
-      _state.volume = data[5];
+      _state.volume = data[4]; // DATA byte (not checksum)
       stateChanged = true;
     } else if (type == 0x91 && len == 0x04 && data.length >= 7) {
-      _state.bass = data[5] - 0x10;
-      _state.treble = data[6] - 0x20;
+      _state.bass = data[4] - 0x10; // DATA[0]
+      _state.treble = data[5] - 0x20; // DATA[1]
       stateChanged = true;
     } else if (type == 0x92 && len == 0x05 && data.length >= 8) {
       _state.balance = data[6] - 0x10;
