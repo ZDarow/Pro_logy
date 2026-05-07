@@ -39,8 +39,24 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
     final bt = context.read<BtProvider>();
     if (bt.isConnected) {
       final band = _freqToBand[freq] ?? 0;
-      bt.setEqPlus(band: band, gain: value.toInt());
+      bt.setEqPlus(band: band, freq: _getFreqValue(freq), gain: value.toInt(), q: 1);
     }
+  }
+
+  int _getFreqValue(String freq) {
+    final map = {
+      '32 Hz': 32,
+      '64 Hz': 64,
+      '125 Hz': 125,
+      '250 Hz': 250,
+      '500 Hz': 500,
+      '1 kHz': 1000,
+      '2 kHz': 2000,
+      '4 kHz': 4000,
+      '8 kHz': 8000,
+      '16 kHz': 16000,
+    };
+    return map[freq] ?? 0;
   }
 
   @override

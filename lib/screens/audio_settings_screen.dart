@@ -16,6 +16,15 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
   double balance = 0;
   double fader = 0;
   bool loudness = false;
+  double subwooferLevel = 50;
+  int xoverType = 0;
+  int taSpeaker = 0;
+  double taDelay = 0;
+
+  String _getSpeakerName(int index) {
+    const names = ['Front Left', 'Front Right', 'Rear Left', 'Rear Right', 'Subwoofer', 'Tweeter'];
+    return names[index % names.length];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +54,93 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
             title: const Text('Loudness'),
             value: loudness,
             onChanged: bt.isConnected
-                ? (v) => setState(() => loudness = v)
+                ? (v) {
+                    setState(() => loudness = v);
+                    bt.setLoudness(v);
+                  }
                 : null,
           ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.speaker),
+            title: const Text('Subwoofer Level'),
+            trailing: SizedBox(
+              width: 200,
+              child: Slider(
+                value: subwooferLevel,
+                min: 0,
+                max: 100,
+                onChanged: bt.isConnected
+                    ? (v) {
+                        setState(() => subwooferLevel = v);
+                        bt.setSubwoofer(level: v.toInt());
+                      }
+                    : null,
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.graphic_eq),
+            title: const Text('X-Over Type'),
+            trailing: DropdownButton<int>(
+              value: xoverType,
+              items: const [
+                DropdownMenuItem(value: 0, child: Text('2-Way')),
+                DropdownMenuItem(value: 1, child: Text('3-Way')),
+              ],
+              onChanged: bt.isConnected
+                  ? (v) {
+                      setState(() => xoverType = v!);
+                      bt.setXOver(type: v!);
+                    }
+                  : null,
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.timer),
+            title: const Text('Time Alignment'),
+            subtitle: Text('Speaker: ${_getSpeakerName(taSpeaker)}, Delay: ${taDelay.toStringAsFixed(0)}ms'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: bt.isConnected
+                ? () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Time Alignment'),
+                        content: StatefulBuilder(
+                          builder: (context, setDialogState) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DropdownButton<int>(
+                                value: taSpeaker,
+                                items: List.generate(6, (i) => DropdownMenuItem(value: i, child: Text(_getSpeakerName(i)))),
+                                onChanged: (v) {
+                                  setDialogState(() => taSpeaker = v!);
+                                  setState(() {});
+                                },
+                              ),
+                              Slider(
+                                value: taDelay,
+                                min: 0,
+                                max: 200,
+                                label: '${taDelay.toStringAsFixed(0)}ms',
+                                onChanged: (v) {
+                                  setDialogState(() => taDelay = v);
+                                  setState(() {});
+                                  bt.setTimeAlignment(speaker: taSpeaker, delay: v.toInt());
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('OK'))],
+                      ),
+                    );
+                  }
+                : null,
+          ),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.equalizer),
             title: const Text('Equalizer'),
