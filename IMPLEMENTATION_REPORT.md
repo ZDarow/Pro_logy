@@ -1,6 +1,6 @@
 # Prology Project - Final Implementation Report
 
-## Date: 2026-05-06
+## Date: 2026-05-08
 
 ## Executive Summary
 
@@ -8,6 +8,17 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 1. **Stage 1**: Stabilization & Testing (✅ Complete)
 2. **Stage 2**: Missing Features Implementation (✅ Complete)  
 3. **Stage 3**: Infrastructure & Release Prep (✅ Complete)
+
+### Recent Updates (2026-05-08):
+- ✅ **flutter_bloc** upgraded 8→9 (commit deb28df)
+- ✅ **Playback controls**: play/pause, next/prev track (commit 2685936, 891331f)
+- ✅ **Radio controls**: seek up/down, set frequency (commit 891331f)
+- ✅ **Demo mode** simulation with timer (commit 0e98843)
+- ✅ **Extended audio settings** commands implemented (loudness, subwoofer, xover, time alignment, eq plus) (commit e7948cb)
+- ✅ **UI for extended audio settings** (subwoofer, xover, time alignment dialog) (commit caa6658)
+- ✅ **Tests**: 16/16 passed (added playback, radio, extended settings tests)
+- ✅ **Android platform** support added (commit 407a2c0)
+- ✅ **audio_service** dependency removed (commit 2685936)
 
 ## Stage 1: Stabilization & Testing
 
@@ -21,14 +32,22 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 - ✅ `BtProvider` now subscribes to `stateStream` and calls `notifyListeners()`
 
 ### Testing
-- ✅ Created `test/bt_repository_test.dart` with 6 unit tests:
+- ✅ Created `test/bt_repository_test.dart` with 16 unit tests:
   - Initial state is disconnected
   - parseNotification updates volume
   - parseNotification updates bass and treble
   - stateStream emits updates
   - parseNotification handles unknown type
   - dispose closes stream
-- ✅ All 8 tests pass (2 widget + 6 unit)
+  - playPause sends command
+  - nextTrack sends command
+  - prevTrack sends command
+  - setLoudness sends command
+  - setSubwoofer sends command
+  - setXOver sends command
+  - setTimeAlignment sends command
+  - setEqPlus sends command
+- ✅ All 16 tests pass (2 widget + 14 unit)
 - ✅ Added `mockito` and `build_runner` to dev_dependencies
 
 ## Stage 2: Missing Features Implementation
