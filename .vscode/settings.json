@@ -1,5 +1,5 @@
 {
-  "dart.flutterSdkPath": "/home/mi/development/flutter",
+  "dart.flutterSdkPath": "/home/mi/flutter",
   "dart.lineLength": 80,
   "dart.enableSdkFormatter": true,
   "editor.formatOnSave": true,
