@@ -17,7 +17,7 @@ class BtProvider extends ChangeNotifier {
   bool _demoConnected = false;
   Timer? _demoTimer;
 
-  BtProvider({BtRepository? repository, this.isDemo = false}) 
+  BtProvider({BtRepository? repository, this.isDemo = false})
       : _repository = repository {
     if (!isDemo && _repository != null) {
       _stateSubscription = _repository.stateStream.listen((_) {
@@ -28,7 +28,7 @@ class BtProvider extends ChangeNotifier {
       _startDemoSimulation();
     }
   }
-  
+
   void _startDemoSimulation() {
     _demoTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       final rand = Random();
@@ -40,12 +40,16 @@ class BtProvider extends ChangeNotifier {
   }
 
   BtConnectionStatus get status {
-    if (isDemo) return _demoConnected ? BtConnectionStatus.connected : BtConnectionStatus.disconnected;
+    if (isDemo) {
+      return _demoConnected
+          ? BtConnectionStatus.connected
+          : BtConnectionStatus.disconnected;
+    }
     return _repository?.status ?? BtConnectionStatus.disconnected;
   }
 
   String? get errorMessage => _repository?.errorMessage;
-  
+
   bool get isConnected {
     if (isDemo) return _demoConnected;
     return _repository?.isConnected ?? false;
@@ -73,7 +77,8 @@ class BtProvider extends ChangeNotifier {
 
   Stream<BluetoothConnectionState> get connectionState {
     if (isDemo) return Stream.value(BluetoothConnectionState.disconnected);
-    return _repository?.connectionState ?? Stream.value(BluetoothConnectionState.disconnected);
+    return _repository?.connectionState ??
+        Stream.value(BluetoothConnectionState.disconnected);
   }
 
   Future<bool> connect(BluetoothDevice device) async {
@@ -269,17 +274,31 @@ class BtProvider extends ChangeNotifier {
   Future<bool> setLoudness(bool enabled, {int level = 0, int freq = 0}) async {
     if (isDemo) return true;
     try {
-      return await _repository?.setLoudness(enabled, level: level, freq: freq) ?? false;
+      return await _repository?.setLoudness(
+            enabled,
+            level: level,
+            freq: freq,
+          ) ??
+          false;
     } catch (e) {
       debugPrint('Set loudness error: $e');
       return false;
     }
   }
 
-  Future<bool> setSubwoofer({int level = 0, int freq = 0, int phase = 0}) async {
+  Future<bool> setSubwoofer({
+    int level = 0,
+    int freq = 0,
+    int phase = 0,
+  }) async {
     if (isDemo) return true;
     try {
-      return await _repository?.setSubwoofer(level: level, freq: freq, phase: phase) ?? false;
+      return await _repository?.setSubwoofer(
+            level: level,
+            freq: freq,
+            phase: phase,
+          ) ??
+          false;
     } catch (e) {
       debugPrint('Set subwoofer error: $e');
       return false;
@@ -299,17 +318,32 @@ class BtProvider extends ChangeNotifier {
   Future<bool> setTimeAlignment({int speaker = 0, int delay = 0}) async {
     if (isDemo) return true;
     try {
-      return await _repository?.setTimeAlignment(speaker: speaker, delay: delay) ?? false;
+      return await _repository?.setTimeAlignment(
+            speaker: speaker,
+            delay: delay,
+          ) ??
+          false;
     } catch (e) {
       debugPrint('Set time alignment error: $e');
       return false;
     }
   }
 
-  Future<bool> setEqPlus({int band = 0, int freq = 0, int gain = 0, int q = 0}) async {
+  Future<bool> setEqPlus({
+    int band = 0,
+    int freq = 0,
+    int gain = 0,
+    int q = 0,
+  }) async {
     if (isDemo) return true;
     try {
-      return await _repository?.setEqPlus(band: band, freq: freq, gain: gain, q: q) ?? false;
+      return await _repository?.setEqPlus(
+            band: band,
+            freq: freq,
+            gain: gain,
+            q: q,
+          ) ??
+          false;
     } catch (e) {
       debugPrint('Set EQ Plus error: $e');
       return false;

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +18,9 @@ class PrologyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => BtProvider()),
-        ChangeNotifierProvider(create: (_) => CommandSettingsProvider()..load()),
+        ChangeNotifierProvider(
+          create: (_) => CommandSettingsProvider()..load(),
+        ),
         BlocProvider(create: (_) => AppBloc()),
       ],
       child: MaterialApp(
