@@ -135,46 +135,51 @@ Notifications received on `AF01` characteristic:
 | 0x92 | 0x05 | `[?] [?] [balance+0x10] [fader+0x10]` | Balance/Fader update |
 | 0x93 | 0x03 | `[?] [?] [source_code]` | Input source update |
 
-## TODO: Extended Audio Settings
+## Extended Audio Settings (Implemented)
 
-The following features were found in APK but exact protocol bytes are TBD:
+The following features are implemented in `lib/data/repositories/bt_repository.dart` with assumed protocol bytes:
 
-### Loudness (implemented with assumed bytes)
+### Loudness
 ```
 [F0 00 07 A0 10 0E 30] [on/off] [level] [freq] [CS]
 ```
+- Command byte: **0x30**
 - on/off: 1 = on, 0 = off
 - level, freq: TBD (currently assumed)
 
-### Subwoofer (implemented with assumed bytes)
+### Subwoofer
 ```
 [F0 00 08 A0 10 0E 40] [level] [freq] [phase] [CS]
 ```
+- Command byte: **0x40**
 - level: 0-100
 - freq: cutoff frequency
 - phase: 0/1
 
-### X-Over (implemented with assumed bytes)
+### X-Over (Crossover)
 ```
 [F0 00 06 A0 10 0E 50] [type] [freq] [CS]
 ```
+- Command byte: **0x50**
 - type: 0=2-way, 1=3-way
 - freq: crossover frequency
 
-### Time Alignment (implemented with assumed bytes)
+### Time Alignment
 ```
 [F0 00 07 A0 10 0E 60] [speaker] [delay] [CS]
 ```
+- Command byte: **0x60**
 - speaker: 0-6 (FL, FR, RL, RR, SW, Tweeter)
 - delay: 0-200 (milliseconds?)
 
-### EQ Plus (implemented with assumed bytes)
+### EQ Plus (Parametric EQ)
 ```
 [F0 00 09 A0 10 0E 70] [band] [freq] [gain] [q] [CS]
 ```
+- Command byte: **0x70**
 - band: 0-8 (frequency band index)
 - freq: center frequency
 - gain: -12 to +12 dB
 - q: Q-factor
 
-When exact protocol is reverse-engineered, update the command bytes above.
+**Note:** These bytes are assumed based on analysis. When exact protocol is reverse-engineered via Frida/logcat, update the command bytes.
