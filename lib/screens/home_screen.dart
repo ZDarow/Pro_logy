@@ -7,6 +7,7 @@ import '../providers/command_settings_provider.dart';
 import '../bloc/app_bloc.dart';
 import '../data/constants.dart';
 import '../widgets/now_playing_bar.dart';
+import '../screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -78,7 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onPressed: connected
                     ? () => _showBtDialog(context)
-                    : () => Navigator.push(context, MaterialPageRoute(builder: (_) => sources[8].screen!)),
+                    : () {
+                        final btScanIdx = sources.indexWhere((s) => s.name == 'BT Scan');
+                        if (btScanIdx >= 0) {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => sources[btScanIdx].screen!));
+                        }
+                      },
                 tooltip: connected ? 'Подключено. Нажмите для отключения.' : 'Нажмите для сканирования',
               );
             },
@@ -103,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NowPlayingBar(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => settingsScreen),
+              MaterialPageRoute(builder: (_) => SettingsScreen()),
             ),
           ),
           Padding(
@@ -114,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => settingsScreen),
+                    MaterialPageRoute(builder: (_) => SettingsScreen()),
                   );
                 },
                 child: const Text('Settings'),

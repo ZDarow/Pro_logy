@@ -34,11 +34,11 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
       appBar: AppBar(title: const Text('Audio Settings')),
       body: ListView(
         children: [
-          _buildSlider('Bass', bass, -10, 10, (v) {
+          _buildSlider('Bass', bass, 0, 100, (v) {
             setState(() => bass = v);
             bt.setBass(v.toInt());
           }, bt.isConnected),
-          _buildSlider('Treble', treble, -10, 10, (v) {
+          _buildSlider('Treble', treble, 0, 100, (v) {
             setState(() => treble = v);
             bt.setTreble(v.toInt());
           }, bt.isConnected),

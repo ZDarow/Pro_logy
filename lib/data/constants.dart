@@ -8,7 +8,6 @@ import '../screens/aux_screen.dart';
 import '../screens/sxm_screen.dart';
 import '../screens/av_in_screen.dart';
 import '../screens/bt_scan_screen.dart';
-import '../screens/settings_screen.dart';
 import '../bloc/app_bloc.dart';
 
 class SourceItem {
@@ -112,4 +111,3 @@ final sources = <SourceItem>[
   ),
 ];
 
-const settingsScreen = SettingsScreen();

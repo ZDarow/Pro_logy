@@ -9,7 +9,7 @@ Prology is a Flutter mobile application for controlling Prology car audio system
 - **Language**: Dart SDK ^3.11.5
 - **Framework**: Flutter 3.x
 - **State Management**: flutter_bloc (AppBloc), provider (BtProvider, CommandSettingsProvider)
-- **Hardware**: flutter_blue_plus (BLE), audio_service
+- **Hardware**: flutter_blue_plus (BLE)
 - **Linting**: flutter_lints + analysis_options.yaml
 
 ### Module Structure

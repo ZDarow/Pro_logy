@@ -32,7 +32,8 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
     '1 kHz': 5,
     '2 kHz': 6,
     '4 kHz': 7,
-    '16 kHz': 8,
+    '8 kHz': 8,
+    '16 kHz': 9,
   };
 
   void _sendCommand(String freq, double value) {
@@ -77,8 +78,10 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
             child: ElevatedButton(
               onPressed: bt.isConnected
                   ? () => setState(() {
-                        bands.updateAll((key, value) => 0);
-                        _sendCommand('RESET', 0);
+                        for (final entry in bands.entries) {
+                          bands[entry.key] = 0;
+                          _sendCommand(entry.key, 0);
+                        }
                       })
                   : null,
               child: const Text('Reset'),
