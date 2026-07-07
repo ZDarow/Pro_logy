@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <string name="flutter.connected.device.name">PROLOGY_BLE</string>
+    <string name="flutter.sp.version">1</string>
+    <string name="flutter.connected.device.address"></string>
+</map>

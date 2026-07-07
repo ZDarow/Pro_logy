@@ -1,0 +1,15 @@
+total 109
+drwx------   8 u0_a790 u0_a790         3452 2026-03-06 14:00 .
+drwxrwx--x 819 system  system        118784 2026-03-12 07:45 ..
+drwxrwx--x   2 u0_a790 u0_a790         3452 2026-03-06 14:00 app_flutter
+drwxrws--x   3 u0_a790 u0_a790_cache   3452 2026-03-10 17:59 cache
+drwxrws--x   3 u0_a790 u0_a790_cache   3452 2026-03-12 12:37 code_cache
+drwxrwx--x   2 u0_a790 u0_a790         3452 2026-03-06 14:00 databases
+drwxrwx--x   2 u0_a790 u0_a790         3452 2026-03-06 14:00 files
+drwxrwx--x   2 u0_a790 u0_a790         3452 2026-03-06 14:00 shared_prefs
+/data/data/com.prology/shared_prefs:
+total 14
+drwxrwx--x 2 u0_a790 u0_a790 3452 2026-03-06 14:00 .
+drwx------ 8 u0_a790 u0_a790 3452 2026-03-06 14:00 ..
+-rw-rw---- 1 u0_a790 u0_a790  251 2026-03-06 14:00 FlutterSharedPreferences.xml
+-rw-rw---- 1 u0_a790 u0_a790  871 2026-03-06 14:00 audio_service_preferences.xml

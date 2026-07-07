@@ -1,0 +1,12 @@
+total 26
+drwxrwx--x 2 u0_a790 u0_a790  3452 2026-03-06 14:00 .
+drwx------ 8 u0_a790 u0_a790  3452 2026-03-06 14:00 ..
+-rw------- 1 u0_a790 u0_a790 16384 2026-03-06 14:00 libCachedImageData.db
+-rw------- 1 u0_a790 u0_a790    24 2026-03-06 14:00 profileInstalled
+total 9
+drwxrws--x 3 u0_a790 u0_a790_cache 3452 2026-03-10 17:59 .
+drwx------ 8 u0_a790 u0_a790       3452 2026-03-06 14:00 ..
+drwx--S--- 2 u0_a790 u0_a790_cache 3452 2026-03-10 17:59 libCachedImageData
+total 6
+drwxrwx--x 2 u0_a790 u0_a790 3452 2026-03-06 14:00 .
+drwx------ 8 u0_a790 u0_a790 3452 2026-03-06 14:00 ..

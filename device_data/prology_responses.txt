@@ -1,0 +1,892 @@
+PROLOGY Bluetooth Responses
+═══════════════════════════════════════════════════════════════════
+Captured: 2026-03-12
+═══════════════════════════════════════════════════════════════════
+
+[1] WRITE CHARACTERISTIC
+    UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+    HEX: C0 00 02 05 05 0C
+    ASCII: ......
+    Length: 6 bytes
+    Type: 0x02, Subcmd: 0x05
+    Description: Volume = 5
+    
+[2] WRITE CHARACTERISTIC (повтор)
+    UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+    HEX: C0 00 02 05 05 0C
+    Description: Volume = 5 (повторная отправка)
+
+═══════════════════════════════════════════════════════════════════
+АНАЛИЗ:
+═══════════════════════════════════════════════════════════════════
+
+Команда: C0 00 02 05 05 0C
+
+Байты:
+  [0] 0xC0 = Префикс
+  [1] 0x00 = Sub-prefix
+  [2] 0x02 = Длина данных
+  [3] 0x05 = Тип команды (Volume)
+  [4] 0x05 = Значение (Volume = 5)
+  [5] 0x0C = CRC
+
+CRC проверка:
+  XOR(байты 0,1,3,4) = C0 XOR 00 XOR 05 XOR 05 = C0
+  CONSTANT для 0x05 = 0xCC
+  CRC = C0 XOR CC = 0C ✅
+
+═══════════════════════════════════════════════════════════════════
+     ____
+    / _  |   Frida 17.2.14 - A world-class dynamic instrumentation toolkit
+   | (_| |
+    > _  |   Commands:
+   /_/ |_|       help      -> Displays the help system
+   . . . .       object?   -> Display information about 'object'
+   . . . .       exit/quit -> Exit
+   . . . .
+   . . . .   More info at https://frida.re/docs/home/
+   . . . .
+   . . . .   Connected to 127.0.0.1:27042 (id=socket@127.0.0.1:27042)
+Attaching...
+╔═══════════════════════════════════════════════════════════════════╗
+║  🔵 PROLOGY Flutter/Dart Interceptor                              ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+✅ Java VM подключена
+
+⚠️  MethodChannel не найден: java.lang.ClassNotFoundException: Didn't find class "io.flutter.plugin.common.MethodChannel" on path: DexPathList[[zip file "/data/app/~~PzGHUu_pBR1Iq6r7DRaahg==/com.prology-KHSR3wtMbhGuiYeMIlqA_g==/base.apk"],nativeLibraryDirectories=[/data/app/~~PzGHUu_pBR1Iq6r7DRaahg==/com.prology-KHSR3wtMbhGuiYeMIlqA_g==/lib/arm64, /data/app/~~PzGHUu_pBR1Iq6r7DRaahg==/com.prology-KHSR3wtMbhGuiYeMIlqA_g==/base.apk!/lib/arm64-v8a, /system/lib64, /system_ext/lib64]]
+✅ FlutterJNI найден
+✅ Hook на FlutterJNI установлен
+✅ Hook на setValue(byte[]) установлен
+
+📋 Найдено GATT Callback классов: 10
+   └─ android.bluetooth.IBluetoothCallback$Stub$Proxy
+   └─ android.bluetooth.IBluetoothCallback$Stub
+   └─ android.bluetooth.IBluetoothCallback$Default
+   └─ android.bluetooth.IBluetoothGattCallback$Stub
+   └─ android.bluetooth.IBluetoothCallback
+   └─ android.bluetooth.IBluetoothGattCallback
+   └─ android.bluetooth.IBluetoothGattCallback$_Parcel
+   └─ android.bluetooth.BluetoothGattCallback
+   └─ android.bluetooth.IBluetoothGattCallback$Stub$Proxy
+   └─ android.bluetooth.IBluetoothGattCallback$Default
+
+📋 PROLOGY/Flutter Bluetooth классов: 0
+✅ Hook на логи установлен
+
+╔═══════════════════════════════════════════════════════════════════╗
+║  ✅ ВСЕ ХУКИ УСТАНОВЛЕНЫ                                          ║
+║  📡 Ожидание Flutter/Dart событий...                              ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+[Remote::PID::9763 ]-> 
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message:
+ 📤 ════════════════════════════════════════════════════════{'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message:
+ {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+
+📤 ════════════════════════════════════════════════════════message:
+ {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}}📤 WRITE CHARACTERISTIC 
+data: ╠═══════════════════════════════════════════════════════════None
+
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+
+📤 ════════════════════════════════════════════════════════
+📤 WRITE CHARACTERISTIC
+╠═══════════════════════════════════════════════════════════
+📤 UUID: 0000ae02-0000-1000-8000-00805f9b34fb
+📤 Data: C0 00 02 05 05 0C 
+📤 Length: 6
+╚═══════════════════════════════════════════════════════════╝
+message: {'type': 'send', 'payload': {'type': 'write', 'uuid': '0000ae02-0000-1000-8000-00805f9b34fb', 'hex': 'C0 00 02 05 05 0C ', 'length': 6}} data: None
+Process crashed: Bad access due to protection failure
+
+***
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Evolution X Version: '10.9'
+Build fingerprint: 'Redmi/joyeuse_global/joyeuse:12/RKQ1.211019.001/V14.0.3.0.SJZMIXM:user/release-keys'
+Revision: '0'
+ABI: 'arm64'
+Timestamp: 2026-03-12 13:48:04.241526198+0300
+Process uptime: 1096s
+Cmdline: com.prology
+pid: 9763, tid: 9982, name: binder:9763_7  >>> com.prology <<<
+uid: 10790
+signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr 0x0000007ae08f2c48
+Cause: stack pointer is not in a rw map; likely due to stack overflow.
+    x0  0000007ad1c99f18  x1  0000007ad1af9ea0  x2  0000007c8aea93b0  x3  0000000000000003
+    x4  0000007ae08f36c0  x5  0000007adcf8e168  x6  0000007ae08f36c0  x7  0000000000000000
+    x8  0000000000000003  x9  0000000000000000  x10 0000007ae08f2bb0  x11 0000000000000000
+    x12 0000000000000008  x13 0000007ac74afc10  x14 0000000000000007  x15 0000007ad1af9ea0
+    x16 0000007ad1c99f00  x17 0000007c64b21420  x18 0000000000000000  x19 0000007ae08f2bc0
+    x20 0000007ae08f3238  x21 0000007ad1af9ea0  x22 0000000000000003  x23 0000007adcf8e168
+    x24 0000007ae08f36c0  x25 0000000000000003  x26 0000000000000003  x27 0000000000000003
+    x28 0000000000000000  x29 0000007ae08f31a0
+    lr  0000007ac7b95770  sp  0000007ae08f2bb0  pc  0000007ac7b9583c  pst 0000000060001000
+512 total frames
+backtrace:
+      #00 pc 000000000097683c  /memfd:frida-agent-64.so (deleted)
+      #01 pc 000000000097674c  /memfd:frida-agent-64.so (deleted)
+      #02 pc 00000000009766a8  /memfd:frida-agent-64.so (deleted)
+      #03 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #04 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #05 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #06 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #07 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #08 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #09 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #10 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #11 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #12 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #13 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #14 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #15 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #16 pc 0000000000b409ac  /memfd:frida-agent-64.so (deleted)
+      #17 pc 0000000000b64030  /memfd:frida-agent-64.so (deleted)
+      #18 pc 0000000000b40ff0  /memfd:frida-agent-64.so (deleted)
+      #19 pc 0000000000b41f88  /memfd:frida-agent-64.so (deleted)
+      #20 pc 0000000000b49c94  /memfd:frida-agent-64.so (deleted)
+      #21 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #22 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #23 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #24 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #25 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #26 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #27 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #28 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #29 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #30 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #31 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #32 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #33 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #34 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #35 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #36 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #37 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #38 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #39 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #40 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #41 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #42 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #43 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #44 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #45 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #46 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #47 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #48 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #49 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #50 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #51 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #52 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #53 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #54 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #55 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #56 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #57 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #58 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #59 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #60 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #61 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #62 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #63 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #64 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #65 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #66 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #67 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #68 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #69 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #70 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #71 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #72 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #73 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #74 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #75 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #76 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #77 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #78 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #79 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #80 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #81 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #82 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #83 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #84 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #85 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #86 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #87 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #88 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #89 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #90 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #91 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #92 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #93 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #94 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #95 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #96 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #97 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #98 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #99 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #100 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #101 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #102 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #103 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #104 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #105 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #106 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #107 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #108 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #109 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #110 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #111 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #112 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #113 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #114 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #115 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #116 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #117 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #118 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #119 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #120 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #121 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #122 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #123 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #124 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #125 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #126 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #127 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #128 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #129 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #130 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #131 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #132 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #133 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #134 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #135 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #136 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #137 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #138 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #139 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #140 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #141 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #142 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #143 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #144 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #145 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #146 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #147 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #148 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #149 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #150 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #151 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #152 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #153 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #154 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #155 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #156 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #157 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #158 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #159 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #160 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #161 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #162 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #163 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #164 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #165 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #166 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #167 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #168 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #169 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #170 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #171 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #172 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #173 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #174 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #175 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #176 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #177 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #178 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #179 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #180 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #181 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #182 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #183 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #184 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #185 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #186 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #187 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #188 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #189 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #190 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #191 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #192 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #193 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #194 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #195 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #196 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #197 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #198 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #199 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #200 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #201 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #202 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #203 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #204 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #205 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #206 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #207 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #208 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #209 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #210 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #211 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #212 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #213 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #214 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #215 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #216 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #217 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #218 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #219 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #220 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #221 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #222 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #223 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #224 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #225 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #226 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #227 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #228 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #229 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #230 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #231 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #232 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #233 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #234 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #235 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #236 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #237 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #238 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #239 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #240 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #241 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #242 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #243 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #244 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #245 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #246 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #247 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #248 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #249 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #250 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #251 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #252 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #253 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #254 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #255 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #256 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #257 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #258 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #259 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #260 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #261 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #262 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #263 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #264 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #265 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #266 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #267 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #268 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #269 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #270 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #271 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #272 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #273 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #274 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #275 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #276 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #277 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #278 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #279 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #280 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #281 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #282 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #283 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #284 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #285 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #286 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #287 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #288 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #289 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #290 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #291 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #292 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #293 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #294 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #295 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #296 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #297 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #298 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #299 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #300 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #301 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #302 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #303 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #304 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #305 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #306 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #307 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #308 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #309 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #310 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #311 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #312 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #313 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #314 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #315 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #316 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #317 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #318 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #319 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #320 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #321 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #322 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #323 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #324 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #325 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #326 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #327 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #328 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #329 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #330 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #331 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #332 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #333 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #334 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #335 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #336 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #337 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #338 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #339 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #340 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #341 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #342 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #343 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #344 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #345 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #346 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #347 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #348 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #349 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #350 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #351 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #352 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #353 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #354 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #355 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #356 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #357 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #358 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #359 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #360 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #361 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #362 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #363 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #364 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #365 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #366 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #367 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #368 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #369 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #370 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #371 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #372 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #373 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #374 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #375 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #376 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #377 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #378 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #379 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #380 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #381 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #382 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #383 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #384 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #385 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #386 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #387 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #388 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #389 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #390 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #391 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #392 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #393 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #394 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #395 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #396 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #397 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #398 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #399 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #400 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #401 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #402 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #403 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #404 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #405 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #406 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #407 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #408 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #409 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #410 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #411 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #412 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #413 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #414 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #415 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #416 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #417 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #418 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #419 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #420 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #421 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #422 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #423 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #424 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #425 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #426 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #427 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #428 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #429 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #430 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #431 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #432 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #433 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #434 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #435 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #436 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #437 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #438 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #439 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #440 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #441 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #442 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #443 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #444 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #445 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #446 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #447 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #448 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #449 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #450 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #451 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #452 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #453 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #454 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #455 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #456 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #457 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #458 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #459 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #460 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #461 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #462 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #463 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #464 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #465 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #466 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #467 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #468 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #469 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #470 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #471 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #472 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #473 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #474 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #475 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #476 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #477 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #478 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #479 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #480 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #481 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #482 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #483 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #484 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #485 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #486 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #487 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+      #488 pc 0000000000b3ca24  /memfd:frida-agent-64.so (deleted)
+      #489 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #490 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #491 pc 0000000000b46ba0  /memfd:frida-agent-64.so (deleted)
+      #492 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #493 pc 00000000009728c4  /memfd:frida-agent-64.so (deleted)
+      #494 pc 000000000097d850  /memfd:frida-agent-64.so (deleted)
+      #495 pc 0000000000aa002c  /memfd:frida-agent-64.so (deleted)
+      #496 pc 0000000000aa0440  /memfd:frida-agent-64.so (deleted)
+      #497 pc 000000000037b100  /apex/com.android.art/lib64/libart.so (art_quick_generic_jni_trampoline+144) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #498 pc 0000000000363d94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #499 pc 0000000000362a1c  /apex/com.android.art/lib64/libart.so (art::JValue art::InvokeWithVarArgs<_jmethodID*>(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, std::__va_list)+636) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #500 pc 00000000008bb558  /apex/com.android.art/lib64/libart.so (art::JNI<false>::CallNonvirtualBooleanMethod(_JNIEnv*, _jobject*, _jclass*, _jmethodID*, ...)+232) (BuildId: ea9554494e3ba0fe00070b1f4c548fc3)
+      #501 pc 0000000000aa02ac  /memfd:frida-agent-64.so (deleted)
+      #502 pc 0000000000a9fd0c  /memfd:frida-agent-64.so (deleted)
+      #503 pc 0000000000976ba0  /memfd:frida-agent-64.so (deleted)
+      #504 pc 00000000009776c4  /memfd:frida-agent-64.so (deleted)
+      #505 pc 00000000009773a4  /memfd:frida-agent-64.so (deleted)
+      #506 pc 0000000000b3c8cc  /memfd:frida-agent-64.so (deleted)
+      #507 pc 0000000000b45c20  /memfd:frida-agent-64.so (deleted)
+      #508 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #509 pc 0000000000b46ccc  /memfd:frida-agent-64.so (deleted)
+      #510 pc 0000000000b45a24  /memfd:frida-agent-64.so (deleted)
+      #511 pc 0000000000b58fe0  /memfd:frida-agent-64.so (deleted)
+***
+
+Thank you for using Frida!

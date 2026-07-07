@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <boolean name="androidNotificationOngoing" value="true" />
+    <string name="androidNotificationChannelName">Audio playback</string>
+    <string name="androidNotificationIcon">mipmap/ic_launcher</string>
+    <boolean name="androidShowNotificationBadge" value="false" />
+    <int name="notificationColor" value="-1" />
+    <boolean name="androidStopForegroundOnPause" value="true" />
+    <string name="androidNotificationChannelId">com.ryanheise.myapp.channel.audio</string>
+    <string name="activityClassName">com.ryanheise.audioservice.AudioServiceActivity</string>
+    <int name="artDownscaleHeight" value="-1" />
+    <boolean name="androidNotificationClickStartsActivity" value="true" />
+    <int name="artDownscaleWidth" value="-1" />
+    <boolean name="androidResumeOnClick" value="true" />
+</map>
