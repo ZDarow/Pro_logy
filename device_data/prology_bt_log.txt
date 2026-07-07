@@ -1,0 +1,1111 @@
+03-12 12:44:32.129 24690 24700 F libc    : Fatal signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr 0x7c7428afe0 in tid 24700 (binder:24690_1), pid 24690 (com.prology)
+03-12 12:44:32.992 30455 30455 F DEBUG   : Cmdline: com.prology
+03-12 12:44:32.992 30455 30455 F DEBUG   : pid: 24690, tid: 24700, name: binder:24690_1  >>> com.prology <<<
+03-12 13:48:04.145  9763  9982 F libc    : Fatal signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr 0x7ae08f2c48 in tid 9982 (binder:9763_7), pid 9763 (com.prology)
+03-12 13:48:04.464 12991 12991 F DEBUG   : Cmdline: com.prology
+03-12 13:48:04.464 12991 12991 F DEBUG   : pid: 9763, tid: 9982, name: binder:9763_7  >>> com.prology <<<
+03-12 13:55:52.631  2006  2273 W PackageManager: Existing package com.prology signatures do not match newer version; ignoring!
+03-12 13:55:52.635  2006  2273 D PackageInstallerSession: Marking session 905118457 as failed: INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.prology signatures do not match newer version; ignoring!
+03-12 13:55:52.635  2006  2273 I PackageInstallerSession: Session [905118457] was destroyed because of [Session marked as failed: INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.prology signatures do not match newer version; ignoring!]
+03-12 13:56:52.326  2006  2322 W ActivityManager: Invalid packageName: com.prology
+03-12 13:56:54.449  2006  2110 I ActivityManager: Force stopping com.prology appid=10790 user=-1: deletePackageX
+03-12 13:56:54.451  2006  2273 I AppsFilter: interaction: PackageSetting{2c92f1b org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{564d8ef com.prology/10790} BLOCKED
+03-12 13:56:54.453  2006  2273 I AppsFilter: interaction: PackageSetting{2c92f1b org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{564d8ef com.prology/10790} BLOCKED
+03-12 13:56:54.660  2006  2440 D BackgroundInstallControlService: handlePackageRemove: removing com.prology from 0
+03-12 13:56:54.697  2006  2273 I ActivityManager: Force stopping com.prology appid=10790 user=10: pkg removed
+03-12 13:56:54.700  2006  2273 I ActivityManager: Force stopping com.prology appid=10790 user=10: pkg removed
+03-12 13:56:54.719  2006  2340 I RollbackManager: broadcast=ACTION_PACKAGE_FULLY_REMOVED pkg=com.prology
+03-12 13:56:54.817  2006  2109 D LauncherAppsService: onPackageRemoved: Skipping - profile not enabled or not accessible for user=UserHandle{10}, packageName=com.prology
+03-12 13:56:54.818  2006  2109 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{10}, packageName=com.prology
+03-12 13:56:54.828  2006  2109 D LauncherAppsService: onPackageRemoved: triggering onPackageRemoved for user=UserHandle{10}, packageName=com.prology
+03-12 13:56:55.079  2006  2006 I ConditionProviders: Disallowing condition provider com.prology (userSet: true)
+03-12 13:57:15.490  2006  2273 V BackupManagerService: [UserID:0] restoreAtInstall pkg=com.prology token=1e restoreSet=0
+03-12 13:57:15.498  2006  2273 I AppsFilter: interaction: PackageSetting{4a6928a org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{f90cc2d com.prology/10791} BLOCKED
+03-12 13:57:15.553  2006  2439 D ShortcutService: adding package: com.prology userId=0
+03-12 13:57:15.695  2006  2006 I AppsFilter: interaction: PackageSetting{9a11621 org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{cdaaa46 com.prology/10791} BLOCKED
+03-12 13:57:15.743  2006  2439 D ShortcutService: changing package: com.prology userId=0
+03-12 13:57:16.299  2006  2109 D LauncherAppsService: onPackageAdded: triggering onPackageAdded for user=UserHandle{0}, packageName=com.prology
+03-12 13:57:16.300  2006  2109 D LauncherAppsService: onPackageAdded: triggering onPackageAdded for user=UserHandle{0}, packageName=com.prology
+03-12 13:57:16.300  2006  2109 D LauncherAppsService: onPackageAdded: triggering onPackageAdded for user=UserHandle{0}, packageName=com.prology
+03-12 13:57:34.701  2006  2042 I ActivityManager: Force stopping com.prology appid=10791 user=-1: set debug app
+03-12 13:57:44.588  2006  4069 I ActivityManager: Force stopping com.prology appid=10791 user=-1: set debug app
+03-12 13:57:44.652  2006  2875 I ActivityManager: Force stopping com.prology appid=10791 user=-1: set debug app
+03-12 13:57:53.590  2006  2322 I ActivityManager: Force stopping com.prology appid=10791 user=-1: set debug app
+03-12 13:57:53.660  2006  2869 I ActivityManager: Force stopping com.prology appid=10791 user=-1: set debug app
+03-12 14:01:58.129  2006  2875 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.prology/com.ryanheise.audioservice.AudioServiceActivity} with LAUNCH_SINGLE_TOP from uid 0 (BAL_ALLOW_ALLOWLISTED_UID) result code=0
+03-12 14:01:58.132  2006  2074 W ActivityManager: ProcessRecord{8f175c0 0:com.prology/u0a791}: ART verification disabled
+03-12 14:01:58.138  2006  4065 I AppsFilter: interaction: PackageSetting{9a11621 org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{a582dec com.prology/10791} BLOCKED
+03-12 14:01:58.176  2006  2111 I ActivityManager: Start proc 22054:com.prology/u0a791 for next-top-activity {com.prology/com.ryanheise.audioservice.AudioServiceActivity}
+03-12 14:01:58.263  2006  2071 V WindowManager: Sent Transition (#631) createdAt=03-12 14:01:58.107 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=966 effectiveUid=10791 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.prology/com.ryanheise.audioservice.AudioServiceActivity } baseActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} topActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} origActivity=null realActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} numActivities=1 lastActiveTime=62962731 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{f155311 Task{412c890 #966 type=standard A=10791:com.prology}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 102 - 0, 0) topActivityInfo=ActivityInfo{b89bc76 com.ryanheise.audioservice.AudioServiceActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(280, 680 - 801, 1760) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityLetterboxAppWidth=-1 topActivityLetterboxAppHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 631 }
+03-12 14:01:58.268  2006  2071 V WindowManager:         {WCT{RemoteToken{f155311 Task{412c890 #966 type=standard A=10791:com.prology}}} m=OPEN f=NONE leash=Surface(name=Task=966)/@0xfd60852 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+03-12 14:01:58.984  2006  2321 I AppsFilter: interaction: PackageSetting{a582dec com.prology/10791} -> PackageSetting{355c672 ru.maximoff.apktool/10670} BLOCKED
+03-12 14:01:59.153  2006  2321 I MediaSessionStack: addSession to bottom of stack | record: com.prology/media-session/25 (userId=0)
+03-12 14:01:59.729  2006  2876 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/25 (userId=0)
+03-12 14:01:59.957  2006  2071 V WindowManager: Sent Transition (#632) createdAt=03-12 14:01:59.491 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=966 effectiveUid=10791 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.prology/com.ryanheise.audioservice.AudioServiceActivity } baseActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} topActivity=ComponentInfo{com.android.permissioncontroller/com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} origActivity=null realActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} numActivities=2 lastActiveTime=62964114 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{f155311 Task{412c890 #966 type=standard A=10791:com.prology}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=ActivityInfo{57d89f9 com.android.permissioncontroller.permission.ui.GrantPermissionsActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=false lastNonFullscreenBounds=Rect(280, 680 - 801, 1760) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityLetterboxAppWidth=-1 topActivityLetterboxAppHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 632 }
+03-12 14:02:04.138  2006  4065 W PackageConfigPersister: App-specific configuration not found for packageName: com.prology and userId: 0
+03-12 14:02:16.391  2006  4065 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/25 (userId=0)
+03-12 14:02:16.959  2006  2321 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/25 (userId=0)
+03-12 14:02:46.055  2006  2071 V WindowManager:         {WCT{RemoteToken{f155311 Task{412c890 #966 type=standard A=10791:com.prology}}} m=TO_BACK f=NONE leash=Surface(name=Task=966)/@0xfd60852 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+03-12 14:02:47.658  2006  2071 V WindowManager:         {WCT{RemoteToken{f155311 Task{412c890 #966 type=standard A=10791:com.prology}}} m=TO_BACK f=NONE leash=Surface(name=Task=966)/@0xfd60852 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1}
+03-12 14:03:57.961  2006  2346 D ActivityManager: freezing 22054 com.prology
+03-12 14:05:22.170  2006  2857 I ActivityManager: Force stopping com.prology appid=10791 user=0: from pid 23308
+03-12 14:05:22.205  2006  2857 I ActivityManager: Killing 22054:com.prology/u0a791 (adj 900): stop com.prology due to from pid 23308
+03-12 14:05:22.212  2006  2857 W ActivityTaskManager: Force removing ActivityRecord{101513043 u0 com.prology/com.ryanheise.audioservice.AudioServiceActivity t966 f}}: app died, no saved state
+03-12 14:05:22.213  2006  2333 W UsageStatsService: Unexpected activity event reported! (com.prology/com.ryanheise.audioservice.AudioServiceActivity event : 23 instanceId : 75199881)
+03-12 14:05:22.238  2006  2857 I AppsFilter: interaction: PackageSetting{9a11621 org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{bbca8f0 com.prology/10791} BLOCKED
+03-12 14:05:22.240  2006  2857 W ActivityManager: Invalid packageName: com.prology
+03-12 14:05:22.341  2006  4065 I MediaSessionStack: removeSession | record: com.prology/media-session/25 (userId=0)
+03-12 14:05:22.341  2006  2857 V ActivityManager: Got obituary of 22054:com.prology
+03-12 14:05:24.363  2006  4894 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.prology/com.ryanheise.audioservice.AudioServiceActivity} with LAUNCH_SINGLE_TOP from uid 0 (BAL_ALLOW_ALLOWLISTED_UID) result code=0
+03-12 14:05:24.373  2006  4894 I AppsFilter: interaction: PackageSetting{9a11621 org.woheller69.audio_analyzer_for_android/10799} -> PackageSetting{50f7b7 com.prology/10791} BLOCKED
+03-12 14:05:24.408  2006  2074 W ActivityManager: ProcessRecord{9e3c68d 0:com.prology/u0a791}: ART verification disabled
+03-12 14:05:24.424  2006  2111 I ActivityManager: Start proc 23343:com.prology/u0a791 for next-top-activity {com.prology/com.ryanheise.audioservice.AudioServiceActivity}
+03-12 14:05:24.461  2006  2071 V WindowManager: Sent Transition (#636) createdAt=03-12 14:05:24.345 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=967 effectiveUid=10791 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.prology/com.ryanheise.audioservice.AudioServiceActivity } baseActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} topActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} origActivity=null realActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} numActivities=1 lastActiveTime=63168969 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 102 - 0, 0) topActivityInfo=ActivityInfo{7253eb5 com.ryanheise.audioservice.AudioServiceActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(280, 680 - 801, 1760) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityLetterboxAppWidth=-1 topActivityLetterboxAppHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 636 }
+03-12 14:05:24.464  2006  2071 V WindowManager:         {WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} m=OPEN f=NONE leash=Surface(name=Task=967)/@0x731adf2 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+03-12 14:05:25.174  2006  4065 I AppsFilter: interaction: PackageSetting{50f7b7 com.prology/10791} -> PackageSetting{355c672 ru.maximoff.apktool/10670} BLOCKED
+03-12 14:05:25.188  2006  4065 I MediaSessionStack: addSession to bottom of stack | record: com.prology/media-session/26 (userId=0)
+03-12 14:05:25.442  2006  4065 W PackageConfigPersister: App-specific configuration not found for packageName: com.prology and userId: 0
+03-12 14:05:25.508  2006  4065 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/26 (userId=0)
+03-12 14:05:32.470  2006  4894 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/26 (userId=0)
+03-12 14:05:32.861  2006  2043 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/26 (userId=0)
+03-12 14:06:05.010  2006  2043 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/26 (userId=0)
+03-12 14:06:05.013  2006  2043 I ActivityManager: Background started FGS: Allowed [callingPackage: com.prology; callingUid: 10791; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { cmp=com.prology/com.ryanheise.audioservice.AudioService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:35; callerTargetSdkVersion:35; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+03-12 14:06:05.029  2006  4894 I ActivityManager: Background started FGS: Allowed [callingPackage: com.prology; callingUid: 10791; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { act=android.media.browse.MediaBrowserService cmp=com.prology/com.ryanheise.audioservice.AudioService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:35; callerTargetSdkVersion:35; startForegroundCount:0; bindFromPackage:null: isBindService:false]; startForegroundDelayMs:39995
+03-12 14:06:05.192  2006  2356 W ActivityManager: pid 2698 com.android.bluetooth sent binder code 4 with flags 0 to frozen apps and got error -32
+03-12 14:06:05.511  2006  2043 W ActivityManager: Permission Denial: Accessing service com.prology/com.ryanheise.audioservice.AudioService from pid=2499, uid=10591 that is not exported from uid 10791
+03-12 14:06:06.326  2006  2071 V WindowManager:         {WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} m=TO_BACK f=NONE leash=Surface(name=Task=967)/@0x731adf2 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+03-12 14:06:07.749  2006  2071 V WindowManager:         {WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} m=TO_BACK f=NONE leash=Surface(name=Task=967)/@0x731adf2 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1}
+03-12 14:07:41.499  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:07:41.500  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:07:41.501  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:07:41.501  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:07:41.502  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:07:41.503  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:41.503  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:41.505  2698  2941 W bluetooth: system/gd/hci/hci_layer.cc:204 on_command_status: Received UNEXPECTED command status:UNSUPPORTED_REMOTE_OR_LMP_FEATURE(0x1a) opcode:SNIFF_MODE(0x0803)
+03-12 14:07:41.584  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:42.503  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:07:42.503  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:42.588  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:42.589  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:07:42.589  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:42.670  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:42.670  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:42.821  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:07:45.713  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:45.714  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:07:45.715  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:07:45.716  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:45.796  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:45.797  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:45.948  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:07:48.863  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:48.864  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:07:48.866  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:07:48.866  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:48.948  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:48.949  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:49.100  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:07:51.968  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:51.969  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:07:51.970  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:07:51.971  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:52.052  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:52.053  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:52.204  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:07:55.073  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:55.074  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:07:55.075  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:07:55.076  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:55.157  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:55.158  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:55.308  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:07:58.178  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:07:58.179  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:07:58.181  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:07:58.182  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:07:58.263  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:07:58.263  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:07:58.414  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:01.328  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:01.329  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:01.331  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:01.331  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:01.412  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:01.413  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:01.564  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:04.433  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:04.435  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:04.436  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:04.437  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:04.518  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:04.518  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:04.669  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:07.538  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:07.541  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:07.542  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:07.543  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:07.624  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:07.624  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:07.774  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:10.688  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:10.689  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:10.690  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:10.691  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:10.772  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:10.772  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:10.923  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:13.793  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:13.794  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:13.795  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:13.796  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:13.877  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:13.877  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:14.028  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:16.898  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:16.899  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:16.900  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:16.900  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:16.982  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:16.982  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:17.133  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:20.048  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:20.049  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:20.051  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:20.052  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:20.133  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:20.134  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:20.284  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:23.153  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:23.154  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:23.155  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:23.156  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:23.237  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:23.238  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:23.389  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:26.258  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:26.259  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:26.260  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:26.260  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:26.341  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:26.342  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:26.493  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:29.408  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:29.409  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:29.411  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:29.411  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:29.493  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:29.493  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:29.644  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:32.513  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:32.514  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:32.515  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:32.516  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:32.597  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:32.598  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:32.749  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:35.663  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:35.664  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:35.664  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:35.665  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:35.745  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:35.746  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:35.897  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:38.768  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:38.769  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:38.770  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:38.770  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:38.852  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:38.852  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:39.003  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:41.446  2006  2110 W ActivityManager: Stopping service due to app idle: u0a791 -3m16s411ms com.prology/com.ryanheise.audioservice.AudioService
+03-12 14:08:41.873  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:41.874  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:41.875  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:41.875  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:41.957  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:41.957  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:42.108  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:44.978  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:44.979  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:44.980  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:44.980  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:45.061  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:45.062  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:45.212  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:48.128  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:48.129  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:48.130  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:48.131  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:48.212  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:48.212  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:48.363  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:51.233  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:51.234  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:51.235  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:51.235  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:51.317  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:51.318  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:51.469  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:54.340  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:54.341  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:54.342  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:54.343  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:54.425  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:54.426  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:54.576  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:08:57.488  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:08:57.489  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:08:57.490  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:08:57.491  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:08:57.572  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:08:57.572  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:08:57.723  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:00.594  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:00.594  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:00.595  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:00.596  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:00.677  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:00.678  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:00.828  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:03.698  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:03.700  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:03.701  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:03.702  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:03.784  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:03.785  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:03.936  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:06.893  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:06.894  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:06.896  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:06.897  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:06.979  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:06.980  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:07.131  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:09.953  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:09.955  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:09.956  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:09.957  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:10.039  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:10.040  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:10.191  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:13.058  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:13.060  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:13.061  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:13.062  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:13.144  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:13.145  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:13.296  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:16.208  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:16.210  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:16.211  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:16.212  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:16.294  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:16.295  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:16.446  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:19.313  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:19.315  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:19.316  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:19.317  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:19.399  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:19.400  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:19.551  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:22.418  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:22.419  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:22.421  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:22.422  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:22.504  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:22.505  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:22.656  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:25.568  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:25.570  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:25.571  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:25.572  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:25.654  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:25.655  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:25.806  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:27.009  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:27.010  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:27.011  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:27.012  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:27.159  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:27.160  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:27.311  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:28.673  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:28.675  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:28.676  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:28.677  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:28.759  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:28.760  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:28.911  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:31.778  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:31.780  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:31.781  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:31.782  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:31.864  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:31.865  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:32.016  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:34.929  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:34.930  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:34.932  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:34.933  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:35.014  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:35.015  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:35.166  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:38.033  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:38.035  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:38.036  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:38.037  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:38.119  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:38.120  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:38.271  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:40.532  2006  2071 V WindowManager: Sent Transition (#640) createdAt=03-12 14:09:40.451 via request=TransitionRequestInfo { type = TO_FRONT, triggerTask = TaskInfo{userId=0 taskId=967 effectiveUid=10791 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.prology/com.ryanheise.audioservice.AudioServiceActivity } baseActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} topActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} origActivity=null realActivity=ComponentInfo{com.prology/com.ryanheise.audioservice.AudioServiceActivity} numActivities=1 lastActiveTime=63212264 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 102 - 0, 0) topActivityInfo=ActivityInfo{7253eb5 com.ryanheise.audioservice.AudioServiceActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(280, 680 - 801, 1760) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityLetterboxAppWidth=-1 topActivityLetterboxAppHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@1d4a021, appThread = android.app.IApplicationThread$Stub$Proxy@ad86c46, debugName = QuickstepLaunch }, displayChange = null, flags = 0, debugId = 640 }
+03-12 14:09:40.534  2006  2071 V WindowManager:         {WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} m=TO_FRONT f=MOVE_TO_TOP leash=Surface(name=Task=967)/@0x731adf2 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+03-12 14:09:40.593  2006  2071 W ziparchive: Unable to open '/data/app/~~GGxNIAZ0JXINedOWSY20Tw==/com.prology-Bnce9j0bmBfn6bhaQoci7A==/base.dm': No such file or directory
+03-12 14:09:40.651  2006  2371 I ImeTracker: com.prology:852ca3f3: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+03-12 14:09:40.653 23343 23343 I ImeTracker: com.prology:852ca3f3: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+03-12 14:09:40.678 21802 21802 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1384 onStartInput(EditorInfo{EditorInfo{packageName=com.prology, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+03-12 14:09:40.681 21802 21802 I GoogleInputMethodService: GoogleInputMethodService.onStartInputView():1472 onStartInputView(EditorInfo{EditorInfo{packageName=com.prology, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+03-12 14:09:40.683  2006  2871 W PackageConfigPersister: App-specific configuration not found for packageName: com.prology and userId: 0
+03-12 14:09:40.686 21802 21802 I AndroidIME: AbstractIme.onActivate():95 PasswordIme.onActivate() : EditorInfo = EditorInfo{packageName=com.prology, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}, IncognitoMode = false, DeviceLocked = false
+03-12 14:09:41.139  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:41.140  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:41.141  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:41.141  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:41.223  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:09:41.223  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:09:41.374  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:09:43.467  2006  4985 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.prology/media-session/26 (userId=0)
+03-12 14:09:43.469  2006  4985 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=1752, buffered position=52401, speed=1.0, updated=63428060, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:43.472  2006  4985 I ActivityManager: Background started FGS: Allowed [callingPackage: com.prology; callingUid: 10791; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { cmp=com.prology/com.ryanheise.audioservice.AudioService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:35; callerTargetSdkVersion:35; startForegroundCount:1; bindFromPackage:null: isBindService:false]
+03-12 14:09:43.479  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+03-12 14:09:43.482  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:09:43.483  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:09:43.483  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:09:43.485  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:09:43.485  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:09:43.486  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:09:43.487  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:09:43.487  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:09:43.489  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:09:43.489  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:09:43.490  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:09:43.517  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:09:43.517  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:09:43.556  2006  2880 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=0, buffered position=52401, speed=1.0, updated=63428060, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:43.566  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+03-12 14:09:43.571  2006  4985 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=7, buffered position=0, speed=1.0, updated=63428135, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=7, error=null}
+03-12 14:09:43.590  2006  2858 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=BUFFERING(6), position=0, buffered position=0, speed=1.0, updated=63428135, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=7, error=null}
+03-12 14:09:43.591  3977  3977 D MusicControl: updateMediaMetadata, com.prology 
+03-12 14:09:43.592  3977  3977 D MusicControl: 筛选com.prology 2026-03-12 14:09:43  old:1970-01-01 03:00:00 
+03-12 14:09:43.594  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=true :  play_state=true :  queue=false
+03-12 14:09:43.596  2698  2698 W AudioMediaPlayerWrapper: onMetadataChanged(): com.prology tried to update with no new data
+03-12 14:09:43.597  2698  2698 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.prology tried to update with no new data
+03-12 14:09:43.615  2006  2321 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=0, buffered position=5537, speed=1.0, updated=63428217, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=7, error=null}
+03-12 14:09:43.621  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+03-12 14:09:43.640  2698  3229 I bluetooth: system/stack/btm/btm_iso_impl.h:327 get_number_of_active_iso: Current number of active_iso is 0
+03-12 14:09:43.640  2698  3229 I bluetooth-a2dp: system/btif/src/btif_av.cc:3778 btif_av_stream_started_ready: active_peer=xx:xx:xx:xx:20:90 state=2 flags=0x0(None) ready=false
+03-12 14:09:43.641  2698  3229 I bluetooth-a2dp: system/btif/src/btif_av.cc:3751 btif_av_stream_ready: active_peer=xx:xx:xx:xx:20:90 state=2 flags=0x0(None)
+03-12 14:09:43.641  2698  3229 I bluetooth-a2dp: system/btif/src/btif_av.cc:3698 btif_av_stream_start_with_latency: peer=xx:xx:xx:xx:20:90 use_latency_mode=false
+03-12 14:09:43.642  2698  3108 I BluetoothAdapterService: getActiveDevices: A2dp device: XX:XX:XX:XX:20:90
+03-12 14:09:43.642  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:3088 btif_av_handle_event: peer=xx:xx:xx:xx:20:90 handle=0x0 event=BTIF_AV_START_STREAM_REQ_EVT(0x1c)
+03-12 14:09:43.642  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2250 ProcessEvent: state=Opened peer=xx:xx:xx:xx:20:90 event=BTIF_AV_START_STREAM_REQ_EVT(0x1c) flags=0x0(None) active_peer=true
+03-12 14:09:43.643  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2269 ProcessEvent: Peer xx:xx:xx:xx:20:90 : event=BTIF_AV_START_STREAM_REQ_EVT(0x1c) flags=0x0(None)
+03-12 14:09:43.643  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2274 ProcessEvent: Stream use_latency_mode=false
+03-12 14:09:43.643  2698  2935 I bluetooth-a2dp: system/bta/av/bta_av_api.cc:238 BTA_AvStart: Starting audio/video stream data transfer bta_handle:65, use_latency_mode:false
+03-12 14:09:43.644  2698  2935 I bluetooth-a2dp: system/bta/av/bta_av_aact.cc:1853 bta_av_do_start: A2dp stream start peer:xx:xx:xx:xx:20:90 sco_occupied:false av_role:0x0 started:false wait:0x0
+03-12 14:09:43.644  2698  2935 I bluetooth-a2dp: system/stack/avdt/avdt_api.cc:551 AVDT_StartReq: num_handles=1
+03-12 14:09:43.645  2698  2935 I bluetooth-a2dp: system/bta/av/bta_av_aact.cc:1912 bta_av_do_start: peer xx:xx:xx:xx:20:90 start requested: sco_occupied:false role:0x10 started:false wait:0x0
+03-12 14:09:43.651  2698  2935 I bluetooth-a2dp: system/bta/av/bta_av_aact.cc:2249 bta_av_start_ok: peer xx:xx:xx:xx:20:90 bta_handle:0x41 wait:0x0 role:0x10 local_tsep:0
+03-12 14:09:43.652  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:3088 btif_av_handle_event: peer=00:00:00:00:00:00 handle=0x41 event=BTA_AV_START_EVT(0x4)
+03-12 14:09:43.653  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2250 ProcessEvent: state=Opened peer=xx:xx:xx:xx:20:90 event=BTA_AV_START_EVT(0x4) flags=0x4(PENDING_START) active_peer=true
+03-12 14:09:43.653  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2287 ProcessEvent: Peer xx:xx:xx:xx:20:90 : event=BTA_AV_START_EVT(0x4) status=0 suspending=false initiator=true flags=0x4(PENDING_START)
+03-12 14:09:43.653  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp.cc:55 btif_a2dp_on_started: ## ON A2DP STARTED ## peer xx:xx:xx:xx:20:90 p_av_start:0x7c185e34a0
+03-12 14:09:43.654  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp.cc:69 btif_a2dp_on_started: peer xx:xx:xx:xx:20:90 status:0 suspending:false initiator:true
+03-12 14:09:43.654  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:701 btif_a2dp_source_start_audio_req: state=STATE_RUNNING
+03-12 14:09:43.655  1032  1058 I BTAudioSessionAidl: ReportControlStatus - status=SUCCESS for SessionType=A2DP_SOFTWARE_ENCODING_DATAPATH, bluetooth_audio=0x0100 started
+03-12 14:09:43.656  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2242 OnExit: state=Opened peer=xx:xx:xx:xx:20:90
+03-12 14:09:43.657  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2493 OnEnter: state=Started peer=xx:xx:xx:xx:20:90
+03-12 14:09:43.657  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_sink.cc:631 btif_a2dp_sink_set_rx_flush: enable=false
+03-12 14:09:43.657  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2909 btif_report_audio_state: peer=xx:xx:xx:xx:20:90 state=2
+03-12 14:09:43.658  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:855 btif_a2dp_source_audio_tx_start_event: streaming false state=STATE_RUNNING
+03-12 14:09:43.658  2698  2935 I bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:330 a2dp_sbc_feeding_reset: PCM bytes per tick 3528
+03-12 14:09:43.659  2698  3108 I bluetooth-a2dp: android/app/jni/com_android_bluetooth_a2dp.cpp:89 bta2dp_audio_state_callback: xx:xx:xx:xx:20:90: state: BTAV_AUDIO_STATE_STARTED(0x2)
+03-12 14:09:43.765  2006  4896 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=152, buffered position=52401, speed=1.0, updated=63428369, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=7, error=null}
+03-12 14:09:43.767  2698  2698 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.prology tried to update with no new data
+03-12 14:09:43.828  2006  4896 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=0, buffered position=52401, speed=1.0, updated=63428431, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=7, error=null}
+03-12 14:09:43.831  2698  2698 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.prology tried to update with no new data
+03-12 14:09:43.856  2006  4896 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=3, buffered position=0, speed=1.0, updated=63428443, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:43.874  2006  2858 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=BUFFERING(6), position=0, buffered position=0, speed=1.0, updated=63428444, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:43.875  3977  3977 D MusicControl: updateMediaMetadata, com.prology 
+03-12 14:09:43.876  3977  3977 D MusicControl: 筛选com.prology 2026-03-12 14:09:43  old:1970-01-01 03:00:00 
+03-12 14:09:43.882  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=true :  play_state=true :  queue=false
+03-12 14:09:43.883  2698  2698 W AudioMediaPlayerWrapper: onMetadataChanged(): com.prology tried to update with no new data
+03-12 14:09:43.884  2698  2698 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.prology tried to update with no new data
+03-12 14:09:43.926  2006  2870 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=1, buffered position=4832, speed=1.0, updated=63428527, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:43.933  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+03-12 14:09:44.059  2006  2880 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=134, buffered position=52401, speed=1.0, updated=63428660, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:44.061  2698  2698 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.prology tried to update with no new data
+03-12 14:09:47.059  2006  2858 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PLAYING(3), position=3138, buffered position=64182, speed=1.0, updated=63431664, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:09:47.071  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+03-12 14:09:58.142 23343 23343 D BluetoothAdapter: isLeEnabled(): ON
+03-12 14:09:58.146 23343 23356 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=2 mScannerId=0
+03-12 14:09:58.156  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:289 unregister_client: Client unregistered
+03-12 14:09:58.157  2698  2941 I bluetooth: system/gd/hci/le_scanning_manager.cc:601 stop_scan: Scanning already stopped, return!
+03-12 14:09:58.158  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:274 register_client: Client registered
+03-12 14:09:59.462 23343 23343 D BluetoothAdapter: isLeEnabled(): ON
+03-12 14:09:59.469  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:289 unregister_client: Client unregistered
+03-12 14:09:59.470  2698  2941 I bluetooth: system/gd/hci/le_scanning_manager.cc:601 stop_scan: Scanning already stopped, return!
+03-12 14:09:59.470  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:274 register_client: Client registered
+03-12 14:10:00.144  2006  2870 D MediaSessionService: Sending KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_MEDIA_PAUSE, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=0, downTime=0, deviceId=-1, source=0x0, displayId=-1 } to com.prology/media-session/26 (userId=0)
+03-12 14:10:00.145  2006  2870 I MediaSessionService: tempAllowlistTargetPkgIfPossible callingPackage:com.android.bluetooth targetPackage:com.prology reason:action=ACTION_DOWN;code=KEYCODE_MEDIA_PAUSE [WIU] [FGS]
+03-12 14:10:00.162  2006  2870 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=PAUSED(2), position=16234, buffered position=64182, speed=1.0, updated=63444760, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:10:00.165  3977  3977 D MusicControl: 筛选com.prology 2026-03-12 14:10:00  old:1970-01-01 03:00:00 
+03-12 14:10:00.170  2698  2698 I bluetooth: system/btif/avrcp/avrcp_service.cc:572 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+03-12 14:10:00.214  2006  2321 D MediaSessionService: Sending KeyEvent { action=ACTION_UP, keyCode=KEYCODE_MEDIA_PAUSE, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=0, downTime=0, deviceId=-1, source=0x0, displayId=-1 } to com.prology/media-session/26 (userId=0)
+03-12 14:10:00.215  2006  2321 I MediaSessionService: tempAllowlistTargetPkgIfPossible callingPackage:com.android.bluetooth targetPackage:com.prology reason:action=ACTION_UP;code=KEYCODE_MEDIA_PAUSE [WIU] [FGS]
+03-12 14:10:00.447  2006  2321 D MediaSessionService: onSessionPlaybackStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=NONE(0), position=16234, buffered position=0, speed=1.0, updated=63445047, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:10:00.448  2006  2321 D MediaSessionService: onSessionActiveStateChanged: record=com.prology/media-session/26 (userId=0) playbackState=PlaybackState {state=NONE(0), position=16234, buffered position=0, speed=1.0, updated=63445047, actions=3670015, custom actions=[Action:mName='Stop, mIcon=2131165270, mExtras=null], active item id=8, error=null}
+03-12 14:10:00.449  3977  3977 D MusicControl: 筛选com.prology 2026-03-12 14:10:00  old:1970-01-01 03:00:00 
+03-12 14:10:00.455  3977  3977 D MusicControl: 取消注册PackageName 2=com.prology
+03-12 14:10:00.472  2499  2499 D NotificationMediaManager: Not dismissing 0|com.prology|1124|null|10791 because it was removed by the system
+03-12 14:10:03.224  2698  3301 I bluetooth-a2dp: system/btif/src/btif_av.cc:3778 btif_av_stream_started_ready: active_peer=xx:xx:xx:xx:20:90 state=3 flags=0x0(None) ready=true
+03-12 14:10:03.225  2698  3301 I bluetooth-a2dp: system/btif/src/btif_av.cc:3724 btif_av_stream_suspend: 
+03-12 14:10:03.226  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:3088 btif_av_handle_event: peer=xx:xx:xx:xx:20:90 handle=0x0 event=BTIF_AV_SUSPEND_STREAM_REQ_EVT(0x1e)
+03-12 14:10:03.227  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2513 ProcessEvent: state=Started peer=xx:xx:xx:xx:20:90 event=BTIF_AV_SUSPEND_STREAM_REQ_EVT(0x1e) flags=0x0(None) active_peer=true
+03-12 14:10:03.228  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2533 ProcessEvent: Peer xx:xx:xx:xx:20:90 : event=BTIF_AV_SUSPEND_STREAM_REQ_EVT(0x1e) flags=0x0(None)
+03-12 14:10:03.229  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:850 btif_a2dp_source_set_tx_flush: enable=true state=STATE_RUNNING
+03-12 14:10:03.230  2698  2935 I bluetooth-a2dp: system/bta/av/bta_av_api.cc:281 BTA_AvStop: bta_handle=0x41 suspend=true
+03-12 14:10:03.231  2698  2935 I bluetooth-a2dp: system/bta/av/bta_av_aact.cc:1930 bta_av_str_stopped: peer xx:xx:xx:xx:20:90 bta_handle:0x41 audio_open_cnt:1, p_data 0x7c673f17d0 start:1
+03-12 14:10:03.232  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AV app_id:2 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.232  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AV app_id:1 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.233  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AV app_id:0 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.234  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AG app_id:1 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.236  2698  2935 I bluetooth-a2dp: system/stack/avdt/avdt_api.cc:609 AVDT_SuspendReq: num_handles=1
+03-12 14:10:03.270  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 472 BYTES OUT OF 512
+03-12 14:10:03.272  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.290  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 0 BYTES OUT OF 40
+03-12 14:10:03.292  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.304  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 0 BYTES OUT OF 40
+03-12 14:10:03.305  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.306  2698  3133 E bluetooth: system/common/repeating_timer.cc:151 RunTask: Periodic task execution took 27058 microseconds, longer than interval 20000 microseconds
+03-12 14:10:03.309  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:390 a2dp_sbc_get_num_frame_iteration: limiting frames to be sent from 24 to 14
+03-12 14:10:03.322  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 0 BYTES OUT OF 40
+03-12 14:10:03.323  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.332  2698  2941 I bluetooth: system/main/shim/acl.cc:619 OnFlushOccurred: UNIMPLEMENTED
+03-12 14:10:03.335  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AV app_id:2 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.336  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 0 BYTES OUT OF 40
+03-12 14:10:03.337  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AV app_id:1 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.337  2698  2941 I bluetooth: system/main/shim/acl.cc:619 OnFlushOccurred: UNIMPLEMENTED
+03-12 14:10:03.338  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.339  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AV app_id:0 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.340  2698  3133 E bluetooth: system/common/repeating_timer.cc:151 RunTask: Periodic task execution took 31841 microseconds, longer than interval 20000 microseconds
+03-12 14:10:03.340  2698  2935 I bluetooth: system/bta/dm/bta_dm_pm.cc:909 bta_dm_pm_ssr: Found connected service:BTA_ID_AG app_id:1 peer:xx:xx:xx:xx:20:90 spec_name:sniff_capable
+03-12 14:10:03.341  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:390 a2dp_sbc_get_num_frame_iteration: limiting frames to be sent from 35 to 14
+03-12 14:10:03.344  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:3088 btif_av_handle_event: peer=00:00:00:00:00:00 handle=0x41 event=BTA_AV_SUSPEND_EVT(0xf)
+03-12 14:10:03.345  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2513 ProcessEvent: state=Started peer=xx:xx:xx:xx:20:90 event=BTA_AV_SUSPEND_EVT(0xf) flags=0x1(LOCAL_SUSPEND_PENDING) active_peer=true
+03-12 14:10:03.345  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2584 ProcessEvent: Peer xx:xx:xx:xx:20:90 : event=BTA_AV_SUSPEND_EVT(0xf) status=0 initiator=true flags=0x1(LOCAL_SUSPEND_PENDING)
+03-12 14:10:03.346  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp.cc:114 btif_a2dp_on_suspended: ## ON A2DP SUSPENDED ## p_av_suspend=0x7c185fc200
+03-12 14:10:03.347  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:820 btif_a2dp_source_on_suspended: state=STATE_RUNNING
+03-12 14:10:03.348  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:707 btif_a2dp_source_stop_audio_req: state=STATE_RUNNING
+03-12 14:10:03.348  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2909 btif_report_audio_state: peer=xx:xx:xx:xx:20:90 state=1
+03-12 14:10:03.349  2698  3108 I bluetooth-a2dp: android/app/jni/com_android_bluetooth_a2dp.cpp:89 bta2dp_audio_state_callback: xx:xx:xx:xx:20:90: state: BTAV_AUDIO_STATE_STOPPED(0x1)
+03-12 14:10:03.350  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2507 OnExit: state=Started peer=xx:xx:xx:xx:20:90
+03-12 14:10:03.351  2698  2935 I bluetooth-a2dp: system/btif/src/btif_av.cc:2223 OnEnter: state=Opened peer=xx:xx:xx:xx:20:90
+03-12 14:10:03.355  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 0 BYTES OUT OF 40
+03-12 14:10:03.356  2698  2935 I bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:889 btif_a2dp_source_audio_tx_stop_event: streaming true state=STATE_RUNNING
+03-12 14:10:03.357  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.380  2698  3133 W bluetooth-a2dp: system/btif/src/btif_a2dp_source.cc:968 btif_a2dp_source_read_callback: UNDERFLOW: ONLY READ 0 BYTES OUT OF 40
+03-12 14:10:03.380  2698  3133 W bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:493 a2dp_sbc_encode_frames: underflow 5, 472
+03-12 14:10:03.381  2698  3133 E bluetooth: system/common/repeating_timer.cc:151 RunTask: Periodic task execution took 40699 microseconds, longer than interval 20000 microseconds
+03-12 14:10:03.384  1032  1058 I BTAudioSessionAidl: ReportControlStatus - status=SUCCESS for SessionType=A2DP_SOFTWARE_ENCODING_DATAPATH, bluetooth_audio=0x0100 suspended
+03-12 14:10:03.386  2698  2935 I bluetooth-a2dp: system/stack/a2dp/a2dp_sbc_encoder.cc:330 a2dp_sbc_feeding_reset: PCM bytes per tick 3528
+03-12 14:10:03.474  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:03.569  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:03.570  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:03.651  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:03.702  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:03.703  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:03.784  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:03.981 23343 23343 D BluetoothAdapter: isLeEnabled(): ON
+03-12 14:10:03.985 23343 23355 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=2 mScannerId=0
+03-12 14:10:03.990  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:03.991  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:03.992  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:289 unregister_client: Client unregistered
+03-12 14:10:03.993  2698  2941 I bluetooth: system/gd/hci/le_scanning_manager.cc:601 stop_scan: Scanning already stopped, return!
+03-12 14:10:03.994  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:274 register_client: Client registered
+03-12 14:10:04.077  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:04.996  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:10:04.997  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:05.147  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:06.473  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:06.474  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:06.474  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:06.475  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:06.555  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:06.556  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:06.707  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:07.382 23343 23343 D BluetoothAdapter: isLeEnabled(): ON
+03-12 14:10:07.385  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:07.386  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:10:07.387  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:10:07.388  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:10:07.389  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:10:07.389  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:10:07.390  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:07.390  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:10:07.391  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:10:07.392  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:10:07.392  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:10:07.393  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:07.393  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:289 unregister_client: Client unregistered
+03-12 14:10:07.393  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:07.394  2698  2941 I bluetooth: system/gd/hci/le_scanning_manager.cc:601 stop_scan: Scanning already stopped, return!
+03-12 14:10:07.394  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:274 register_client: Client registered
+03-12 14:10:07.478  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:08.118  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:08.119  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:08.199  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:08.253  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:08.254  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:08.334  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:09.077  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:10:09.077  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:09.228  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:09.578  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:09.579  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:09.580  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:09.580  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:09.661  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:09.661  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:09.812  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:10.345  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:10.346  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:10:10.346  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:10:10.347  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:10:10.348  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:10:10.349  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:10:10.349  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:10.349  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:10:10.350  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:10:10.350  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:10:10.351  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:10:10.352  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:10.352  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:10.353  2698  2941 W bluetooth: system/gd/hci/hci_layer.cc:204 on_command_status: Received UNEXPECTED command status:UNSUPPORTED_REMOTE_OR_LMP_FEATURE(0x1a) opcode:SNIFF_MODE(0x0803)
+03-12 14:10:10.433  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:11.314  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:11.314  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:11.395  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:12.278  2006  4985 D CoreBackPreview: startBackNavigation currentTask=Task{804dea #967 type=standard A=10791:com.prology}, topRunningActivity=ActivityRecord{218420876 u0 com.prology/com.ryanheise.audioservice.AudioServiceActivity t967}, callbackInfo=OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@5189846, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}, currentFocus=Window{397dfe3 u0 com.prology/com.ryanheise.audioservice.AudioServiceActivity}
+03-12 14:10:12.300  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:10:12.300  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:12.307  2006  4985 I InputDispatcher: Channel [Gesture Monitor] edge-swipe is stealing input gesture for device 2 from [397dfe3 com.prology/com.ryanheise.audioservice.AudioServiceActivity, [Gesture Monitor] swipe-up]
+03-12 14:10:12.455  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:12.728  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:12.729  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:12.731  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:12.731  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:12.813  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:12.814  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:12.965  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:13.534  2006  2870 D CoreBackPreview: startBackNavigation currentTask=Task{804dea #967 type=standard A=10791:com.prology}, topRunningActivity=ActivityRecord{218420876 u0 com.prology/com.ryanheise.audioservice.AudioServiceActivity t967}, callbackInfo=OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@5189846, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}, currentFocus=Window{397dfe3 u0 com.prology/com.ryanheise.audioservice.AudioServiceActivity}
+03-12 14:10:13.545  2006  2870 I InputDispatcher: Channel [Gesture Monitor] edge-swipe is stealing input gesture for device 2 from [397dfe3 com.prology/com.ryanheise.audioservice.AudioServiceActivity, [Gesture Monitor] swipe-up]
+03-12 14:10:15.006 23343 23343 D BluetoothAdapter: isLeEnabled(): ON
+03-12 14:10:15.014 23343 23355 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=2 mScannerId=0
+03-12 14:10:15.022  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:15.024  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:10:15.024  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:10:15.026  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:10:15.027  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:10:15.028  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:10:15.029  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:15.029  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:10:15.030  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:10:15.031  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:10:15.032  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:10:15.033  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:289 unregister_client: Client unregistered
+03-12 14:10:15.033  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:15.033  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:15.034  2698  2941 I bluetooth: system/gd/hci/le_scanning_manager.cc:601 stop_scan: Scanning already stopped, return!
+03-12 14:10:15.036  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:274 register_client: Client registered
+03-12 14:10:15.158  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:15.813  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:15.814  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:15.896  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:16.078  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:10:16.079  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:16.230  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:18.939  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:18.939  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:18.941  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:18.942  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:19.023  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:19.024  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:19.175  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:19.238 23343 23343 D BluetoothAdapter: isLeEnabled(): ON
+03-12 14:10:19.246  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:19.248  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:10:19.249  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:10:19.251  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:10:19.253  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:10:19.254  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:10:19.255  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:19.256  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:10:19.257  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:10:19.258  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:10:19.259  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:10:19.260  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:19.260  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:289 unregister_client: Client unregistered
+03-12 14:10:19.261  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:19.262  2698  2941 I bluetooth: system/gd/hci/le_scanning_manager.cc:601 stop_scan: Scanning already stopped, return!
+03-12 14:10:19.263  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:274 register_client: Client registered
+03-12 14:10:19.350  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:20.269  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:10:20.270  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:20.422  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:22.134  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:22.135  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:22.136  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:22.137  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:22.218  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:22.219  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:22.262  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:22.263  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:10:22.266  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:10:22.268  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:10:22.269  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:10:22.270  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:10:22.270  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:10:22.271  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:10:22.272  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:10:22.273  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:10:22.338  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:22.339  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:22.420  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:23.274  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:10:23.275  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:23.426  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:24.030  2006  4985 I InputDispatcher: Channel [Gesture Monitor] swipe-up is stealing input gesture for device 2 from [397dfe3 com.prology/com.ryanheise.audioservice.AudioServiceActivity, [Gesture Monitor] edge-swipe]
+03-12 14:10:24.101  2006  2071 V WindowManager:         {WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} m=TO_BACK f=NONE leash=Surface(name=Task=967)/@0x731adf2 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+03-12 14:10:25.238  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:25.239  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:25.239  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:25.240  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:25.320  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:25.321  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:25.431  2006  2071 V WindowManager:         {WCT{RemoteToken{5868aec Task{804dea #967 type=standard A=10791:com.prology}}} m=TO_BACK f=NONE leash=Surface(name=Task=967)/@0x731adf2 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1}
+03-12 14:10:25.471  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:28.298  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:28.299  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:28.300  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:28.301  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:28.382  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:28.383  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:28.533  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:31.449  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:31.450  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:31.451  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:31.452  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:31.533  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:31.534  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:31.685  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:34.599  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:34.599  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:34.600  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:34.601  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:34.683  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:34.683  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:34.834  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:37.658  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:37.659  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:37.660  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:37.660  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:37.741  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:37.742  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:37.893  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:40.809  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:40.810  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:40.811  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:40.812  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:40.893  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:40.894  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:41.045  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:43.914  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:43.914  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:43.916  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:43.916  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:43.998  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:43.999  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:44.150  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:47.018  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:47.019  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:47.020  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:47.020  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:47.102  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:47.102  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:47.253  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:49.088  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:49.089  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:49.090  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:49.091  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:49.172  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:49.172  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:49.323  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:50.213  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:50.214  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:50.215  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:50.216  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:50.297  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:50.297  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:50.448  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:53.273  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:53.274  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:53.275  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:53.276  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:53.357  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:53.357  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:53.508  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:56.019  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:56.019  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:56.020  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:56.021  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:56.103  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:56.103  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:56.254  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:56.379  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:56.379  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:56.380  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:56.381  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:56.462  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:56.462  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:56.613  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:10:59.528  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:10:59.529  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:10:59.530  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:10:59.531  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:10:59.612  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:10:59.613  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:10:59.763  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:02.634  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:02.635  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:02.636  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:02.637  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:02.719  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:02.719  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:02.870  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:05.738  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:05.739  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:05.740  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:05.741  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:05.823  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:05.823  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:05.974  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:08.889  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:08.890  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:08.891  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:08.892  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:08.973  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:08.974  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:09.125  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:11.993  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:11.994  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:11.995  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:11.995  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:12.076  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:12.077  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:12.228  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:15.098  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:15.099  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:15.100  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:15.100  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:15.181  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:15.182  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:15.332  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:18.248  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:18.249  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:18.250  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:18.250  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:18.331  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:18.332  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:18.482  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:21.399  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:21.399  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:21.400  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:21.401  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:21.482  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:21.483  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:21.634  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:24.458  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:24.459  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:24.460  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:24.460  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:24.541  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:24.541  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:24.692  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:27.609  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:27.609  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:27.610  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:27.611  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:27.692  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:27.692  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:27.843  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:30.713  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:30.714  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:30.715  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:30.716  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:30.797  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:30.798  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:30.951  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:33.818  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:33.819  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:33.820  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:33.821  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:33.902  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:33.903  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:34.053  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:35.726  2006  2346 D ActivityManager: freezing 23343 com.prology
+03-12 14:11:36.968  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:36.969  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:36.970  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:36.971  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:37.052  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:37.053  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:37.204  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:40.073  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:40.074  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:40.075  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:40.076  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:40.157  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:40.157  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:40.308  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:43.179  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:43.179  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:43.180  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:43.181  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:43.262  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:43.262  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:43.413  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:46.373  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:46.374  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:46.375  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:46.376  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:46.457  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:46.458  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:46.609  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:49.434  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:49.434  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:49.435  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:49.436  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:49.517  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:49.518  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:49.668  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:52.538  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:52.539  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:52.540  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:52.541  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:52.622  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:52.623  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:52.773  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:55.689  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:55.689  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:55.691  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:55.692  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:55.773  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:55.773  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:55.924  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:11:58.839  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:11:58.839  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:11:58.840  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:11:58.841  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:11:58.922  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:11:58.923  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:11:59.074  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:01.898  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:01.899  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:01.900  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:01.900  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:01.981  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:01.982  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:02.133  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:05.048  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:05.049  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:05.050  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:05.051  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:05.132  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:05.132  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:05.283  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:07.978  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:07.979  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:12:07.980  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:12:07.982  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:12:07.983  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:12:07.983  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:12:07.984  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:07.985  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:12:07.986  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:12:07.986  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:12:07.987  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:12:07.991  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:593 GetNextPrivateAddressIntervalRange: client=LeAddressManager, nonwake=7m18s, wake=13m49s
+03-12 14:12:08.031  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:08.031  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:08.034  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:792 OnCommandComplete: Received command complete with op_code LE_SET_RANDOM_ADDRESS(0x2005)
+03-12 14:12:08.035  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:812 OnCommandComplete: update random address : xx:xx:xx:xx:04:0a
+03-12 14:12:08.035  2698  2941 I bluetooth: system/gd/hci/le_address_manager.cc:403 resume_registered_clients: Resuming registered clients
+03-12 14:12:08.117  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:08.133  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:08.134  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:08.215  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:09.036  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:12:09.037  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:09.188  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:11.258  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:11.259  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:11.260  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:11.261  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:11.342  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:11.342  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:11.493  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:14.498  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:14.499  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:14.500  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:14.501  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:14.583  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:14.583  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:14.734  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:17.513  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:17.514  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:17.516  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:17.517  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:17.598  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:17.599  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:17.750  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:20.618  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:20.619  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:20.620  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:20.621  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:20.702  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:20.702  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:20.853  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:23.769  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:23.769  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:23.771  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:23.771  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:23.853  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:23.853  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:24.004  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:26.874  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:26.875  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:26.876  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:26.877  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:26.958  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:26.960  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:27.110  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:29.978  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:29.979  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:29.980  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:29.980  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:30.062  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:30.063  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:30.214  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:33.129  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:33.129  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:33.130  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:33.131  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:33.212  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:33.213  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:33.363  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:36.233  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:36.234  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:36.235  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:36.235  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:36.316  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:36.317  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:36.467  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:39.384  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:39.384  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:39.385  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:39.386  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:39.467  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:39.467  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:39.617  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:42.488  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:42.489  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:42.490  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:42.491  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:42.573  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:42.573  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:42.724  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:45.638  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:45.639  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:45.640  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:45.640  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:45.721  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:45.722  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:45.872  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:48.743  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:48.744  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:48.745  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:48.746  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:48.827  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:48.827  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:48.978  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:51.578  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:51.579  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:51.580  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:51.580  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:51.661  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:51.662  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:51.812  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:51.848  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:51.849  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:51.850  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:51.851  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:51.932  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:51.932  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:52.083  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:54.953  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:54.954  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:54.955  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:54.956  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:55.037  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:55.037  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:55.188  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:56.200  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:56.201  1033  1033 D vendor.qti.bluetooth@1.0-uart_transport: SocRxDWakeup: Flow off->Change UART baudrate to 38.4kbs->send 0x00->Change UART baudrate to max->Flow on
+03-12 14:12:56.202  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow Off 
+03-12 14:12:56.203  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_set_baud: 17
+03-12 14:12:56.204  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: SetBaudRate: in BOTHER
+03-12 14:12:56.204  1033  1033 I vendor.qti.bluetooth@1.0-uart_transport: ## userial_vendor_ioctl: UART Flow On 
+03-12 14:12:56.205  1033  1033 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:56.205  1033  1033 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Writing IBS_WAKE_IND
+03-12 14:12:56.206  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_ACK: 0xFC
+03-12 14:12:56.207  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Signal wack_cond_
+03-12 14:12:56.207  1033  1033 D vendor.qti.bluetooth@1.0-ibs_handler: DeviceWakeUp: Unblocked from waiting for FC
+03-12 14:12:56.209  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:56.209  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:56.290  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:57.208  1033  3106 I vendor.qti.bluetooth@1.0-ibs_handler: DeviceSleep: TX Awake, Sending SLEEP_IND
+03-12 14:12:57.209  1033  3106 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:57.360  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:58.103  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:58.104  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:58.104  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:58.105  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:58.185  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:58.186  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:58.336  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:12:59.184  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:12:59.185  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:12:59.186  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:12:59.187  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:12:59.268  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:12:59.269  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:12:59.420  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+03-12 14:13:01.209  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+03-12 14:13:01.209  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+03-12 14:13:01.210  1033  3101 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+03-12 14:13:01.211  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+03-12 14:13:01.292  1033  3101 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+03-12 14:13:01.293  1033  3101 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+03-12 14:13:01.444  1033  2948 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 

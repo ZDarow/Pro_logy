@@ -38,7 +38,6 @@ class BtRepository {
   final AbstractTransport transport;
 
   StreamSubscription? _transportSubscription;
-
   BtConnectionStatus _status = BtConnectionStatus.disconnected;
   String? _errorMessage;
   final PrologyState _state = PrologyState();

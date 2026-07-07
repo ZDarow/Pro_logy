@@ -1,0 +1,23 @@
+Отчет о сборке APK
+==================
+Исходная директория: ./output/decompiled/PROLOGY-140-5.0.55
+Выходной файл: /home/mi/AutoSettingEQ/output/rebuilt/PROLOGY-140-5.0.55_rebuilt.apk
+Дата сборки: Пн 02 мар 2026 11:32:32 MSK
+
+Этапы сборки:
+------------
+1. apktool build - Сборка из smali
+2. zipalign - Выравнивание по 4 байтам
+3. keytool - Генерация debug ключа
+4. apksigner - Подпись APK
+
+Результат:
+---------
+Размер APK: 
+Подпись: Verified (debug.keystore)
+
+Примечания:
+----------
+- Используется debug ключ для тестирования
+- Для production сборки используйте свой keystore
+- APK готов к установке на устройство с отладкой по USB

@@ -1,0 +1,17 @@
+Activity Resolver Table:
+        3abab5e com.prology/com.ryanheise.audioservice.AudioServiceActivity filter 702cb3f
+Receiver Resolver Table:
+        7031f6a com.prology/androidx.profileinstaller.ProfileInstallReceiver filter e0d35d1
+        7031f6a com.prology/androidx.profileinstaller.ProfileInstallReceiver filter 5e2dc5b
+        7031f6a com.prology/androidx.profileinstaller.ProfileInstallReceiver filter a1dbcf8
+        7031f6a com.prology/androidx.profileinstaller.ProfileInstallReceiver filter 2abc836
+        7d7ec0c com.prology/com.ryanheise.audioservice.MediaButtonReceiver filter e235955
+Service Resolver Table:
+      android.media.browse.MediaBrowserService:
+        9e8e337 com.prology/com.ryanheise.audioservice.AudioService filter edb0a4
+          Action: "android.media.browse.MediaBrowserService"
+Registered ContentProviders:
+  com.prology/androidx.startup.InitializationProvider:
+    Provider{5063004 com.prology/androidx.startup.InitializationProvider}
+ContentProvider Authorities:
+    Provider{5063004 com.prology/androidx.startup.InitializationProvider}

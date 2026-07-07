@@ -1,0 +1,216 @@
+PROLOGY Settings Dump Commands
+===========================================================================
+
+Generated: 2026-03-12 13:12:54
+Total commands: 42
+
+Status Request 1:
+  HEX: C00002900093
+  Type: 0x90, Subcmd: 0x00
+  Length: 6 bytes
+
+Status Request 2:
+  HEX: C00002900194
+  Type: 0x90, Subcmd: 0x01
+  Length: 6 bytes
+
+Config Request:
+  HEX: C00002900353
+  Type: 0x90, Subcmd: 0x03
+  Length: 6 bytes
+
+Config Request B:
+  HEX: C00002910150
+  Type: 0x91, Subcmd: 0x01
+  Length: 6 bytes
+
+DateTime Field 1:
+  HEX: C00002920A58
+  Type: 0x92, Subcmd: 0x0A
+  Length: 6 bytes
+
+DateTime Field 2:
+  HEX: C00002920B59
+  Type: 0x92, Subcmd: 0x0B
+  Length: 6 bytes
+
+DateTime Field 3:
+  HEX: C00002920C5E
+  Type: 0x92, Subcmd: 0x0C
+  Length: 6 bytes
+
+DateTime Field 4:
+  HEX: C00002920D5F
+  Type: 0x92, Subcmd: 0x0D
+  Length: 6 bytes
+
+Config Request C:
+  HEX: C00002940054
+  Type: 0x94, Subcmd: 0x00
+  Length: 6 bytes
+
+Config Request D:
+  HEX: C00002990059
+  Type: 0x99, Subcmd: 0x00
+  Length: 6 bytes
+
+Config A:
+  HEX: C000029A019E
+  Type: 0x9A, Subcmd: 0x01
+  Length: 6 bytes
+
+Config B:
+  HEX: C000029A0379
+  Type: 0x9A, Subcmd: 0x03
+  Length: 6 bytes
+
+Config C:
+  HEX: C000029A04A1
+  Type: 0x9A, Subcmd: 0x04
+  Length: 6 bytes
+
+Config D:
+  HEX: C000029A055F
+  Type: 0x9A, Subcmd: 0x05
+  Length: 6 bytes
+
+Config E:
+  HEX: C000029A0A50
+  Type: 0x9A, Subcmd: 0x0A
+  Length: 6 bytes
+
+Config F:
+  HEX: C000029A0B51
+  Type: 0x9A, Subcmd: 0x0B
+  Length: 6 bytes
+
+Config G:
+  HEX: C000029A0C56
+  Type: 0x9A, Subcmd: 0x0C
+  Length: 6 bytes
+
+Config H:
+  HEX: C000029A0D57
+  Type: 0x9A, Subcmd: 0x0D
+  Length: 6 bytes
+
+Config I:
+  HEX: C000029A104A
+  Type: 0x9A, Subcmd: 0x10
+  Length: 6 bytes
+
+Config J:
+  HEX: C000029A114B
+  Type: 0x9A, Subcmd: 0x11
+  Length: 6 bytes
+
+Config K:
+  HEX: C000029A144E
+  Type: 0x9A, Subcmd: 0x14
+  Length: 6 bytes
+
+Config L:
+  HEX: C000029A154F
+  Type: 0x9A, Subcmd: 0x15
+  Length: 6 bytes
+
+Config M:
+  HEX: C000029A164C
+  Type: 0x9A, Subcmd: 0x16
+  Length: 6 bytes
+
+Config N:
+  HEX: C000029A174D
+  Type: 0x9A, Subcmd: 0x17
+  Length: 6 bytes
+
+Config O:
+  HEX: C000029A1842
+  Type: 0x9A, Subcmd: 0x18
+  Length: 6 bytes
+
+Config P:
+  HEX: C000029A1A40
+  Type: 0x9A, Subcmd: 0x1A
+  Length: 6 bytes
+
+Config Q:
+  HEX: C000029A1F45
+  Type: 0x9A, Subcmd: 0x1F
+  Length: 6 bytes
+
+Config R:
+  HEX: C000029A217B
+  Type: 0x9A, Subcmd: 0x21
+  Length: 6 bytes
+
+Config S:
+  HEX: C000029A277D
+  Type: 0x9A, Subcmd: 0x27
+  Length: 6 bytes
+
+Config T:
+  HEX: C000029A2A70
+  Type: 0x9A, Subcmd: 0x2A
+  Length: 6 bytes
+
+System Control 1:
+  HEX: C00002B00070
+  Type: 0xB0, Subcmd: 0x00
+  Length: 6 bytes
+
+System Control 2:
+  HEX: C00002B00171
+  Type: 0xB0, Subcmd: 0x01
+  Length: 6 bytes
+
+System Control 3:
+  HEX: C00002B00272
+  Type: 0xB0, Subcmd: 0x02
+  Length: 6 bytes
+
+System Preset 1:
+  HEX: C00002B00474
+  Type: 0xB0, Subcmd: 0x04
+  Length: 6 bytes
+
+System Preset 2:
+  HEX: C00002B00575
+  Type: 0xB0, Subcmd: 0x05
+  Length: 6 bytes
+
+System Adv 1:
+  HEX: C00002B00C7C
+  Type: 0xB0, Subcmd: 0x0C
+  Length: 6 bytes
+
+System Adv 2:
+  HEX: C00002B00D7D
+  Type: 0xB0, Subcmd: 0x0D
+  Length: 6 bytes
+
+System Adv 3:
+  HEX: C00002B00F7F
+  Type: 0xB0, Subcmd: 0x0F
+  Length: 6 bytes
+
+System Adv 4:
+  HEX: C00002B01060
+  Type: 0xB0, Subcmd: 0x10
+  Length: 6 bytes
+
+System Adv 5:
+  HEX: C00002B01666
+  Type: 0xB0, Subcmd: 0x16
+  Length: 6 bytes
+
+System Adv 6:
+  HEX: C00002B01767
+  Type: 0xB0, Subcmd: 0x17
+  Length: 6 bytes
+
+System Info:
+  HEX: C00002B10071
+  Type: 0xB1, Subcmd: 0x00
+  Length: 6 bytes
+

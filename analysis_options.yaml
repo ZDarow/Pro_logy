@@ -12,6 +12,12 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - docs/toolkit_analysis/**
+    - bluetooth-library/**
+    - tools/**
+    - btsnoop/**
+    - apk/**
+    - experimental/**
+    - device_data/**
 
 linter:
   # The lint rules applied to this project can be customized in the

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PROLOGY Bluetooth Session
+Comment=Reverse Engineering PROLOGY LS20
+Exec=xfce4-terminal --working-directory=/home/mi/AutoSettingEQ
+Icon=utilities-terminal
+Terminal=false
+Categories=Development;
+Path=/home/mi/AutoSettingEQ
