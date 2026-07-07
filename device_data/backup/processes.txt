@@ -1,0 +1,68 @@
+u0_a790      24690   902   10862536 237728 do_freezer_trap     0 S com.prology
+Applications Memory Usage (in Kilobytes):
+Uptime: 48394545 Realtime: 58313947
+
+** MEMINFO in pid 24690 [com.prology] **
+                   Pss  Private  Private  SwapPss      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap    18243    18216        4       26    19976    22720    20450     2269
+  Dalvik Heap     3881     3868        0       85     4956    12729     4537     8192
+ Dalvik Other     1128     1044       76        0     1504                           
+        Stack     1180     1180        0        0     1184                           
+       Ashmem       24        0        0        0     1592                           
+      Gfx dev     5972     5972        0        0     5972                           
+    Other dev      252      144       20        0      796                           
+     .so mmap    13894     8204     4324        1    45508                           
+    .jar mmap      809        0        0        0    36156                           
+    .apk mmap    11415      372    10996        0    11916                           
+    .ttf mmap      373        0      356        0      416                           
+    .dex mmap      808       16      784        0     1644                           
+    .oat mmap      216        4        0        0    11560                           
+    .art mmap    11001     9216     1040       23    30284                           
+   Other mmap      126       36       80        0      860                           
+    GL mtrack      192      192        0        0      192                           
+      Unknown    66855    66824       24        1    67532                           
+        TOTAL   136505   115288    17704      136   242048    35449    24987    10461
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:    14124                          35240
+         Native Heap:    18216                          19976
+                Code:    25072                         107216
+               Stack:     1180                           1184
+            Graphics:     6164                           6164
+       Private Other:    68236
+              System:     3513
+             Unknown:                                   72268
+ 
+           TOTAL PSS:   136505            TOTAL RSS:   242048       TOTAL SWAP PSS:      136
+ 
+ Objects
+               Views:        6         ViewRootImpl:        1
+         AppContexts:        9           Activities:        1
+              Assets:       40        AssetManagers:        0
+       Local Binders:       34        Proxy Binders:       69
+       Parcel memory:        9         Parcel count:       38
+    Death Recipients:        2             WebViews:        0
+ 
+ SQL
+         MEMORY_USED:       71
+  PAGECACHE_OVERFLOW:       12          MALLOC_SIZE:       46
+ 
+ DATABASES
+      pgsz     dbsz   Lookaside(b) cache hits cache misses cache size  Dbname
+PER CONNECTION STATS
+         4       16             17     0    16     1  /data/user/0/com.prology/files/libCachedImageData.db
+POOL STATS
+     cache hits  cache misses    cache size  Dbname
+              0            17            17  /data/user/0/com.prology/files/libCachedImageData.db
+ 
+ Asset Allocations
+    : 334K
+    : 336K
+    : 338K
+    : 21K
+    : 1607K
+    : 17K
