@@ -89,16 +89,15 @@ class _RadioScreenState extends State<RadioScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedPreset == i ? Colors.blue : null,
                 ),
-                onPressed: bt.isConnected
-                    ? () {
-                        setState(() {
-                          frequency = double.parse(presets[i]);
-                          _selectedPreset = i;
-                        });
-                        bt.setInput('RADIO');
-                        bt.radioSetFreq(frequency, isFm);
-                      }
-                    : null,
+                    onPressed: bt.isConnected
+                        ? () {
+                            setState(() {
+                              frequency = double.parse(presets[i]);
+                              _selectedPreset = i;
+                            });
+                            bt.radioSetFreq(frequency, isFm);
+                          }
+                        : null,
                 child: Text(presets[i]),
               )),
             ),

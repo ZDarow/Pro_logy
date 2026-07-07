@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../screens/equalizer_screen.dart';
@@ -21,6 +22,21 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
   int taSpeaker = 0;
   double taDelay = 0;
 
+  /// Debounce-таймер для BLE-команд со слайдеров
+  Timer? _debounceTimer;
+
+  /// Отправляет BLE-команду с дебаунсом 300 мс
+  void _debouncedBle(VoidCallback action) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), action);
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
+
   String _getSpeakerName(int index) {
     const names = ['Front Left', 'Front Right', 'Rear Left', 'Rear Right', 'Subwoofer', 'Tweeter'];
     return names[index % names.length];
@@ -36,19 +52,19 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
         children: [
           _buildSlider('Bass', bass, -10, 10, (v) {
             setState(() => bass = v);
-            bt.setBass(v.toInt());
+            _debouncedBle(() => bt.setBass(v.toInt()));
           }, bt.isConnected),
           _buildSlider('Treble', treble, -10, 10, (v) {
             setState(() => treble = v);
-            bt.setTreble(v.toInt());
+            _debouncedBle(() => bt.setTreble(v.toInt()));
           }, bt.isConnected),
           _buildSlider('Balance', balance, -10, 10, (v) {
             setState(() => balance = v);
-            bt.setBalance(v.toInt());
+            _debouncedBle(() => bt.setBalance(v.toInt()));
           }, bt.isConnected),
           _buildSlider('Fader', fader, -10, 10, (v) {
             setState(() => fader = v);
-            bt.setFader(v.toInt());
+            _debouncedBle(() => bt.setFader(v.toInt()));
           }, bt.isConnected),
           SwitchListTile(
             title: const Text('Loudness'),
@@ -73,7 +89,7 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
                 onChanged: bt.isConnected
                     ? (v) {
                         setState(() => subwooferLevel = v);
-                        bt.setSubwoofer(level: v.toInt());
+                        _debouncedBle(() => bt.setSubwoofer(level: v.toInt()));
                       }
                     : null,
               ),
@@ -128,7 +144,7 @@ class _AudioSettingsScreenState extends State<AudioSettingsScreen> {
                                 onChanged: (v) {
                                   setDialogState(() => taDelay = v);
                                   setState(() {});
-                                  bt.setTimeAlignment(speaker: taSpeaker, delay: v.toInt());
+                                  _debouncedBle(() => bt.setTimeAlignment(speaker: taSpeaker, delay: v.toInt()));
                                 },
                               ),
                             ],
