@@ -15,11 +15,64 @@ class PrologyState {
 }
 
 class BtRepository {
+  // --- BLE GATT UUIDs ---
   static const String targetName = 'PROLOGY_BLE';
   static const String serviceUuid = '0000ae00-0000-1000-8000-00805f9b34fb';
   static const String cmdCharUuid = '0000ae01-0000-1000-8000-00805f9b34fb';
   static const String notifyServiceUuid = '0000ae00-0000-1000-8000-00805f9b34fb';
   static const String notifyCharUuid = '0000ae02-0000-1000-8000-00805f9b34fb';
+
+  // --- Protocol framing ---
+  static const int syncByte = 0xf0;
+  static const int reservedByte = 0x00;
+  static const int rxSyncByte = 0xc0;
+
+  // --- Protocol header bytes (common to all commands) ---
+  static const int headerType = 0xa0;
+  static const int headerSub = 0x10;
+  static const int headerSub2 = 0x0e;
+
+  // --- TX command bytes ---
+  static const int cmdPlayPause = 0x01;
+  static const int cmdNextTrack = 0x02;
+  static const int cmdPrevTrack = 0x03;
+  static const int cmdVolume = 0x18;
+  static const int cmdFader = 0x20;
+  static const int cmdBass = 0x21;    // TODO: уточнить по протоколу (отделён от 0x24)
+  static const int cmdTreble = 0x22;  // TODO: уточнить по протоколу (отделён от 0x24)
+  static const int cmdInput = 0x24;
+  static const int cmdEqPreset = 0x26;
+  static const int cmdBalance = 0x2a;
+  static const int cmdLoudness = 0x30;
+  static const int cmdSubwoofer = 0x40;
+  static const int cmdXOver = 0x50;
+  static const int cmdTimeAlignment = 0x60;
+  static const int cmdEqPlus = 0x70;
+  static const int cmdRadioSeekUp = 0x80;
+  static const int cmdRadioSeekDown = 0x81;
+  static const int cmdRadioSetFreqFm = 0x82;
+  static const int cmdRadioSetFreqAm = 0x83;
+
+  // --- RX notification types ---
+  static const int notifyVolume = 0x90;
+  static const int notifyBassTreble = 0x91;
+  static const int notifyBalanceFader = 0x92;
+  static const int notifyInputSource = 0x93;
+
+  // --- Checksum offsets ---
+  static const int txChecksumOffset = 0x10;
+  static const int rxChecksumOffset = 0x40;
+
+  // --- Value encoding offsets ---
+  static const int bassEncodingOffset = 0x10;
+  static const int trebleEncodingOffset = 0x20;
+  static const int balanceFaderEncodingOffset = 0x10;
+
+  // --- Limits ---
+  static const int minVolume = 0;
+  static const int maxVolume = 28;
+  static const int minToneValue = -10;
+  static const int maxToneValue = 10;
 
   BluetoothDevice? _device;
   BluetoothCharacteristic? _cmdCharacteristic;
@@ -163,26 +216,30 @@ class BtRepository {
     return false;
   }
 
+  /// Init sequence: [F0 00 03 01 05 00 09]
   Future<void> _sendInit() async {
-    // Init: [F0 00 03 01 05 00 09]
     final payload = <int>[0x03, 0x01, 0x05, 0x00]; // LEN + TYPE + DATA
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    await sendCommand(cmd);
+    await sendCommand(_buildTx(payload));
   }
 
-  /// TX checksum: (sum(data) + 0x10) & 0xFF
+  /// Собирает команду: [SYNC, RES, ...payload, checksum]
+  List<int> _buildTx(List<int> payload) {
+    final checksum = _calcChecksumTx(payload);
+    return [syncByte, reservedByte, ...payload, checksum];
+  }
+
+  /// TX checksum: (sum(data) + txChecksumOffset) & 0xFF
   /// data = bytes from LEN to DATA (excluding SYNC, RES, CHECK)
   int _calcChecksumTx(List<int> data) {
     int sum = data.fold(0, (prev, element) => prev + element);
-    return (sum + 0x10) & 0xFF;
+    return (sum + txChecksumOffset) & 0xFF;
   }
 
-  /// RX checksum: (sum(data) + 0x40) & 0xFF
+  /// RX checksum: (sum(data) + rxChecksumOffset) & 0xFF
   /// data = bytes from LEN to DATA (excluding SYNC, RES, CHECK)
   int _calcChecksumRx(List<int> data) {
     int sum = data.fold(0, (prev, element) => prev + element);
-    return (sum + 0x40) & 0xFF;
+    return (sum + rxChecksumOffset) & 0xFF;
   }
 
   Future<bool> volumeUp() async {
@@ -193,14 +250,13 @@ class BtRepository {
     return await volumeSet(_state.volume - 1);
   }
 
+  /// Приводит значение тона (bass/treble/balance/fader) к диапазону [-10..10]
+  static int _clampTone(int value) => value.clamp(minToneValue, maxToneValue);
+
   Future<bool> volumeSet(int value) async {
-    if (value < 0) value = 0;
-    if (value > 28) value = 28;
-    // Data from LEN to DATA: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x18, value];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    value = value.clamp(minVolume, maxVolume);
+    final payload = <int>[0x05, headerType, headerSub, headerSub2, cmdVolume, value];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _state.volume = value;
       _updateState();
@@ -209,44 +265,10 @@ class BtRepository {
   }
 
   Future<bool> setInput(String input) async {
-    int inputCode;
-    switch (input.toUpperCase()) {
-      case 'RADIO':
-        inputCode = 0x01;
-        break;
-      case 'USB':
-        inputCode = 0x02;
-        break;
-      case 'SD':
-        inputCode = 0x03;
-        break;
-      case 'BT':
-        inputCode = 0x04;
-        break;
-      case 'AUX':
-        inputCode = 0x05;
-        break;
-      case 'DISC':
-        inputCode = 0x06;
-        break;
-      case 'GPS':
-        inputCode = 0x07;
-        break;
-      case 'SXM':
-        inputCode = 0x08;
-        break;
-      case 'AVIN':
-      case 'AV IN':
-        inputCode = 0x09;
-        break;
-      default:
-        inputCode = 0x01;
-    }
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, inputCode];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    final inputCode = _inputStringToCode(input);
+    // Payload: [LEN, TYPE, SUB, SUB2, CMD, VALUE]
+    final payload = <int>[0x05, headerType, headerSub, headerSub2, cmdInput, inputCode];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _state.inputSource = input.toUpperCase();
       _updateState();
@@ -255,13 +277,10 @@ class BtRepository {
   }
 
   Future<bool> setBass(int value) async {
-    if (value < -10) value = -10;
-    if (value > 10) value = 10;
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, value + 0x10];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    value = _clampTone(value);
+    // NOTE: command byte 0x21 — предположительный, уточнить по протоколу
+    final payload = <int>[0x05, headerType, headerSub, headerSub2, cmdBass, value + bassEncodingOffset];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _state.bass = value;
       _updateState();
@@ -270,13 +289,10 @@ class BtRepository {
   }
 
   Future<bool> setTreble(int value) async {
-    if (value < -10) value = -10;
-    if (value > 10) value = 10;
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, value + 0x20];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    value = _clampTone(value);
+    // NOTE: command byte 0x22 — предположительный, уточнить по протоколу
+    final payload = <int>[0x05, headerType, headerSub, headerSub2, cmdTreble, value + trebleEncodingOffset];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _state.treble = value;
       _updateState();
@@ -285,13 +301,9 @@ class BtRepository {
   }
 
   Future<bool> setBalance(int value) async {
-    if (value < -10) value = -10;
-    if (value > 10) value = 10;
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x2a, 0x03, value + 0x10];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    value = _clampTone(value);
+    final payload = <int>[0x06, headerType, headerSub, headerSub2, cmdBalance, 0x03, value + balanceFaderEncodingOffset];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _state.balance = value;
       _updateState();
@@ -300,13 +312,9 @@ class BtRepository {
   }
 
   Future<bool> setFader(int value) async {
-    if (value < -10) value = -10;
-    if (value > 10) value = 10;
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x20, 0x01, value + 0x10];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    value = _clampTone(value);
+    final payload = <int>[0x06, headerType, headerSub, headerSub2, cmdFader, 0x01, value + balanceFaderEncodingOffset];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _state.fader = value;
       _updateState();
@@ -315,117 +323,92 @@ class BtRepository {
   }
 
   Future<bool> setEqPreset(int preset) async {
-    final presets = [0x08, 0x03, 0x04, 0x09, 0x0a, 0x05, 0x06];
-    if (preset < 0 || preset >= presets.length) return false;
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x26, 0x01, presets[preset]];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    final result = await sendCommand(cmd);
+    const eqPresetValues = [0x08, 0x03, 0x04, 0x09, 0x0a, 0x05, 0x06];
+    if (preset < 0 || preset >= eqPresetValues.length) return false;
+    final payload = <int>[0x06, headerType, headerSub, headerSub2, cmdEqPreset, 0x01, eqPresetValues[preset]];
+    final result = await sendCommand(_buildTx(payload));
     if (result) {
       _updateState();
     }
     return result;
   }
 
-  // Extended Audio Settings (protocol bytes TBD based on APK analysis)
-  // TODO: Update cmd bytes when exact protocol is documented
+  // ---- Extended Audio Settings ----
+  // TODO: уточнить protocol bytes по документации протокола
 
   Future<bool> setLoudness(bool enabled, {int level = 0, int freq = 0}) async {
-    // Payload: [LEN, TYPE, ...DATA]
-    // Assuming: 0x30 = Loudness command, DATA[0] = on/off, DATA[1] = level, DATA[2] = freq
-    final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x30, enabled ? 1 : 0, level, freq];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x07, headerType, headerSub, headerSub2, cmdLoudness, enabled ? 1 : 0, level, freq];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> setSubwoofer({int level = 0, int freq = 0, int phase = 0}) async {
-    // Payload: [LEN, TYPE, ...DATA]
-    // Assuming: 0x40 = Subwoofer command
-    final payload = <int>[0x08, 0xa0, 0x10, 0x0e, 0x40, level, freq, phase];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    // LEN=7: headerType(1) + headerSub(2) + headerSub2(3) + cmd(4) + level(5) + freq(6) + phase(7)
+    final payload = <int>[0x07, headerType, headerSub, headerSub2, cmdSubwoofer, level, freq, phase];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> setXOver({int type = 0, int freq = 0}) async {
-    // Payload: [LEN, TYPE, ...DATA]
-    // Assuming: 0x50 = X-Over command
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x50, type, freq];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x06, headerType, headerSub, headerSub2, cmdXOver, type, freq];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> setTimeAlignment({int speaker = 0, int delay = 0}) async {
-    // Payload: [LEN, TYPE, ...DATA]
-    // Assuming: 0x60 = Time Alignment command
-    final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x60, speaker, delay];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    // LEN=6: headerType(1) + headerSub(2) + headerSub2(3) + cmd(4) + speaker(5) + delay(6)
+    final payload = <int>[0x06, headerType, headerSub, headerSub2, cmdTimeAlignment, speaker, delay];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> setEqPlus({int band = 0, int freq = 0, int gain = 0, int q = 0}) async {
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x09, 0xa0, 0x10, 0x0e, 0x70, band, freq, gain, q];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    // LEN=8: headerType(1)+headerSub(2)+headerSub2(3)+cmd(4)+band(5)+freq(6)+gain(7)+q(8)
+    final payload = <int>[0x08, headerType, headerSub, headerSub2, cmdEqPlus, band, freq, gain, q];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> playPause() async {
-    // Data from LEN to DATA: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x01];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x04, headerType, headerSub, headerSub2, cmdPlayPause];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> nextTrack() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x02];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x04, headerType, headerSub, headerSub2, cmdNextTrack];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> prevTrack() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x03];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x04, headerType, headerSub, headerSub2, cmdPrevTrack];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> radioSeekUp() async {
-    // Payload: [LEN, TYPE, ...DATA]
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x80];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x04, headerType, headerSub, headerSub2, cmdRadioSeekUp];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> radioSeekDown() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x81];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    final payload = <int>[0x04, headerType, headerSub, headerSub2, cmdRadioSeekDown];
+    return await sendCommand(_buildTx(payload));
   }
 
   Future<bool> radioSetFreq(double freq, bool isFm) async {
-    int freqCode = isFm ? (freq * 10).toInt() : freq.toInt();
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, isFm ? 0x82 : 0x83, freqCode >> 8, freqCode & 0xFF];
-    final checksum = _calcChecksumTx(payload);
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
-    return await sendCommand(cmd);
+    // FM: freq*10, AM: частота в kHz
+    final int freqCode;
+    if (isFm) {
+      freqCode = (freq * 10).round();
+    } else {
+      freqCode = freq.toInt();
+    }
+    final cmdByte = isFm ? cmdRadioSetFreqFm : cmdRadioSetFreqAm;
+    // LEN=6: headerType(1)+headerSub(2)+headerSub2(3)+cmd(4)+freqH(5)+freqL(6)
+    final payload = <int>[0x06, headerType, headerSub, headerSub2, cmdByte, freqCode >> 8, freqCode & 0xFF];
+    return await sendCommand(_buildTx(payload));
   }
 
   void parseNotification(List<int> data) {
     if (data.length < 4) return;
-    if (data[0] != 0xC0) return;
+    if (data[0] != rxSyncByte) return;
 
-    // RX checksum: sum(LEN..DATA) + 0x40
-    final payload = data.sublist(2, data.length - 1); // LEN to DATA
+    // RX checksum: sum(LEN..DATA) + rxChecksumOffset
+    final payload = data.sublist(2, data.length - 1); // LEN to DATA (excl. checksum)
     final calc = _calcChecksumRx(payload);
     final recv = data.last;
     if (calc != recv) {
@@ -437,18 +420,18 @@ class BtRepository {
     final type = data[3];
     bool stateChanged = false;
 
-    if (type == 0x90 && len == 0x03 && data.length >= 6) {
-      _state.volume = data[4]; // DATA byte (not checksum)
+    if (type == notifyVolume && len == 0x03 && data.length >= 6) {
+      _state.volume = data[4];
       stateChanged = true;
-    } else if (type == 0x91 && len == 0x04 && data.length >= 7) {
-      _state.bass = data[4] - 0x10; // DATA[0]
-      _state.treble = data[5] - 0x20; // DATA[1]
+    } else if (type == notifyBassTreble && len == 0x04 && data.length >= 7) {
+      _state.bass = data[4] - bassEncodingOffset;      // DATA[0] - 0x10
+      _state.treble = data[5] - trebleEncodingOffset;  // DATA[1] - 0x20
       stateChanged = true;
-    } else if (type == 0x92 && len == 0x05 && data.length >= 8) {
-      _state.balance = data[6] - 0x10;
-      _state.fader = data[7] - 0x10;
+    } else if (type == notifyBalanceFader && len == 0x05 && data.length >= 8) {
+      _state.balance = data[6] - balanceFaderEncodingOffset; // DATA[2] - 0x10
+      _state.fader = data[7] - balanceFaderEncodingOffset;   // DATA[3] - 0x10
       stateChanged = true;
-    } else if (type == 0x93 && len == 0x03 && data.length >= 6) {
+    } else if (type == notifyInputSource && len == 0x03 && data.length >= 6) {
       _state.inputSource = _inputCodeToString(data[5]);
       stateChanged = true;
     }
@@ -458,7 +441,25 @@ class BtRepository {
     }
   }
 
-  String _inputCodeToString(int code) {
+  /// Преобразует строку источника в code для BLE-команды
+  static int _inputStringToCode(String input) {
+    switch (input.toUpperCase()) {
+      case 'RADIO':  return 0x01;
+      case 'USB':    return 0x02;
+      case 'SD':     return 0x03;
+      case 'BT':     return 0x04;
+      case 'AUX':    return 0x05;
+      case 'DISC':   return 0x06;
+      case 'GPS':    return 0x07;
+      case 'SXM':    return 0x08;
+      case 'AVIN':
+      case 'AV IN':  return 0x09;
+      default:       return 0x01;
+    }
+  }
+
+  /// Преобразует code из BLE-уведомления в строку источника
+  static String _inputCodeToString(int code) {
     switch (code) {
       case 0x01: return 'RADIO';
       case 0x02: return 'USB';
@@ -466,7 +467,7 @@ class BtRepository {
       case 0x04: return 'BT';
       case 0x05: return 'AUX';
       case 0x06: return 'DISC';
-      default: return 'UNKNOWN';
+      default:   return 'UNKNOWN';
     }
   }
 }

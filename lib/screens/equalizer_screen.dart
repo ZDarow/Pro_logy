@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/bt_provider.dart';
@@ -23,7 +24,7 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
     '16 kHz': 0,
   };
 
-  final Map<String, int> _freqToBand = {
+  static const Map<String, int> _freqToBand = {
     '32 Hz': 0,
     '64 Hz': 1,
     '125 Hz': 2,
@@ -32,8 +33,22 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
     '1 kHz': 5,
     '2 kHz': 6,
     '4 kHz': 7,
-    '16 kHz': 8,
+    '8 kHz': 8,
+    '16 kHz': 9,
   };
+
+  Timer? _debounceTimer;
+
+  void _debouncedBle(VoidCallback action) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), action);
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
 
   void _sendCommand(String freq, double value) {
     final bt = context.read<BtProvider>();
@@ -69,7 +84,7 @@ class _EqualizerScreenState extends State<EqualizerScreen> {
         children: [
           ...bands.entries.map((e) => _buildBand(e.key, e.value, (v) {
                 setState(() => bands[e.key] = v);
-                _sendCommand(e.key, v);
+                _debouncedBle(() => _sendCommand(e.key, v));
               })),
           const SizedBox(height: 20),
           Padding(
