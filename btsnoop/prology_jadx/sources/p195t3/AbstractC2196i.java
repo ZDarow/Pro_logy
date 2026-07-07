@@ -1,0 +1,118 @@
+package p195t3;
+
+/* renamed from: t3.i */
+/* loaded from: classes.dex */
+public abstract class AbstractC2196i {
+
+    /* renamed from: a */
+    public static final p195t3.C2195h f8799a = new java.lang.Object();
+
+    /* renamed from: a */
+    public static p195t3.C2189b m4373a(int i4, int i5, int i6) {
+        p195t3.C2189b c2199l;
+        if ((i6 & 2) != 0) {
+            i5 = 1;
+        }
+        if (i4 != -2) {
+            if (i4 == -1) {
+                if (i5 == 1) {
+                    return new p195t3.C2199l(1, 2, null);
+                }
+                throw new java.lang.IllegalArgumentException("CONFLATED capacity cannot be used with non-default onBufferOverflow");
+            }
+            if (i4 != 0) {
+                return i4 != Integer.MAX_VALUE ? i5 == 1 ? new p195t3.C2189b(i4, null) : new p195t3.C2199l(i4, i5, null) : new p195t3.C2189b(Integer.MAX_VALUE, null);
+            }
+            c2199l = i5 == 1 ? new p195t3.C2189b(0, null) : new p195t3.C2199l(1, i5, null);
+        } else if (i5 == 1) {
+            p195t3.InterfaceC2193f.f8797h.getClass();
+            c2199l = new p195t3.C2189b(p195t3.C2192e.f8796b, null);
+        } else {
+            c2199l = new p195t3.C2199l(1, i5, null);
+        }
+        return c2199l;
+    }
+
+    /* JADX WARN: Multi-variable type inference failed */
+    /* JADX WARN: Removed duplicated region for block: B:18:0x0033  */
+    /* JADX WARN: Removed duplicated region for block: B:9:0x0021  */
+    /* JADX WARN: Type inference failed for: r0v2, types: [b3.d, t3.m, d3.b] */
+    /* JADX WARN: Type inference failed for: r0v7 */
+    /* JADX WARN: Type inference failed for: r0v8 */
+    /* JADX WARN: Type inference failed for: r5v5, types: [j3.a] */
+    /* renamed from: b */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+        To view partially-correct add '--show-bad-code' argument
+    */
+    public static final java.lang.Object m4374b(p195t3.InterfaceC2202o r4, p044L.C0344b r5, p120d3.AbstractC1292b r6) {
+        /*
+            boolean r0 = r6 instanceof p195t3.C2200m
+            if (r0 == 0) goto L13
+            r0 = r6
+            t3.m r0 = (p195t3.C2200m) r0
+            int r1 = r0.f8805q
+            r2 = -2147483648(0xffffffff80000000, float:-0.0)
+            r3 = r1 & r2
+            if (r3 == 0) goto L13
+            int r1 = r1 - r2
+            r0.f8805q = r1
+            goto L18
+        L13:
+            t3.m r0 = new t3.m
+            r0.<init>(r6)
+        L18:
+            java.lang.Object r6 = r0.f8804p
+            c3.a r1 = p115c3.EnumC1252a.f4880l
+            int r2 = r0.f8805q
+            r3 = 1
+            if (r2 == 0) goto L33
+            if (r2 != r3) goto L2b
+            j3.a r5 = r0.f8803o
+            p176p1.AbstractC1949a.m3913P(r6)     // Catch: java.lang.Throwable -> L29
+            goto L65
+        L29:
+            r4 = move-exception
+            goto L6b
+        L2b:
+            java.lang.IllegalStateException r4 = new java.lang.IllegalStateException
+            java.lang.String r5 = "call to 'resume' before 'invoke' with coroutine"
+            r4.<init>(r5)
+            throw r4
+        L33:
+            p176p1.AbstractC1949a.m3913P(r6)
+            b3.i r6 = r0.f5176m
+            p154k3.AbstractC1803h.m3776b(r6)
+            r3.t r2 = p187r3.C2129t.f8496m
+            b3.g r6 = r6.mo678j(r2)
+            if (r6 != r4) goto L6f
+            r0.f8803o = r5     // Catch: java.lang.Throwable -> L29
+            r0.f8805q = r3     // Catch: java.lang.Throwable -> L29
+            r3.f r6 = new r3.f     // Catch: java.lang.Throwable -> L29
+            b3.d r0 = p176p1.AbstractC1949a.m3902C(r0)     // Catch: java.lang.Throwable -> L29
+            r6.<init>(r3, r0)     // Catch: java.lang.Throwable -> L29
+            r6.m4232v()     // Catch: java.lang.Throwable -> L29
+            I.L r0 = new I.L     // Catch: java.lang.Throwable -> L29
+            r2 = 1
+            r0.<init>(r2, r6)     // Catch: java.lang.Throwable -> L29
+            t3.n r4 = (p195t3.C2201n) r4     // Catch: java.lang.Throwable -> L29
+            r4.m4383X(r0)     // Catch: java.lang.Throwable -> L29
+            java.lang.Object r4 = r6.m4231u()     // Catch: java.lang.Throwable -> L29
+            if (r4 != r1) goto L65
+            return r1
+        L65:
+            r5.mo501c()
+            Z2.g r4 = p100Z2.C0934g.f3298a
+            return r4
+        L6b:
+            r5.mo501c()
+            throw r4
+        L6f:
+            java.lang.IllegalStateException r4 = new java.lang.IllegalStateException
+            java.lang.String r5 = "awaitClose() can only be invoked from the producer context"
+            r4.<init>(r5)
+            throw r4
+        */
+        throw new UnsupportedOperationException("Method not decompiled: p195t3.AbstractC2196i.m4374b(t3.o, L.b, d3.b):java.lang.Object");
+    }
+}
