@@ -1,5 +1,15 @@
 import 'dart:async';
 
+/// Тип события транспорта
+enum TransportEventType { connected, disconnected, error }
+
+/// Событие транспорта (connected/disconnected/error)
+class TransportEvent {
+  final TransportEventType type;
+  final String? message;
+  const TransportEvent(this.type, {this.message});
+}
+
 /// Абстрактный транспортный слой для PROLOGY протокола
 ///
 /// Поддерживает BLE (GATT) и SPP (RFCOMM/Classic Bluetooth).
@@ -16,6 +26,9 @@ abstract class AbstractTransport {
 
   /// Поток входящих данных (нотификации/ответы)
   Stream<List<int>> get onData;
+
+  /// Поток событий транспорта (connected/disconnected/error)
+  Stream<TransportEvent> get onEvent;
 
   /// Статус подключения
   bool get isConnected;

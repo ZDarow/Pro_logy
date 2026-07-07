@@ -34,9 +34,12 @@ class BleTransport implements AbstractTransport {
 
   final StreamController<List<int>> _dataController =
       StreamController<List<int>>.broadcast();
+  final StreamController<TransportEvent> _eventController =
+      StreamController<TransportEvent>.broadcast();
 
   bool _connected = false;
   String? _errorMessage;
+  StreamSubscription? _connectionStateSub;
 
   @override
   bool get isConnected => _connected;
@@ -46,6 +49,9 @@ class BleTransport implements AbstractTransport {
 
   @override
   Stream<List<int>> get onData => _dataController.stream;
+
+  @override
+  Stream<TransportEvent> get onEvent => _eventController.stream;
 
   BleTransport({String? targetAddress}) : _pendingAddress = targetAddress;
 
@@ -81,10 +87,9 @@ class BleTransport implements AbstractTransport {
   @override
   Future<bool> connect() async {
     if (_device == null && _pendingAddress != null) {
-      try {
-        _device = BluetoothDevice.fromId(_pendingAddress!);
-      } catch (e) {
-        _errorMessage = 'Invalid address "$_pendingAddress": $e';
+      _device = await _scanForAddress(_pendingAddress!);
+      if (_device == null) {
+        _errorMessage = 'Device $_pendingAddress not found via scan';
         debugPrint('BleTransport.connect: $_errorMessage');
         return false;
       }
@@ -99,21 +104,78 @@ class BleTransport implements AbstractTransport {
     return _connectDevice();
   }
 
+  /// Сканирует BLE и ищет устройство с указанным MAC-адресом
+  static Future<BluetoothDevice?> _scanForAddress(String address,
+      {Duration timeout = const Duration(seconds: 10)}) async {
+    final target = address.toUpperCase();
+    final completer = Completer<BluetoothDevice?>();
+
+    final sub = FlutterBluePlus.scanResults.listen((devices) {
+      for (final d in devices) {
+        if (d.device.remoteId.str.toUpperCase() == target) {
+          if (!completer.isCompleted) {
+            completer.complete(d.device);
+          }
+          return;
+        }
+      }
+    });
+
+    await FlutterBluePlus.startScan(timeout: timeout);
+    final result = await completer.future.timeout(timeout, onTimeout: () => null);
+    await FlutterBluePlus.stopScan();
+    await sub.cancel();
+
+    return result;
+  }
+
   /// Подключиться по MAC-адресу (полный цикл: установка адреса + connect)
   Future<bool> connectToAddress(String remoteId) async {
     setTargetAddress(remoteId);
     return connect();
   }
 
+  /// Таймаут на BLE-подключение и discovery
+  static const Duration _connectTimeout = Duration(seconds: 15);
+
   Future<bool> _connectDevice() async {
     try {
-      await _device!.connect();
+      _connectionStateSub?.cancel();
+      _connectionStateSub = _device!.connectionState.listen((state) {
+        debugPrint('BleTransport: connection state -> $state');
+        if (state == BluetoothConnectionState.disconnected && _connected) {
+          _connected = false;
+          _eventController.add(const TransportEvent(
+            TransportEventType.disconnected,
+            message: 'BLE device disconnected',
+          ));
+        }
+      });
+
+      await _device!.connect(timeout: _connectTimeout);
       await _discoverPrologyService();
+
+      if (_cmdCharacteristic == null) {
+        _errorMessage = 'CMD characteristic (AE01) not found during discovery';
+        await _device!.disconnect();
+        _eventController.add(TransportEvent(
+          TransportEventType.error,
+          message: _errorMessage,
+        ));
+        return false;
+      }
+
       _connected = true;
       _errorMessage = null;
+      _eventController.add(const TransportEvent(TransportEventType.connected));
+      debugPrint('BleTransport: connected with timeout=$_connectTimeout');
       return true;
     } catch (e) {
       _errorMessage = 'Connection failed: $e';
+      _eventController.add(TransportEvent(
+        TransportEventType.error,
+        message: _errorMessage,
+      ));
       debugPrint('BleTransport._connectDevice error: $e');
       return false;
     }
@@ -124,12 +186,12 @@ class BleTransport implements AbstractTransport {
 
     final services = await _device!.discoverServices();
     for (final service in services) {
-      final svcUuid = service.uuid.str.toLowerCase();
+      final svcUuid = service.uuid.str128.toLowerCase();
 
       // Service AE00
       if (svcUuid == serviceUuid) {
         for (final char in service.characteristics) {
-          final uuid = char.uuid.str.toLowerCase();
+          final uuid = char.uuid.str128.toLowerCase();
           if (uuid == cmdCharUuid) {
             _cmdCharacteristic = char;
             debugPrint('BleTransport: found CMD char (AE01)');
@@ -145,7 +207,7 @@ class BleTransport implements AbstractTransport {
       // Fallback: Service AF00
       if (svcUuid == altServiceUuid && _notifyCharacteristic == null) {
         for (final char in service.characteristics) {
-          final uuid = char.uuid.str.toLowerCase();
+          final uuid = char.uuid.str128.toLowerCase();
           if (uuid == altNotifyCharUuid) {
             _notifyCharacteristic = char;
             debugPrint('BleTransport: found NOTIFY char (AF01 fallback)');
@@ -179,7 +241,7 @@ class BleTransport implements AbstractTransport {
   Future<bool> send(List<int> data) async {
     if (_cmdCharacteristic == null) return false;
     try {
-      await _cmdCharacteristic!.write(data, withoutResponse: false);
+      await _cmdCharacteristic!.write(data, withoutResponse: true);
       return true;
     } catch (e) {
       debugPrint('BleTransport.send error: $e');
@@ -191,6 +253,8 @@ class BleTransport implements AbstractTransport {
   Future<void> disconnect() async {
     _notificationSubscription?.cancel();
     _notificationSubscription = null;
+    _connectionStateSub?.cancel();
+    _connectionStateSub = null;
     if (_notifyCharacteristic != null) {
       try {
         await _notifyCharacteristic!.setNotifyValue(false);
@@ -211,5 +275,6 @@ class BleTransport implements AbstractTransport {
   Future<void> dispose() async {
     await disconnect();
     await _dataController.close();
+    await _eventController.close();
   }
 }

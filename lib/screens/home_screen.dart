@@ -17,6 +17,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<BtProvider>().connect('90:20:71:5E:48:10');
+    });
+  }
+
   void _showBtDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -42,9 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onSourceTap(SourceItem source) {
     final appBloc = context.read<AppBloc>();
-    if (source.screen != null) {
+    if (source.screenBuilder != null) {
       appBloc.add(SelectSource(source.appSource));
-      Navigator.push(context, MaterialPageRoute(builder: (_) => source.screen!));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (ctx) => source.screenBuilder!(ctx)),
+      );
     } else {
       final cmdSettings = context.read<CommandSettingsProvider>();
       final cmd = cmdSettings.getCommand(source.command).codeUnits;
@@ -82,7 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     : () {
                         final btScanIdx = sources.indexWhere((s) => s.name == 'BT Scan');
                         if (btScanIdx >= 0) {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => sources[btScanIdx].screen!));
+                          final builder = sources[btScanIdx].screenBuilder;
+                          if (builder != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: builder),
+                            );
+                          }
                         }
                       },
                 tooltip: connected ? 'Подключено. Нажмите для отключения.' : 'Нажмите для сканирования',

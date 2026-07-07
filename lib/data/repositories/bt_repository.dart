@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import '../protocol/protocol_parser.dart';
+export '../protocol/protocol_parser.dart' show PrologyState;
+import '../protocol/legacy_protocol.dart';
 import '../transport/abstract_transport.dart';
 import '../transport/ble_transport.dart';
 
@@ -16,20 +18,6 @@ enum ProtocolVersion {
 
 enum BtConnectionStatus { disconnected, connecting, connected, error }
 
-class PrologyState {
-  int volume = 0; // 0-100 (v2), 0-28 (v1 legacy)
-  int bass = 0; // 0-100 (v2), -10..+10 (v1)
-  int treble = 0; // 0-100 (v2), -10..+10 (v1)
-  int balance = 0; // -10..+10
-  int fader = 0; // -10..+10
-  int eqPreset = 0; // 0=flat, 3=rock, 4=jazz, 5=classical, 6=pop
-  String inputSource = 'RADIO';
-  bool isConnected = false;
-  String deviceSerial = '';
-  String deviceModel = '';
-  String deviceFirmware = '';
-}
-
 class BtRepository {
   // Версия протокола
   final ProtocolVersion protocolVersion;
@@ -38,6 +26,8 @@ class BtRepository {
   final AbstractTransport transport;
 
   StreamSubscription? _transportSubscription;
+  StreamSubscription? _eventSubscription;
+
   BtConnectionStatus _status = BtConnectionStatus.disconnected;
   String? _errorMessage;
   final PrologyState _state = PrologyState();
@@ -49,6 +39,10 @@ class BtRepository {
       StreamController<BtConnectionStatus>.broadcast();
 
   Timer? _heartbeatTimer;
+  Timer? _reconnectTimer;
+  int _missedHeartbeats = 0;
+  int _reconnectAttempt = 0;
+  bool _reconnecting = false;
 
   BtRepository({
     this.protocolVersion = ProtocolVersion.hci,
@@ -71,7 +65,6 @@ class BtRepository {
   /// Поток статуса Bluetooth для HomeScreen (BluetoothConnectionState)
   Stream<BluetoothConnectionState> get connectionState {
     return _statusController.stream.map((s) {
-      // connecting deprecated — Android & iOS не стримят это состояние
       return s == BtConnectionStatus.connected
           ? BluetoothConnectionState.connected
           : BluetoothConnectionState.disconnected;
@@ -88,10 +81,16 @@ class BtRepository {
     _status = BtConnectionStatus.connecting;
     _statusController.add(_status);
     _errorMessage = null;
+    _reconnectAttempt = 0;
+    _reconnecting = false;
 
     // Слушаем входящие данные от транспорта
     _transportSubscription?.cancel();
     _transportSubscription = transport.onData.listen(_onTransportData);
+
+    // Слушаем события транспорта
+    _eventSubscription?.cancel();
+    _eventSubscription = transport.onEvent.listen(_onTransportEvent);
 
     final ok = await transport.connect();
     if (!ok) {
@@ -105,9 +104,90 @@ class BtRepository {
     _state.isConnected = true;
     _statusController.add(_status);
     _updateState();
+    _missedHeartbeats = 0;
     await _sendInit();
     _startHeartbeat();
     return true;
+  }
+
+  void _onTransportEvent(TransportEvent event) {
+    debugPrint('BtRepository: transport event -> ${event.type} ${event.message ?? ''}');
+
+    switch (event.type) {
+      case TransportEventType.disconnected:
+        _handleDisconnect();
+      case TransportEventType.error:
+        _handleDisconnect();
+      case TransportEventType.connected:
+        // Уже обрабатывается в connect()
+        break;
+    }
+  }
+
+  void _handleDisconnect() {
+    _heartbeatTimer?.cancel();
+    _heartbeatTimer = null;
+    _status = BtConnectionStatus.disconnected;
+    _state.isConnected = false;
+    _statusController.add(_status);
+    _updateState();
+
+    if (!_reconnecting) {
+      _reconnecting = true;
+      _reconnectAttempt = 0;
+      _tryReconnect();
+    }
+  }
+
+  Future<void> _tryReconnect() async {
+    const maxAttempts = 3;
+    _scheduleReconnect(maxAttempts);
+  }
+
+  void _scheduleReconnect(int maxAttempts) {
+    if (!_reconnecting || _reconnectAttempt >= maxAttempts) {
+      _reconnecting = false;
+      _status = BtConnectionStatus.error;
+      _errorMessage = 'Reconnect failed after $maxAttempts attempts';
+      if (!_statusController.isClosed) {
+        _statusController.add(_status);
+      }
+      debugPrint('BtRepository: $_errorMessage');
+      return;
+    }
+
+    _reconnectAttempt++;
+    final delay = Duration(seconds: 1 * (1 << (_reconnectAttempt - 1)));
+    debugPrint('BtRepository: reconnect attempt $_reconnectAttempt/$maxAttempts in ${delay.inSeconds}s');
+
+    _reconnectTimer?.cancel();
+    _reconnectTimer = Timer(delay, () async {
+      if (!_reconnecting) return;
+
+      _status = BtConnectionStatus.connecting;
+      if (!_statusController.isClosed) {
+        _statusController.add(_status);
+      }
+
+      final ok = await transport.connect();
+      if (ok) {
+        _reconnecting = false;
+        _reconnectAttempt = 0;
+        _status = BtConnectionStatus.connected;
+        _state.isConnected = true;
+        if (!_statusController.isClosed) {
+          _statusController.add(_status);
+        }
+        _updateState();
+        _missedHeartbeats = 0;
+        await _sendInit();
+        _startHeartbeat();
+        debugPrint('BtRepository: reconnected on attempt $_reconnectAttempt');
+      } else {
+        debugPrint('BtRepository: reconnect attempt $_reconnectAttempt failed');
+        _scheduleReconnect(maxAttempts);
+      }
+    });
   }
 
   /// Подключиться к BLE-устройству по MAC-адресу
@@ -119,10 +199,15 @@ class BtRepository {
   }
 
   Future<void> disconnect() async {
+    _reconnecting = false;
+    _reconnectTimer?.cancel();
+    _reconnectTimer = null;
     _heartbeatTimer?.cancel();
     _heartbeatTimer = null;
     _transportSubscription?.cancel();
     _transportSubscription = null;
+    _eventSubscription?.cancel();
+    _eventSubscription = null;
     await transport.disconnect();
     _status = BtConnectionStatus.disconnected;
     _state.isConnected = false;
@@ -141,8 +226,12 @@ class BtRepository {
   }
 
   void dispose() {
+    _reconnecting = false;
+    _reconnectTimer?.cancel();
+    _reconnectTimer = null;
     _heartbeatTimer?.cancel();
     _transportSubscription?.cancel();
+    _eventSubscription?.cancel();
     transport.dispose();
     _stateController.close();
     _statusController.close();
@@ -154,10 +243,16 @@ class BtRepository {
   // =======================================================================
 
   void _startHeartbeat() {
+    _missedHeartbeats = 0;
     _heartbeatTimer?.cancel();
     _heartbeatTimer = Timer.periodic(const Duration(seconds: 10), (_) {
       if (protocolVersion == ProtocolVersion.hci) {
         sendCommand(ProtocolParser.buildHeartbeat());
+        _missedHeartbeats++;
+        if (_missedHeartbeats >= 3) {
+          debugPrint('BtRepository: 3 missed heartbeats, initiating reconnect');
+          _handleDisconnect();
+        }
       }
     });
   }
@@ -177,9 +272,7 @@ class BtRepository {
         break;
 
       case ProtocolVersion.legacy:
-        final payload = <int>[0x03, 0x01, 0x05, 0x00];
-        final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-        await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+        await sendCommand(LegacyProtocolBuilder.buildInit());
         break;
     }
   }
@@ -225,17 +318,10 @@ class BtRepository {
 
   Future<bool> volumeSet(int value) async {
     final clamped = value.clamp(0, 100);
-    List<int> cmd;
-    switch (protocolVersion) {
-      case ProtocolVersion.hci:
-        cmd = ProtocolParser.buildVolumeSet(clamped);
-        break;
-      case ProtocolVersion.legacy:
-        final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x18, clamped];
-        final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-        cmd = <int>[0xf0, 0x00, ...payload, cs];
-        break;
-    }
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildVolumeSet(clamped),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildVolumeSet(clamped),
+    };
     final result = await sendCommand(cmd);
     if (result) {
       _state.volume = clamped;
@@ -250,18 +336,10 @@ class BtRepository {
 
   Future<bool> setBass(int value) async {
     final clamped = value.clamp(0, 100);
-    List<int> cmd;
-    switch (protocolVersion) {
-      case ProtocolVersion.hci:
-        cmd = ProtocolParser.buildBassSet(clamped);
-        break;
-      case ProtocolVersion.legacy:
-        final bassVal = ((clamped * 20) ~/ 100) - 10;
-        final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, bassVal + 0x10];
-        final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-        cmd = <int>[0xf0, 0x00, ...payload, cs];
-        break;
-    }
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildBassSet(clamped),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildBassSet(clamped),
+    };
     final result = await sendCommand(cmd);
     if (result) {
       _state.bass = clamped;
@@ -272,18 +350,10 @@ class BtRepository {
 
   Future<bool> setTreble(int value) async {
     final clamped = value.clamp(0, 100);
-    List<int> cmd;
-    switch (protocolVersion) {
-      case ProtocolVersion.hci:
-        cmd = ProtocolParser.buildTrebleSet(clamped);
-        break;
-      case ProtocolVersion.legacy:
-        final trebVal = ((clamped * 20) ~/ 100) - 10;
-        final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, trebVal + 0x20];
-        final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-        cmd = <int>[0xf0, 0x00, ...payload, cs];
-        break;
-    }
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildTrebleSet(clamped),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildTrebleSet(clamped),
+    };
     final result = await sendCommand(cmd);
     if (result) {
       _state.treble = clamped;
@@ -297,47 +367,38 @@ class BtRepository {
   // =======================================================================
 
   Future<bool> setBalance(int value) async {
-    if (value < -10) value = -10;
-    if (value > 10) value = 10;
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x2a, 0x03, value + 0x10];
-    final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    final cmd = <int>[0xf0, 0x00, ...payload, cs];
+    final clamped = value.clamp(-10, 10);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildBalance(clamped),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildBalance(clamped),
+    };
     final result = await sendCommand(cmd);
     if (result) {
-      _state.balance = value;
+      _state.balance = clamped;
       _updateState();
     }
     return result;
   }
 
   Future<bool> setFader(int value) async {
-    if (value < -10) value = -10;
-    if (value > 10) value = 10;
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x20, 0x01, value + 0x10];
-    final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    final cmd = <int>[0xf0, 0x00, ...payload, cs];
+    final clamped = value.clamp(-10, 10);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildFader(clamped),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildFader(clamped),
+    };
     final result = await sendCommand(cmd);
     if (result) {
-      _state.fader = value;
+      _state.fader = clamped;
       _updateState();
     }
     return result;
   }
 
   Future<bool> setEqPreset(int preset) async {
-    List<int> cmd;
-    switch (protocolVersion) {
-      case ProtocolVersion.hci:
-        cmd = ProtocolParser.buildEqPreset(preset);
-        break;
-      case ProtocolVersion.legacy:
-        final legacyPresets = [0x08, 0x03, 0x04, 0x09, 0x0a, 0x05, 0x06];
-        final p = preset < legacyPresets.length ? legacyPresets[preset] : 0x08;
-        final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x26, 0x01, p];
-        final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-        cmd = <int>[0xf0, 0x00, ...payload, cs];
-        break;
-    }
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildEqPreset(preset),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildEqPreset(preset),
+    };
     final result = await sendCommand(cmd);
     if (result) {
       _state.eqPreset = preset;
@@ -351,42 +412,10 @@ class BtRepository {
   // =======================================================================
 
   Future<bool> setInput(String input) async {
-    int inputCode;
-    switch (input.toUpperCase()) {
-      case 'RADIO':
-        inputCode = 0x01;
-        break;
-      case 'USB':
-        inputCode = 0x02;
-        break;
-      case 'SD':
-        inputCode = 0x03;
-        break;
-      case 'BT':
-        inputCode = 0x04;
-        break;
-      case 'AUX':
-        inputCode = 0x05;
-        break;
-      case 'DISC':
-        inputCode = 0x06;
-        break;
-      case 'GPS':
-        inputCode = 0x07;
-        break;
-      case 'SXM':
-        inputCode = 0x08;
-        break;
-      case 'AVIN':
-      case 'AV IN':
-        inputCode = 0x09;
-        break;
-      default:
-        inputCode = 0x01;
-    }
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, 0x24, inputCode];
-    final checksum = (payload.fold(0, (prev, element) => prev + element) + 0x10) & 0xFF;
-    final cmd = <int>[0xf0, 0x00, ...payload, checksum];
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildInputSelect(_inputToCode(input)),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildInputSelect(input),
+    };
     final result = await sendCommand(cmd);
     if (result) {
       _state.inputSource = input.toUpperCase();
@@ -395,26 +424,48 @@ class BtRepository {
     return result;
   }
 
+  int _inputToCode(String input) {
+    switch (input.toUpperCase()) {
+      case 'RADIO': return 0x01;
+      case 'USB': return 0x02;
+      case 'SD': return 0x03;
+      case 'BT': return 0x04;
+      case 'AUX': return 0x05;
+      case 'DISC': return 0x06;
+      case 'GPS': return 0x07;
+      case 'SXM': return 0x08;
+      case 'AVIN':
+      case 'AV IN': return 0x09;
+      default: return 0x01;
+    }
+  }
+
   // =======================================================================
   // PLAYBACK
   // =======================================================================
 
   Future<bool> playPause() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x01];
-    final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildPlayPause(),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildPlayPause(),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> nextTrack() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x02];
-    final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildNextTrack(),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildNextTrack(),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> prevTrack() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x03];
-    final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildPrevTrack(),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildPrevTrack(),
+    };
+    return sendCommand(cmd);
   }
 
   // =======================================================================
@@ -422,94 +473,138 @@ class BtRepository {
   // =======================================================================
 
   Future<bool> radioSeekUp() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x80];
-    final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildRadioSeekUp(),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildRadioSeekUp(),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> radioSeekDown() async {
-    final payload = <int>[0x04, 0xa0, 0x10, 0x0e, 0x81];
-    final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildRadioSeekDown(),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildRadioSeekDown(),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> radioSetFreq(double freq, bool isFm) async {
-    int freqCode = isFm ? (freq * 10).toInt() : freq.toInt();
-    final payload = <int>[0x05, 0xa0, 0x10, 0x0e, isFm ? 0x82 : 0x83, freqCode >> 8, freqCode & 0xFF];
-    final checksum = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, checksum]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildRadioSetFreq(freq, isFm),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildRadioSetFreq(freq, isFm),
+    };
+    return sendCommand(cmd);
   }
 
   // =======================================================================
-  // EXTENDED DSP (HCI protocol — CMD 0x20, 0x21, 0x30, 0x40, 0x13, 0x14)
+  // EXTENDED DSP — общие для HCI и legacy через switch
   // =======================================================================
 
   Future<bool> setXoverHpf(int ch, int freq, int gain, int slope, int type) async {
-    final cmd = ProtocolParser.buildXoverHpf(ch, freq, gain, slope, type);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildXoverHpf(ch, freq, gain, slope, type),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildXOver(type: type, freq: freq),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setXoverLpf(int ch, int freq, int gain, int slope, int type) async {
-    final cmd = ProtocolParser.buildXoverLpf(ch, freq, gain, slope, type);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildXoverLpf(ch, freq, gain, slope, type),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildXOver(type: type, freq: freq),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setTimeAlignment(int channel, int delayMs) async {
-    final cmd = ProtocolParser.buildTimeAlignment(channel, delayMs);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildTimeAlignment(channel, delayMs),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildEqPlus(band: channel, gain: delayMs),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setMuteChannel(int channel, bool mute) async {
-    final cmd = ProtocolParser.buildMuteChannel(channel, mute);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildMuteChannel(channel, mute),
+      ProtocolVersion.legacy => _buildLegacyPlacholder('mute_ch_$channel'),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setSubwooferVolume(int volume) async {
-    final cmd = ProtocolParser.buildSubwooferVolume(volume);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildSubwooferVolume(volume),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildSubwoofer(level: volume),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setBassBoost(bool enabled, int level) async {
-    final cmd = ProtocolParser.buildBassBoost(enabled, level);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildBassBoost(enabled, level),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildLoudness(enabled, level: level),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setEqBandGain(int band, int gainDb) async {
-    final cmd = ProtocolParser.buildEqGain(band, gainDb);
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildEqGain(band, gainDb),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildEqPlus(band: band, gain: gainDb),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> getStatus() async {
-    final cmd = ProtocolParser.buildGetStatus();
-    return await sendCommand(cmd);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildGetStatus(),
+      ProtocolVersion.legacy => _buildLegacyPlacholder('get_status'),
+    };
+    return sendCommand(cmd);
   }
 
   // =======================================================================
-  // LEGACY EXTENDED SETTINGS
+  // LEGACY EXTENDED SETTINGS (только legacy)
   // =======================================================================
 
   Future<bool> setLoudness(bool enabled, {int level = 0, int freq = 0}) async {
-    final payload = <int>[0x07, 0xa0, 0x10, 0x0e, 0x30, enabled ? 1 : 0, level, freq];
-    final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, cs]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildLoudness(enabled, level: level, freq: freq),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildLoudness(enabled, level: level, freq: freq),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setSubwoofer({int level = 0, int freq = 0, int phase = 0}) async {
-    final payload = <int>[0x08, 0xa0, 0x10, 0x0e, 0x40, level, freq, phase];
-    final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, cs]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildSubwooferCfg(level: level, freq: freq, phase: phase),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildSubwoofer(level: level, freq: freq, phase: phase),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setXOver({int type = 0, int freq = 0}) async {
-    final payload = <int>[0x06, 0xa0, 0x10, 0x0e, 0x50, type, freq];
-    final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, cs]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildXoverCfg(type: type, freq: freq),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildXOver(type: type, freq: freq),
+    };
+    return sendCommand(cmd);
   }
 
   Future<bool> setEqPlus({int band = 0, int freq = 0, int gain = 0, int q = 0}) async {
-    final payload = <int>[0x09, 0xa0, 0x10, 0x0e, 0x70, band, freq, gain, q];
-    final cs = (payload.fold(0, (p, b) => p + b) + 0x10) & 0xFF;
-    return await sendCommand(<int>[0xf0, 0x00, ...payload, cs]);
+    final cmd = switch (protocolVersion) {
+      ProtocolVersion.hci => ProtocolParser.buildEqPlusCfg(band: band, freq: freq, gain: gain, q: q),
+      ProtocolVersion.legacy => LegacyProtocolBuilder.buildEqPlus(band: band, freq: freq, gain: gain, q: q),
+    };
+    return sendCommand(cmd);
+  }
+
+  /// Заглушка для legacy-команд, у которых нет прямого аналога
+  List<int> _buildLegacyPlacholder(String hint) {
+    debugPrint('Legacy placeholder: $hint — no legacy equivalent, sending as debug');
+    // Отправляем безвредный запрос getStatus в legacy-формате
+    return LegacyProtocolBuilder.buildInit();
   }
 
   // =======================================================================
@@ -527,7 +622,8 @@ class BtRepository {
 
     // Формат v1 (C0 00 ...)
     if (data.first == 0xC0) {
-      _parseLegacyNotification(data);
+      final changed = LegacyProtocolBuilder.parseLegacyNotification(data, _state);
+      if (changed) _updateState();
       return;
     }
 
@@ -540,6 +636,8 @@ class BtRepository {
       debugPrint('Failed to parse HCI notification');
       return;
     }
+
+    _missedHeartbeats = 0;
 
     bool stateChanged = false;
 
@@ -610,56 +708,6 @@ class BtRepository {
 
     if (stateChanged) {
       _updateState();
-    }
-  }
-
-  void _parseLegacyNotification(List<int> data) {
-    if (data.length < 4) return;
-
-    final payload = data.sublist(2, data.length - 1);
-    final calc = (payload.fold(0, (prev, element) => prev + element) + 0x40) & 0xFF;
-    if (calc != data.last) {
-      debugPrint(
-          'Legacy RX checksum error: calc=0x${calc.toRadixString(16)}, recv=0x${data.last.toRadixString(16)}');
-      return;
-    }
-
-    final len = data[2];
-    final type = data[3];
-    bool stateChanged = false;
-
-    if (type == 0x90 && len == 0x03 && data.length >= 6) {
-      _state.volume = data[4].clamp(0, 28);
-      stateChanged = true;
-    } else if (type == 0x91 && len == 0x04 && data.length >= 7) {
-      final b = data[4] - 0x10;
-      _state.bass = ((b.clamp(-10, 10) + 10) * 5);
-      final t = data[5] - 0x20;
-      _state.treble = ((t.clamp(-10, 10) + 10) * 5);
-      stateChanged = true;
-    } else if (type == 0x92 && len == 0x05 && data.length >= 8) {
-      _state.balance = data[6] - 0x10;
-      _state.fader = data[7] - 0x10;
-      stateChanged = true;
-    } else if (type == 0x93 && len == 0x03 && data.length >= 6) {
-      _state.inputSource = _inputCodeToString(data[5]);
-      stateChanged = true;
-    }
-
-    if (stateChanged) {
-      _updateState();
-    }
-  }
-
-  String _inputCodeToString(int code) {
-    switch (code) {
-      case 0x01: return 'RADIO';
-      case 0x02: return 'USB';
-      case 0x03: return 'SD';
-      case 0x04: return 'BT';
-      case 0x05: return 'AUX';
-      case 0x06: return 'DISC';
-      default: return 'UNKNOWN';
     }
   }
 }

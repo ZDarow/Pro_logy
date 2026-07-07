@@ -139,6 +139,116 @@ void main() {
       final serial = ProtocolParser.parseDeviceInfoResponse(pkt);
       expect(serial, '12345678');
     });
+
+    test('parse returns null for invalid checksum', () {
+      // Volume response with wrong CS
+      final data = <int>[0x6f, 0x0f, 0x80, 0x03, 0x00, 0x01, 0x32, 0x00, 0x8f];
+      final pkt = ProtocolParser.parse(data);
+      expect(pkt, isNull);
+    });
+
+    test('parse minimum valid frame with LEN=0', () {
+      // 6f 01 70 00 CS 8f — no data, LEN=0
+      final data = <int>[0x6f, 0x01, 0x70, 0x00];
+      final cs = data.fold<int>(0, (p, b) => p ^ b);
+      data.addAll([cs, 0x8f]);
+
+      final pkt = ProtocolParser.parse(data);
+      expect(pkt, isNotNull);
+      expect(pkt!.cmd, 0x01);
+      expect(pkt.type, 0x70);
+      expect(pkt.length, 0);
+      expect(pkt.data, isEmpty);
+    });
+
+    test('parseVolumeResponse returns null for wrong cmd', () {
+      final pkt = PrologyPacket(
+        cmd: 0x08, type: 0x80, length: 3, data: [0x00, 0x01, 0x32],
+        checksum: 0, raw: [],
+      );
+      expect(ProtocolParser.parseVolumeResponse(pkt), isNull);
+    });
+
+    test('parseVolumeResponse returns null for wrong type', () {
+      final pkt = PrologyPacket(
+        cmd: 0x0f, type: 0x70, length: 3, data: [0x00, 0x01, 0x32],
+        checksum: 0, raw: [],
+      );
+      expect(ProtocolParser.parseVolumeResponse(pkt), isNull);
+    });
+
+    test('parseVolumeResponse returns null for short data', () {
+      final pkt = PrologyPacket(
+        cmd: 0x0f, type: 0x80, length: 1, data: [0x00],
+        checksum: 0, raw: [],
+      );
+      expect(ProtocolParser.parseVolumeResponse(pkt), isNull);
+    });
+
+    test('parseBassTrebleResponse parses correctly', () {
+      // Bass=70: 6f 08 80 03 00 01 46 CS 8f
+      final data = <int>[0x6f, 0x08, 0x80, 0x03, 0x00, 0x01, 0x46];
+      final cs = data.fold<int>(0, (p, b) => p ^ b);
+      data.addAll([cs, 0x8f]);
+
+      final pkt = ProtocolParser.parse(data);
+      expect(pkt, isNotNull);
+
+      final level = ProtocolParser.parseBassTrebleResponse(pkt!);
+      expect(level, 70);
+    });
+
+    test('parseDeviceInfoResponse returns null for wrong cmd', () {
+      final pkt = PrologyPacket(
+        cmd: 0x0f, type: 0x80, length: 2, data: [0x00, 0x02],
+        checksum: 0, raw: [],
+      );
+      expect(ProtocolParser.parseDeviceInfoResponse(pkt), isNull);
+    });
+
+    test('buildSubwooferVolume creates correct packet', () {
+      final packet = ProtocolParser.buildSubwooferVolume(80);
+      expect(packet[1], 0x13);
+      expect(packet[4], 0x01);
+      expect(packet[5], 80);
+    });
+
+    test('buildEqQFactor creates correct packet', () {
+      final packet = ProtocolParser.buildEqQFactor(3, 7);
+      expect(packet[1], 0x03);
+      expect(packet[4], 3);
+      expect(packet[5], 7);
+    });
+
+    test('buildXoverLpf creates correct packet', () {
+      final packet = ProtocolParser.buildXoverLpf(0, 120, 0, 1, 0);
+      expect(packet[1], 0x21);
+      expect(packet[4], 0);
+      expect(packet[5], 120);
+      expect(packet[6], 12); // gain+12
+      expect(packet[7], 1);
+    });
+
+    test('buildSubwooferRequest creates correct packet', () {
+      final packet = ProtocolParser.buildSubwooferRequest();
+      expect(packet[1], 0x11);
+      expect(packet[4], 0x00);
+      expect(packet[5], 0x01);
+    });
+
+    test('buildVolumeUp creates correct packet', () {
+      final packet = ProtocolParser.buildVolumeUp();
+      expect(packet[1], 0x0f);
+      expect(packet[4], 0x00);
+      expect(packet[5], 1);
+    });
+
+    test('buildVolumeDown creates correct packet', () {
+      final packet = ProtocolParser.buildVolumeDown();
+      expect(packet[1], 0x0f);
+      expect(packet[4], 0x00);
+      expect(packet[5], 0);
+    });
   });
 
   group('BtRepository', () {
@@ -220,6 +330,64 @@ void main() {
 
       repository.parseNotification(data);
       expect(repository.state.deviceSerial, serial);
+    });
+
+    test('parseNotification handles HCI device model notification', () {
+      // XOVER response (CMD 0x03): 6f 03 80 LEN 00 02 [model ASCII] CS 8f
+      final model = 'PROLOGY_DSP';
+      final modelBytes = model.codeUnits;
+      final totalDataLen = 2 + modelBytes.length; // 0x00, 0x02 + model
+      final data = <int>[0x6f, 0x03, 0x80, totalDataLen, 0x00, 0x02, ...modelBytes];
+      final cs = data.fold<int>(0, (p, b) => p ^ b);
+      data.addAll([cs, 0x8f]);
+
+      repository.parseNotification(data);
+      expect(repository.state.deviceModel, model);
+    });
+
+    test('parseNotification handles HCI EQ preset notification', () {
+      // EQ_SETTINGS response (CMD 0x43): 6f 43 80 03 00 01 03 CS 8f → preset=3 (ROCK)
+      final data = <int>[0x6f, 0x43, 0x80, 0x03, 0x00, 0x01, 0x03];
+      final cs = data.fold<int>(0, (p, b) => p ^ b);
+      data.addAll([cs, 0x8f]);
+
+      repository.parseNotification(data);
+      expect(repository.state.eqPreset, 3);
+    });
+
+    test('parseNotification handles HCI firmware notification', () {
+      // SUBWOOFER response (CMD 0x11): 6f 11 80 0A 00 02 56 31 2E 30 30 CS 8f → "V1.00"
+      final fwBytes = 'V1.00'.codeUnits;
+      final data = <int>[0x6f, 0x11, 0x80, 0x07, 0x00, 0x02, ...fwBytes];
+      final cs = data.fold<int>(0, (p, b) => p ^ b);
+      data.addAll([cs, 0x8f]);
+
+      repository.parseNotification(data);
+      expect(repository.state.deviceFirmware, 'V1.00');
+    });
+
+    test('parseNotification handles legacy bass/treble', () {
+      // Legacy bass/treble: C0 00 04 91 BB TT CS
+      // BB-0x10 = bass (-10..+10) → ((b+10)*5) = 0..100
+      // TT-0x20 = treble (-10..+10) → ((t+10)*5) = 0..100
+      // BB=0x14 → bass=4 → ((4+10)*5)=70
+      // TT=0x24 → treble=4 → ((4+10)*5)=70
+      // sum(0x04,0x91,0x14,0x24)=0xCD, +0x40=0x10D, &0xFF=0x0D
+      final data = <int>[0xc0, 0x00, 0x04, 0x91, 0x14, 0x24, 0x0D];
+      repository.parseNotification(data);
+      expect(repository.state.bass, 70);
+      expect(repository.state.treble, 70);
+    });
+
+    test('parseNotification handles legacy balance/fader', () {
+      // Legacy balance/fader: C0 00 05 92 BL FD CS
+      // BL-0x10=balance (-10..+10), FD-0x10=fader (-10..+10)
+      // BL=0x1A → balance=10, FD=0x15 → fader=5
+      // sum(0x05,0x92,0x0a,0x01,0x1a,0x15)=0xD1, +0x40=0x111, &0xFF=0x11
+      final data = <int>[0xc0, 0x00, 0x05, 0x92, 0x0a, 0x01, 0x1a, 0x15, 0x11];
+      repository.parseNotification(data);
+      expect(repository.state.balance, 10);
+      expect(repository.state.fader, 5);
     });
 
     test('parseNotification handles unknown notification', () {

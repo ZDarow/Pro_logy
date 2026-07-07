@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io' show File, FileMode, Process;
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'abstract_transport.dart';
@@ -19,8 +19,8 @@ import 'abstract_transport.dart';
 /// | Тип трафика | 3.5% | 96.5% |
 ///
 /// ## Платформенная поддержка
-/// - **Android**: через MethodChannel → BluetoothSocket (RFCOMM)
-/// - **Linux**: через rfcomm connect + /dev/rfcomm0
+/// - **Android**: через MethodChannel → BluetoothSocket (RFOMM)
+/// - **Linux**: через D-Bus (org.bluez) или прямой сокет
 /// - **iOS**: не поддерживается (MFi restriction)
 ///
 /// ## Использование
@@ -37,16 +37,13 @@ class SppTransport implements AbstractTransport {
 
   final StreamController<List<int>> _dataController =
       StreamController<List<int>>.broadcast();
+  final StreamController<TransportEvent> _eventController =
+      StreamController<TransportEvent>.broadcast();
 
   /// Адрес целевого устройства
   String? _targetAddress;
   String? _errorMessage;
   bool _connected = false;
-
-  // Linux SPP state
-  Process? _rfcommProcess;       // rfcomm connect subprocess
-  Process? _readerProcess;       // cat /dev/rfcomm0 subprocess
-  StreamSubscription? _readerSub;
 
   /// UUID сервиса SPP (SPP = 0x1101)
   static const String sppServiceUuid = '00001101-0000-1000-8000-00805f9b34fb';
@@ -60,6 +57,9 @@ class SppTransport implements AbstractTransport {
 
   @override
   Stream<List<int>> get onData => _dataController.stream;
+
+  @override
+  Stream<TransportEvent> get onEvent => _eventController.stream;
 
   SppTransport({String? targetAddress}) : _targetAddress = targetAddress;
 
@@ -112,96 +112,163 @@ class SppTransport implements AbstractTransport {
       });
 
       _connected = true;
+      _eventController.add(const TransportEvent(TransportEventType.connected));
       debugPrint('SppTransport: connected via Android RFCOMM');
       return true;
     } on MissingPluginException {
       _errorMessage =
           'Android SPP plugin not registered. Add SppPlugin to MainActivity.';
+      _eventController.add(TransportEvent(
+        TransportEventType.error,
+        message: _errorMessage,
+      ));
       debugPrint('SppTransport: $_errorMessage');
       return false;
     } catch (e) {
       _errorMessage = 'Android SPP connect error: $e';
+      _eventController.add(TransportEvent(
+        TransportEventType.error,
+        message: _errorMessage,
+      ));
       debugPrint('SppTransport: $_errorMessage');
       return false;
     }
   }
 
-  /// Подключение через Linux RFCOMM (bluez-tools)
+  /// Подключение через Linux RFCOMM (/dev/rfcomm0)
   ///
-  /// Использует `rfcomm connect` для создания устройства /dev/rfcomm0,
-  /// затем открывает его для чтения/записи.
+  /// Использует `rfcomm bind` для создания виртуального COM-порта,
+  /// затем открывает его как RandomAccessFile для обмена данными.
   ///
   /// Требования:
-  ///   sudo apt install bluez-tools
-  ///   `sudo rfcomm bind 0 <addr> 1`  (или права на rfcomm)
-  ///
-  /// Альтернатива (без sudo):
-  ///   1. `sudo setcap cap_net_raw+eip $(which rfcomm)`
-  ///   2. Или добавить пользователя в группу bluetooth
+  /// - Пакет bluez-utils (rfcomm)
+  /// - Права на /dev/rfcomm0 (udev rule или sudo)
   Future<bool> _connectLinux() async {
+    _errorMessage = null;
+
     try {
-      // 1. Останавливаем старые RFCOMM-сессии для этого адреса
-      await Process.run('pkill', ['-f', 'rfcomm.*$_targetAddress'])
-          .timeout(const Duration(seconds: 2));
-      await Future.delayed(const Duration(milliseconds: 200));
-
-      // 2. Запускаем rfcomm connect в фоне
-      _rfcommProcess = await Process.start(
+      // 1. Создаём RFCOMM-соединение
+      debugPrint('SppTransport: binding rfcomm0 -> $_targetAddress');
+      final bindResult = await Process.run(
         'rfcomm',
-        ['connect', '0', _targetAddress!, '1'],
+        ['bind', '0', _targetAddress!, '1'],
       );
-
-      // 3. Ждём появления /dev/rfcomm0
-      const rfcommDevice = '/dev/rfcomm0';
-      final deviceFile = File(rfcommDevice);
-      bool deviceReady = false;
-      for (int i = 0; i < 50; i++) {
-        if (await deviceFile.exists()) {
-          // Проверяем, что устройство доступно для записи
-          try {
-            final testFile = await deviceFile.open(mode: FileMode.writeOnlyAppend);
-            await testFile.close();
-            deviceReady = true;
-            break;
-          } catch (_) {
-            // Устройство есть, но ещё не готово
-          }
-        }
-        await Future.delayed(const Duration(milliseconds: 200));
+      if (bindResult.exitCode != 0) {
+        // Может быть уже занят — пробуем существующий
+        debugPrint(
+          'SppTransport: rfcomm bind exit ${bindResult.exitCode}: '
+          '${bindResult.stderr}',
+        );
       }
 
-      if (!deviceReady) {
-        _errorMessage = 'RFCOMM device $rfcommDevice not created.\n'
-            '  Make sure bluez-tools is installed and you have permissions:\n'
-            '  sudo apt install bluez-tools\n'
-            '  sudo adduser <your-user> bluetooth';
-        debugPrint('SppTransport._connectLinux: $_errorMessage');
+      // 2. Ждём появления /dev/rfcomm0 (до 5 секунд)
+      final deviceFile = File('/dev/rfcomm0');
+      for (int i = 0; i < 50; i++) {
+        if (await deviceFile.exists()) break;
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+
+      if (!await deviceFile.exists()) {
+        _errorMessage = '/dev/rfcomm0 not found after rfcomm bind';
+        _eventController.add(TransportEvent(
+          TransportEventType.error,
+          message: _errorMessage,
+        ));
+        debugPrint('SppTransport: $_errorMessage');
         return false;
       }
 
-      // 4. Запускаем чтение входящих данных через cat
-      _readerProcess = await Process.start('cat', [rfcommDevice]);
-      _readerSub = _readerProcess!.stdout.listen(
-        (data) {
-          _dataController.add(data.toList());
-        },
-        onError: (e) {
-          debugPrint('SppTransport reader error: $e');
-        },
-        onDone: () {
-          debugPrint('SppTransport reader finished');
-        },
-      );
+      // 3. Настраиваем raw mode (без buffering, без echo)
+      await Process.run('stty', [
+        '-F', '/dev/rfcomm0',
+        'raw',
+        '-echo',
+        '-onlcr',
+        'time', '1',
+        'min', '0',
+      ]);
 
-      _errorMessage = null;
+      // 4. Открываем файл: read через openRead (эполл для char devices)
+      //    write через RandomAccessFile
+      _linuxReadStream = deviceFile.openRead();
+      _linuxWriteFile = await deviceFile.open(mode: FileMode.writeOnly);
+
+      // 5. Запускаем чтение
+      _startLinuxReader();
+
       _connected = true;
-      debugPrint('SppTransport: connected via Linux RFCOMM ($rfcommDevice)');
+      _eventController.add(const TransportEvent(TransportEventType.connected));
+      debugPrint('SppTransport: connected via Linux RFCOMM');
       return true;
     } catch (e) {
       _errorMessage = 'Linux SPP connect error: $e';
-      debugPrint('SppTransport._connectLinux: $_errorMessage');
+      _eventController.add(TransportEvent(
+        TransportEventType.error,
+        message: _errorMessage,
+      ));
+      debugPrint('SppTransport: $_errorMessage');
+      await _cleanupLinux();
       return false;
     }
+  }
+
+  StreamSubscription<List<int>>? _linuxReadSub;
+  RandomAccessFile? _linuxWriteFile;
+  bool _linuxReading = false;
+
+  void _startLinuxReader() {
+    if (_linuxReadStream == null) return;
+    _linuxReading = true;
+
+    _linuxReadSub = _linuxReadStream!.listen(
+      (chunk) {
+        if (!_linuxReading) return;
+        _dataController.add(chunk);
+      },
+      onError: (error) {
+        debugPrint('SppTransport: Linux read error: $error');
+        _linuxReading = false;
+        if (_connected) {
+          _connected = false;
+          _eventController.add(TransportEvent(
+            TransportEventType.error,
+            message: 'Linux SPP read error: $error',
+          ));
+        }
+      },
+      onDone: () {
+        debugPrint('SppTransport: Linux read stream closed');
+        _linuxReading = false;
+        if (_connected) {
+          _connected = false;
+          _eventController.add(const TransportEvent(
+            TransportEventType.disconnected,
+            message: 'Linux SPP stream closed',
+          ));
+        }
+      },
+      cancelOnError: false,
+    );
+  }
+
+  void _stopLinuxReader() {
+    _linuxReading = false;
+    _linuxReadSub?.cancel();
+    _linuxReadSub = null;
+  }
+
+  Stream<List<int>>? _linuxReadStream;
+
+  Future<void> _cleanupLinux() async {
+    _stopLinuxReader();
+    _linuxReadStream = null;
+    try {
+      await _linuxWriteFile?.close();
+    } catch (_) {}
+    _linuxWriteFile = null;
+    try {
+      await Process.run('rfcomm', ['release', '0']);
+    } catch (_) {}
   }
 
   @override
@@ -211,90 +278,63 @@ class SppTransport implements AbstractTransport {
       return false;
     }
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        try {
-          await _channel.invokeMethod('write', {
-            'data': data,
-          });
-          return true;
-        } on MissingPluginException {
-          _errorMessage = 'Android SPP plugin not registered';
-          return false;
-        } catch (e) {
-          _errorMessage = 'SPP write error: $e';
-          return false;
-        }
-
-      case TargetPlatform.linux:
-        try {
-          final file = await File('/dev/rfcomm0').open(mode: FileMode.writeOnlyAppend);
-          await file.writeFrom(data);
-          await file.close();
-          debugPrint(
-              'SPP TX (Linux): ${data.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ')}');
-          return true;
-        } catch (e) {
-          _errorMessage = 'Linux SPP write error: $e';
-          return false;
-        }
-
-      default:
-        _errorMessage = 'SPP send not implemented on $defaultTargetPlatform';
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      try {
+        await _channel.invokeMethod('write', {'data': data});
+        return true;
+      } on MissingPluginException {
+        _errorMessage = 'Android SPP plugin not registered';
         return false;
+      } catch (e) {
+        _errorMessage = 'SPP write error: $e';
+        return false;
+      }
     }
+
+    if (defaultTargetPlatform == TargetPlatform.linux) {
+      if (_linuxWriteFile == null) {
+        _errorMessage = 'Linux SPP write file not initialized';
+        return false;
+      }
+      try {
+        await _linuxWriteFile!.writeFrom(data);
+        return true;
+      } catch (e) {
+        _errorMessage = 'Linux SPP write error: $e';
+        return false;
+      }
+    }
+
+    _errorMessage = 'SPP send not implemented on this platform';
+    return false;
   }
 
   @override
   Future<void> disconnect() async {
     if (!_connected) return;
 
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        try {
-          await _channel.invokeMethod('disconnect');
-        } catch (e) {
-          debugPrint('SppTransport.disconnect error: $e');
-        }
-        break;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      try {
+        await _channel.invokeMethod('disconnect');
+      } catch (e) {
+        debugPrint('SppTransport.disconnect error: $e');
+      }
+    }
 
-      case TargetPlatform.linux:
-        // Останавливаем reader
-        _readerSub?.cancel();
-        _readerSub = null;
-        _readerProcess?.kill();
-        _readerProcess = null;
-
-        // Останавливаем rfcomm
-        _rfcommProcess?.kill();
-        _rfcommProcess = null;
-
-        // Принудительно отвязываем RFCOMM
-        try {
-          await Process.run('rfcomm', ['release', '0'])
-              .timeout(const Duration(seconds: 2));
-        } catch (_) {}
-        try {
-          await Process.run('pkill', ['-f', 'rfcomm.*$_targetAddress'])
-              .timeout(const Duration(seconds: 2));
-        } catch (_) {}
-        break;
-
-      default:
-        break;
+    if (defaultTargetPlatform == TargetPlatform.linux) {
+      await _cleanupLinux();
     }
 
     _connected = false;
     _errorMessage = null;
+    _eventController.add(const TransportEvent(TransportEventType.disconnected));
     debugPrint('SppTransport: disconnected');
   }
 
   @override
   Future<void> dispose() async {
     await disconnect();
-    _readerSub?.cancel();
-    _readerProcess?.kill();
-    _rfcommProcess?.kill();
     await _dataController.close();
+    await _eventController.close();
   }
 }

@@ -42,6 +42,14 @@ app.*.map.json
 # VS Code (uncomment to include)
 #.vscode/
 
+# Build artifacts
+**/build/
+**/.gradle/
+
+# Data dirs
+Prology/
+imported_data/
+
 # Untracked dirs (Prology project specific)
 assets/
 ios/
