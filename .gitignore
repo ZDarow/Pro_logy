@@ -45,6 +45,11 @@ app.*.map.json
 # Build artifacts
 **/build/
 **/.gradle/
+*.dill
+*.ninja
+*.ninja_deps
+*.ninja_log
+kernel_blob.bin
 
 # Data dirs
 Prology/
@@ -71,4 +76,7 @@ vault/graph.html
 vault/graph.json
 vault/graph.graphml
 tools/.graph_cache.json
+tools/.venv/
 linux/
+chat-export*.json
+obsidian*.md
