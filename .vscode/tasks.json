@@ -2,71 +2,71 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Flutter: Pub Get",
+      "label": "📊 Generate Documentation Graph",
       "type": "shell",
-      "command": "flutter",
-      "args": ["pub", "get"],
-      "group": "build",
-      "presentation": {
-        "reveal": "silent",
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "Flutter: Analyze",
-      "type": "shell",
-      "command": "flutter",
-      "args": ["analyze"],
-      "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "problemMatcher": ["$dart-analysis"]
-    },
-    {
-      "label": "Flutter: Test",
-      "type": "shell",
-      "command": "flutter",
-      "args": ["test"],
+      "command": "make graph",
       "group": {
-        "kind": "test",
+        "kind": "build",
         "isDefault": true
       },
       "presentation": {
+        "echo": true,
         "reveal": "always",
-        "panel": "shared"
-      }
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
     },
     {
-      "label": "Flutter: Build APK",
+      "label": "📊 Generate Graph (fresh, no cache)",
       "type": "shell",
-      "command": "flutter",
-      "args": ["build", "apk"],
+      "command": "make fresh",
       "group": "build",
       "presentation": {
+        "echo": true,
         "reveal": "always",
-        "panel": "shared"
-      }
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
     },
     {
-      "label": "Flutter: Clean",
+      "label": "📊 Generate Graph from Obsidian Vault",
       "type": "shell",
-      "command": "flutter",
-      "args": ["clean"],
-      "group": "build"
+      "command": "make graph-vault",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
     },
     {
-      "label": "Flutter: Run",
+      "label": "📊 Open Graph in Browser",
       "type": "shell",
-      "command": "flutter",
-      "args": ["run"],
-      "group": "test",
-      "isBackground": true,
+      "command": "make open",
+      "group": "none",
       "presentation": {
         "reveal": "always",
+        "focus": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Watch for Changes (auto-regenerate)",
+      "type": "shell",
+      "command": "make watch",
+      "group": "none",
+      "isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
         "panel": "dedicated"
-      }
+      },
+      "problemMatcher": []
     }
   ]
 }
