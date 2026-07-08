@@ -69,6 +69,7 @@ prology/
 prology.zip
 devtools_options.yaml
 docs/APK_MOD_ANALYSIS_REPORT.md
+docs/toolkit_analysis/apk/*
 docs/graph.html
 docs/graph.json
 docs/graph.graphml
