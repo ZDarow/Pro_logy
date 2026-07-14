@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --surface: #16213e;
+    --surface2: #0f3460;
+    --text: #e0e0e0;
+    --text-secondary: #a0a0b0;
+    --accent: #e94560;
+    --accent2: #ff6b6b;
+    --border: #2a2a4a;
+    --shadow: rgba(0,0,0,0.3);
+    --link-stroke: rgba(255,255,255,0.08);
+    --link-highlight: rgba(255,255,255,0.4);
+    --node-stroke: rgba(255,255,255,0.2);
+    --label-fill: rgba(255,255,255,0.6);
+    --scrollbar-thumb: var(--border);
+    --path-color: #ffd700;
+  }
+  [data-theme="light"] {
+    --bg: #f5f5f5;
+    --surface: #ffffff;
+    --surface2: #e0e0e0;
+    --text: #333333;
+    --text-secondary: #666666;
+    --accent: #d32f2f;
+    --accent2: #e53935;
+    --border: #cccccc;
+    --shadow: rgba(0,0,0,0.1);
+    --link-stroke: rgba(0,0,0,0.12);
+    --link-highlight: rgba(0,0,0,0.35);
+    --node-stroke: rgba(0,0,0,0.15);
+    --label-fill: rgba(0,0,0,0.5);
+    --scrollbar-thumb: #bbbbbb;
+    --path-color: #ff8f00;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+  /* Toolbar */
+  #toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s;
+  }
+  #toolbar h1 {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #toolbar input {
+    flex: 1;
+    max-width: 240px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #toolbar input:focus { border-color: var(--accent); }
+  #toolbar .stats {
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  #toolbar .stats span { color: var(--accent); font-weight: 600; }
+  #toolbar #filter-toggles {
+    display: flex;
+    gap: 4px;
+  }
+  .btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+  .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* Legend */
+  #legend {
+    position: fixed;
+    bottom: 12px;
+    left: 12px;
+    z-index: 100;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    max-height: 55vh;
+    overflow-y: auto;
+    min-width: 140px;
+    font-size: 11px;
+    transition: background 0.3s;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  #legend h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .legend-item:hover { background: var(--surface2); }
+  .legend-item.active { background: rgba(255,255,255,0.08); }
+  [data-theme="light"] .legend-item.active { background: rgba(0,0,0,0.05); }
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-count {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 10px;
+  }
+  /* Info panel */
+  #info-panel {
+    position: fixed;
+    top: 54px;
+    right: 12px;
+    z-index: 100;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    max-width: 300px;
+    max-height: calc(100vh - 68px);
+    overflow-y: auto;
+    display: none;
+    font-size: 12px;
+    transition: background 0.3s;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  #info-panel.visible { display: block; }
+  #info-panel h2 { font-size: 13px; margin-bottom: 6px; color: var(--accent); }
+  #info-panel .meta { color: var(--text-secondary); font-size: 11px; }
+  #info-panel .meta span { color: var(--text); }
+  #info-panel .path {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--text-secondary);
+    word-break: break-all;
+    margin-bottom: 6px;
+  }
+  #info-panel .headings { margin-top: 6px; }
+  #info-panel .headings h4 { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; }
+  #info-panel .headings ul { list-style: none; padding: 0; }
+  #info-panel .headings li { padding: 1px 0; font-size: 11px; color: var(--text-secondary); }
+  #info-panel .headings li:before { content: '#'; margin-right: 3px; color: var(--accent); }
+  #info-panel .connections { margin-top: 8px; }
+  #info-panel .connections h4 { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; }
+  #info-panel .connections .conn-list { list-style: none; padding: 0; max-height: 120px; overflow-y: auto; }
+  #info-panel .connections .conn-item {
+    display: flex; align-items: center; gap: 4px;
+    padding: 2px 4px; cursor: pointer; border-radius: 3px;
+    font-size: 10px; color: var(--text); transition: background 0.1s;
+  }
+  #info-panel .connections .conn-item:hover { background: var(--surface2); color: var(--accent); }
+  #info-panel .connections .conn-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  #info-panel .connections .conn-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #info-panel .connections .conn-weight { color: var(--text-secondary); font-size: 9px; }
+  /* Pin badge */
+  .node-pin { fill: var(--accent); opacity: 0.7; }
+  #pin-btn { margin-left: auto; cursor: pointer; opacity: 0.5; transition: opacity 0.15s; background: none; border: none; color: var(--accent); font-size: 11px; }
+  #pin-btn:hover, #pin-btn.active { opacity: 1; }
+  #info-panel-close {
+    position: absolute; top: 6px; right: 6px;
+    background: none; border: none;
+    color: var(--text-secondary); cursor: pointer;
+    font-size: 14px; padding: 2px;
+  }
+  #info-panel-close:hover { color: var(--text); }
+  /* Filter panel */
+  #search-wrapper {
+    position: relative;
+    flex: 1;
+    max-width: 240px;
+  }
+  #search-wrapper input {
+    width: 100%;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #search-wrapper input:focus { border-color: var(--accent); }
+  #search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 6px 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 12px var(--shadow);
+    margin-top: 2px;
+  }
+  #search-results.visible { display: block; }
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: var(--surface2); }
+  .search-result-item .sr-cat {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .search-result-item .sr-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .search-result-item .sr-path { color: var(--text-secondary); font-size: 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 120px; }
+  .search-result-item .sr-degree { color: var(--text-secondary); font-size: 9px; white-space: nowrap; }
+  .search-result-item:hover .sr-title { color: var(--accent); }
+  .search-empty { padding: 10px; text-align: center; color: var(--text-secondary); font-size: 11px; }
+
+  #filter-panel {
+    position: fixed;
+    top: 54px;
+    left: 12px;
+    z-index: 100;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: none;
+    font-size: 11px;
+    transition: background 0.3s;
+    box-shadow: 0 2px 12px var(--shadow);
+    min-width: 180px;
+  }
+  #filter-panel.visible { display: block; }
+  #filter-panel h4 { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .filter-row label {
+    min-width: 55px;
+    color: var(--text-secondary);
+    font-size: 10px;
+  }
+  .filter-row input[type="range"] {
+    flex: 1;
+    height: 3px;
+    accent-color: var(--accent);
+  }
+  .filter-row .val {
+    min-width: 30px;
+    text-align: right;
+    color: var(--text);
+    font-size: 10px;
+  }
+  .quick-filters {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .quick-filters label {
+    font-size: 9px;
+    color: var(--text-secondary);
+    min-width: auto;
+    margin-right: 2px;
+  }
+  .btn-sm {
+    font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.2;
+  }
+  .btn-sm:hover { background: var(--surface2); border-color: var(--accent); }
+  .btn-sm.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  /* Status bar */
+  #status-bar {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    z-index: 100;
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: right;
+    pointer-events: none;
+  }
+  #status-bar kbd {
+    background: var(--surface2);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 10px;
+    pointer-events: auto;
+  }
+  #mode-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  #mode-badge.path-mode { background: #ffd70033; color: #ffd700; border: 1px solid #ffd70066; }
+  #mode-badge.isolate-mode { background: #e9456033; color: #e94560; border: 1px solid #e9456066; }
+  /* SVG */
+  #graph-container { width: 100vw; height: 100vh; }
+  svg { width: 100%; height: 100%; }
+  .link {
+    stroke: var(--link-stroke);
+    stroke-width: 1.5;
+    transition: stroke 0.2s, stroke-width 0.2s;
+  }
+  .link.highlighted { stroke: var(--link-highlight); stroke-width: 2.5; }
+  .link.path-highlight { stroke: var(--path-color) !important; stroke-width: 3 !important; }
+  .link-arrow { fill: var(--link-stroke); transition: fill 0.2s; }
+  .link.highlighted .link-arrow { fill: var(--link-highlight); }
+  .link.path-highlight .link-arrow { fill: var(--path-color) !important; }
+  .node { cursor: pointer; transition: opacity 0.2s; }
+  .node circle {
+    stroke: var(--node-stroke);
+    stroke-width: 1.5;
+    transition: r 0.2s, stroke-width 0.2s;
+  }
+  .node:hover circle { stroke-width: 3; stroke: rgba(255,255,255,0.6); }
+  [data-theme="light"] .node:hover circle { stroke: rgba(0,0,0,0.4); }
+  .node-label {
+    font-size: 10px;
+    fill: var(--label-fill);
+    pointer-events: none;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    transition: fill 0.2s, font-size 0.2s;
+  }
+  [data-theme="light"] .node-label { text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+  .node.highlighted .node-label { fill: var(--text); font-size: 12px; font-weight: 600; }
+  .node.highlighted circle { stroke: var(--text); stroke-width: 3; }
+  .node.path-highlight .node-label { fill: var(--path-color) !important; font-size: 12px; font-weight: 600; }
+  .node.path-highlight circle { stroke: var(--path-color) !important; stroke-width: 3 !important; }
+  .node.dimmed { opacity: 0.12; }
+  .link.dimmed { opacity: 0.02; }
+  .link.hidden { display: none; }
+  /* Tooltip */
+  .node-title-tooltip {
+    font-size: 10px;
+    fill: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .node:hover .node-title-tooltip { opacity: 1; }
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+  @media (max-width: 768px) {
+    #legend, #filter-panel { display: none !important; }
+    #toolbar { flex-wrap: wrap; height: auto; padding: 6px; gap: 4px; }
+    #toolbar h1 { font-size: 12px; }
+    #toolbar input { max-width: 100%; }
+    #info-panel { max-width: calc(100vw - 24px); }
+  }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <h1>📊 {{ title }}</h1>
+  <div id="search-wrapper">
+    <input type="text" id="search-input" placeholder="🔍 Поиск..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div class="stats">
+    <span id="node-count">0</span> уз / <span id="edge-count">0</span> св
+    <span id="edge-implicit" style="color:var(--text-secondary);font-size:10px;"></span>
+  </div>
+  <div id="filter-toggles">
+    <button class="btn" id="theme-btn" title="Переключить тему">🌓</button>
+    <button class="btn" id="filter-btn" title="Фильтры">⚙</button>
+    <button class="btn active" id="implicit-btn" title="Показать/скрыть неявные связи">🔗</button>
+    <button class="btn" id="bookmark-btn" title="Показать только избранное">⭐</button>
+    <button class="btn" id="fit-btn" title="По размеру экрана">⊞</button>
+    <button class="btn" id="reset-btn" title="Сбросить">⟲</button>
+    <button class="btn" id="export-btn" title="Экспорт PNG">⬇ PNG</button>
+    <button class="btn" id="export-svg-btn" title="Экспорт SVG">✎ SVG</button>
+    <button class="btn" id="export-csv-btn" title="Экспорт CSV">📋 CSV</button>
+  </div>
+  <span id="mode-badge"></span>
+</div>
+
+<div id="legend"></div>
+
+<div id="filter-panel">
+  <h4>⚙ Фильтры</h4>
+  <div class="filter-row">
+    <label>Слова</label>
+    <input type="range" id="filter-words" min="0" max="1000" value="1000">
+    <span class="val" id="filter-words-val">1000</span>
+  </div>
+  <div class="filter-row">
+    <label>Код-блоки</label>
+    <input type="range" id="filter-code" min="0" max="50" value="50">
+    <span class="val" id="filter-code-val">50</span>
+  </div>
+  <div class="filter-row">
+    <label>Степень</label>
+    <input type="range" id="filter-degree" min="0" max="50" value="50">
+    <span class="val" id="filter-degree-val">50</span>
+  </div>
+  <div class="filter-row">
+    <label>Мин. вес ребра</label>
+    <input type="range" id="filter-weight" min="0" max="100" value="0">
+    <span class="val" id="filter-weight-val">0</span>
+  </div>
+  <div class="quick-filters">
+    <label>Быстрые:</label>
+    <button class="btn-sm" id="qf-code" title="Только с код-блоками">📟 Код</button>
+    <button class="btn-sm" id="qf-high-degree" title="Степень > медианы">🎯 Топ</button>
+    <button class="btn-sm" id="qf-reset" title="Сбросить все фильтры">⟲ Сброс</button>
+  </div>
+</div>
+
+<div id="info-panel">
+  <button id="info-panel-close">✕</button>
+  <button id="pin-btn" title="Закрепить узел">📌</button>
+  <h2 id="info-title"></h2>
+  <div class="path" id="info-path"></div>
+  <div class="meta" id="info-meta"></div>
+  <div class="headings" id="info-headings"></div>
+  <div class="connections" id="info-connected">
+    <h4>🔗 Связи</h4>
+    <div class="conn-list" id="conn-list"></div>
+  </div>
+</div>
+
+<div id="status-bar">
+  <span id="mode-text"></span><br>
+  <kbd>Ctrl+E</kbd> PNG &nbsp; <kbd>Esc</kbd> сброс &nbsp; <kbd>Ctrl+Click</kbd> путь &nbsp; <kbd>Ctrl+drag</kbd> закрепить
+</div>
+
+<div id="graph-container">
+  <svg>
+    <defs>
+      <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto">
+        <path class="link-arrow" d="M 0 0 L 10 5 L 0 10 z" />
+      </marker>
+    </defs>
+  </svg>
+</div>
+
+<script>
+// ======================================================================
+// DATA
+// ======================================================================
+const GRAPH_DATA = {{ graph_data }};
+const DATA = GRAPH_DATA;
+
+let pathMode = false;        // Ctrl+Click path selection mode
+let pathSource = null;       // first node selected for path
+let pathTarget = null;       // second node
+let pathNodes = null;        // Set of nodes in shortest path
+let pathLinks = [];          // array of links in shortest path
+let isolationNode = null;    // isolated node id (double-click)
+let showImplicit = true;     // show implicit edges
+let showBookmarked = false;  // show only bookmarked
+let activeFilters = { words: Infinity, code: Infinity, degree: Infinity, minWeight: 0 };
+
+// Bookmarks persisted in localStorage
+const STORAGE_KEY = 'prology-bookmarks';
+let bookmarks = new Set();
+try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    bookmarks = new Set(stored);
+} catch(e) { bookmarks = new Set(); }
+
+function saveBookmarks() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...bookmarks]));
+}
+
+function toggleBookmark(id) {
+    if (bookmarks.has(id)) bookmarks.delete(id);
+    else bookmarks.add(id);
+    saveBookmarks();
+    updateBookmarkIndicators();
+}
+
+// ======================================================================
+// SVG SETUP
+// ======================================================================
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const svg = d3.select('svg');
+const g = svg.append('g');
+
+const zoom = d3.zoom()
+    .scaleExtent([0.1, 8])
+    .on('zoom', (event) => {
+        g.attr('transform', event.transform);
+    })
+    .on('end', () => saveState());
+
+svg.call(zoom);
+
+// ======================================================================
+// FORCE SIMULATION
+// ======================================================================
+// Category cluster centers
+const catCenters = {};
+const catNodes = {};
+DATA.nodes.forEach(n => {
+    const cat = n.category || 'other';
+    if (!catNodes[cat]) catNodes[cat] = [];
+    catNodes[cat].push(n);
+});
+const catAngleStep = (Math.PI * 2) / Object.keys(catNodes).length;
+let catIdx = 0;
+for (const [cat, nodes] of Object.entries(catNodes)) {
+    const angle = catIdx * catAngleStep;
+    const dist = Math.min(width, height) * 0.25;
+    catCenters[cat] = {
+        x: width / 2 + Math.cos(angle) * dist,
+        y: height / 2 + Math.sin(angle) * dist,
+    };
+    catIdx++;
+}
+
+// Cluster force: тянет узлы к центру их категории
+function clusterForce(alpha) {
+    for (const node of DATA.nodes) {
+        const cat = node.category || 'other';
+        const center = catCenters[cat];
+        if (center) {
+            node.vx += (center.x - node.x) * 0.0008 * alpha;
+            node.vy += (center.y - node.y) * 0.0008 * alpha;
+        }
+    }
+}
+
+const simulation = d3.forceSimulation(DATA.nodes)
+    .force('link', d3.forceLink(DATA.links)
+        .id(d => d.id)
+        .distance(d => Math.max(60, Math.min(200, 200 - (d.target.word_count || 0) / 20)))
+        .strength(0.4))
+    .force('charge', d3.forceManyBody()
+        .strength(d => -80 - (d.word_count || 0) / 10))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collision', d3.forceCollide().radius(d => 10 + Math.sqrt(d.out_degree || 0) * 3))
+    .force('cluster', clusterForce)
+    .alphaDecay(0.02);
+
+// ======================================================================
+// DRAW LINKS
+// ======================================================================
+const link = g.append('g')
+    .selectAll('path')
+    .data(DATA.links)
+    .join('path')
+    .attr('class', 'link')
+    .attr('marker-end', 'url(#arrowhead)');
+
+// ======================================================================
+// DRAW NODES
+// ======================================================================
+const node = g.append('g')
+    .selectAll('g')
+    .data(DATA.nodes)
+    .join('g')
+    .attr('class', 'node');
+
+const colors = DATA.colors || {};
+const maxDepth = d3.max(DATA.nodes, d => d.depth) || 1;
+
+function nodeRadius(d) {
+    return 4 + Math.sqrt(d.out_degree || 0) * 2 + Math.sqrt(d.word_count || 0) / 50;
+}
+
+node.append('circle')
+    .attr('r', d => nodeRadius(d))
+    .attr('fill', d => colors[d.category] || '#999');
+
+// Depth ring
+node.append('circle')
+    .attr('r', d => nodeRadius(d) + 2)
+    .attr('fill', 'none')
+    .attr('stroke', d => `rgba(255,255,255,${0.15 + (d.depth || 0) / maxDepth * 0.4})`)
+    .attr('stroke-width', d => 1 + (d.depth || 0) / maxDepth * 2)
+    .attr('stroke-dasharray', d => d.depth > 0 ? '3,2' : 'none')
+    .attr('pointer-events', 'none');
+
+// Bookmark star
+node.append('text')
+    .attr('class', 'node-star')
+    .attr('dx', d => -nodeRadius(d) - 2)
+    .attr('dy', d => -nodeRadius(d) - 2)
+    .attr('font-size', '9px')
+    .attr('pointer-events', 'none')
+    .text(d => bookmarks.has(d.id) ? '⭐' : '');
+
+node.append('text')
+    .attr('class', 'node-label')
+    .attr('dx', d => nodeRadius(d) + 2)
+    .attr('dy', 4)
+    .text(d => d.title.length > 30 ? d.title.substring(0, 28) + '…' : d.title);
+
+// Tooltip — полное название при наведении
+node.append('title')
+    .text(d => `${d.title}\n${d.path}\n📝 ${d.word_count} слов | 📊 ст. ${d.degree}`);
+
+// ======================================================================
+// TICK
+// ======================================================================
+simulation.on('tick', () => {
+    link.attr('d', d => {
+        const dx = d.target.x - d.source.x;
+        const dy = d.target.y - d.source.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 1) return 'M0,0L0,0';
+        const srcR = nodeRadius(d.source) + 2;
+        const tgtR = nodeRadius(d.target) + 2;
+        const srcOff = Math.min(srcR / dist, 0.9);
+        const tgtOff = Math.min((dist - tgtR) / dist, 0.9);
+        return `M${d.source.x + dx * srcOff},${d.source.y + dy * srcOff}L${d.source.x + dx * tgtOff},${d.source.y + dy * tgtOff}`;
+    });
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+});
+
+// ======================================================================
+// INTERACTIONS
+// ======================================================================
+
+// Hover
+function getConnected(d) {
+    const nodes = new Set();
+    const links = new Set();
+    DATA.links.forEach(l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        if (s === d.id) { nodes.add(t); links.add(l); }
+        if (t === d.id) { nodes.add(s); links.add(l); }
+    });
+    nodes.add(d.id);
+    return { nodes, links };
+}
+
+node.on('mouseenter', function(event, d) {
+    if (pathMode || isolationNode) return;
+    const c = getConnected(d);
+    node.classed('dimmed', n => !c.nodes.has(n.id));
+    link.classed('dimmed', l => !c.links.has(l));
+    link.classed('highlighted', l => c.links.has(l));
+});
+
+node.on('mouseleave', function() {
+    if (pathMode || isolationNode) return;
+    clearHighlights();
+});
+
+function clearHighlights() {
+    node.classed('dimmed', false);
+    link.classed('dimmed', false);
+    link.classed('highlighted', false);
+    // Don't clear path highlights
+    applyPathHighlights();
+}
+
+// Click — show info or path mode
+node.on('click', function(event, d) {
+    event.stopPropagation();
+    if (event.ctrlKey || event.metaKey) {
+        // PATH MODE
+        enterPathMode(d);
+        return;
+    }
+    if (isolationNode) {
+        exitIsolation();
+    }
+    showInfo(d);
+});
+
+svg.on('click', function() {
+    hideInfo();
+    if (pathMode) exitPathMode();
+    if (isolationNode) exitIsolation();
+});
+
+// Double-click — isolation mode
+node.on('dblclick', function(event, d) {
+    event.stopPropagation();
+    enterIsolation(d);
+});
+
+function updateBookmarkIndicators() {
+    if (typeof node === 'undefined') return;
+    node.selectAll('.node-star').text(d => bookmarks.has(d.id) ? '⭐' : '');
+}
+
+function togglePin(d) {
+    if (d.fx !== null && d.fx !== undefined) {
+        // Unpin
+        d.fx = null;
+        d.fy = null;
+        simulation.alpha(0.3).restart();
+    } else {
+        // Pin at current position
+        d.fx = d.x;
+        d.fy = d.y;
+        simulation.alpha(0.3).restart();
+    }
+    showInfo(d); // Refresh pin button state
+    updatePinIndicators();
+}
+
+function updatePinIndicators() {
+    node.selectAll('.node-pin').remove();
+    DATA.nodes.forEach(n => {
+        if (n.fx !== null && n.fx !== undefined) {
+            const g = node.filter(d => d.id === n.id);
+            g.append('circle')
+                .attr('class', 'node-pin')
+                .attr('r', 18)
+                .attr('cx', 0)
+                .attr('cy', 0)
+                .attr('stroke', 'var(--accent)')
+                .attr('stroke-width', 1.5)
+                .attr('fill', 'none')
+                .attr('stroke-dasharray', '3,2');
+        }
+    });
+}
+
+function clearPins() {
+    DATA.nodes.forEach(n => {
+        n.fx = null;
+        n.fy = null;
+    });
+    node.selectAll('.node-pin').remove();
+    document.getElementById('pin-btn').classList.remove('active');
+    document.getElementById('pin-btn').textContent = '📌 Закрепить';
+    simulation.alpha(0.3).restart();
+}
+
+// Drag with pinning on Ctrl+drag or after drag-end with Ctrl held
+const drag = d3.drag()
+    .on('start', (event, d) => {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+    })
+    .on('drag', (event, d) => {
+        d.fx = event.x;
+        d.fy = event.y;
+    })
+    .on('end', (event, d) => {
+        if (!event.active) simulation.alphaTarget(0);
+        if (event.sourceEvent && (event.sourceEvent.ctrlKey || event.sourceEvent.metaKey)) {
+            // Ctrl+drag — pin in place
+            d.fx = d.x;
+            d.fy = d.y;
+            updatePinIndicators();
+        } else {
+            d.fx = null;
+            d.fy = null;
+        }
+        saveState();
+    });
+
+node.call(drag);
+
+// ======================================================================
+// ISOLATION MODE (#6)
+// ======================================================================
+function enterIsolation(d) {
+    isolationNode = d.id;
+    const c = getConnected(d);
+    node.classed('dimmed', n => !c.nodes.has(n.id));
+    link.classed('dimmed', l => !c.links.has(l));
+    link.classed('highlighted', l => c.links.has(l));
+    updateModeBadge('isolate-mode', '🔍 Изоляция: ' + d.title.substring(0, 20));
+    showInfo(d);
+}
+
+function exitIsolation() {
+    if (!isolationNode) return;
+    isolationNode = null;
+    clearHighlights();
+    updateModeBadge();
+    updateStats(DATA.nodes.length, DATA.links.length);
+}
+
+// ======================================================================
+// PATH MODE (#8)
+// ======================================================================
+function enterPathMode(d) {
+    if (!pathMode) {
+        pathMode = true;
+        pathSource = d;
+        pathTarget = null;
+        pathNodes = null;
+        pathLinks = [];
+        updateModeBadge('path-mode', '🔄 Выберите второй узел для пути');
+        showInfo(d);
+        clearHighlights();
+        // Highlight source
+        const c = getConnected(d);
+        node.classed('dimmed', n => !c.nodes.has(n.id));
+        link.classed('dimmed', l => !c.links.has(l));
+        return;
+    }
+    // Second click — find path
+    if (pathSource && pathSource.id !== d.id) {
+        pathTarget = d;
+        findAndHighlightPath(pathSource.id, d.id);
+        pathMode = false;
+        showInfo(d);
+    } else if (pathSource && pathSource.id === d.id) {
+        // Clicking same node — cancel
+        exitPathMode();
+        showInfo(d);
+    }
+}
+
+function exitPathMode() {
+    pathMode = false;
+    pathSource = null;
+    pathTarget = null;
+    pathNodes = null;
+    pathLinks = [];
+    updateModeBadge();
+    clearHighlights();
+    applyMetricFilters();
+}
+
+function findAndHighlightPath(sourceId, targetId) {
+    // Build adjacency list
+    const adj = {};
+    DATA.nodes.forEach(n => { adj[n.id] = []; });
+    DATA.links.forEach(l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        adj[s].push(t);
+        // Directed graph — also search reverse
+        adj[t].push(s);
+    });
+
+    // BFS
+    const visited = new Set();
+    const parent = {};
+    const queue = [sourceId];
+    visited.add(sourceId);
+    parent[sourceId] = null;
+
+    while (queue.length > 0) {
+        const cur = queue.shift();
+        if (cur === targetId) break;
+        for (const neighbor of (adj[cur] || [])) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                parent[neighbor] = cur;
+                queue.push(neighbor);
+            }
+        }
+    }
+
+    if (!parent[targetId] && sourceId !== targetId) {
+        // No path found
+        updateModeBadge('path-mode', '❌ Путь не найден');
+        setTimeout(() => exitPathMode(), 1500);
+        return;
+    }
+
+    // Reconstruct path
+    const path = [];
+    let cur = targetId;
+    while (cur !== null) {
+        path.unshift(cur);
+        cur = parent[cur];
+    }
+
+    pathNodes = new Set(path);
+    pathLinks = [];
+    // Find links along the path
+    for (let i = 0; i < path.length - 1; i++) {
+        DATA.links.forEach(l => {
+            const s = l.source.id !== undefined ? l.source.id : l.source;
+            const t = l.target.id !== undefined ? l.target.id : l.target;
+            if ((s === path[i] && t === path[i+1]) || (s === path[i+1] && t === path[i])) {
+                pathLinks.push(l);
+            }
+        });
+    }
+
+    applyPathHighlights();
+    updateModeBadge('path-mode', `🛤️ Путь: ${path.length} узлов`);
+    updateStats(pathNodes.size, pathLinks.length);
+}
+
+function applyPathHighlights() {
+    if (!pathNodes) return;
+    node.classed('path-highlight', n => pathNodes.has(n.id));
+    link.classed('path-highlight', l => pathLinks.includes(l));
+    node.classed('dimmed', n => !pathNodes.has(n.id) && !isolationNode);
+    link.classed('dimmed', l => !pathLinks.includes(l) && !isolationNode);
+}
+
+// ======================================================================
+// SEARCH + DROPDOWN
+// ======================================================================
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+
+function focusNodeById(id) {
+    const n = DATA.nodes.find(node => node.id === id);
+    if (!n) return;
+    // Isolate this node
+    enterIsolation(n);
+    // Close dropdown
+    searchResults.classList.remove('visible');
+    searchResults.innerHTML = '';
+}
+
+function buildSearchResults(query, matched) {
+    if (!query) {
+        searchResults.classList.remove('visible');
+        return;
+    }
+    const results = DATA.nodes.filter(n => matched.has(n.id));
+    if (results.length === 0) {
+        searchResults.innerHTML = '<div class="search-empty">Ничего не найдено</div>';
+        searchResults.classList.add('visible');
+        return;
+    }
+    let html = '';
+    results.slice(0, 20).forEach(n => {
+        const catColor = colors[n.category] || '#999';
+        html += `<div class="search-result-item" data-id="${n.id}">
+          <span class="sr-cat" style="background:${catColor}"></span>
+          <span class="sr-title">${n.title.length > 40 ? n.title.substring(0, 38) + '…' : n.title}</span>
+          <span class="sr-path">${n.path}</span>
+          <span class="sr-degree">📊 ${n.degree}</span>
+        </div>`;
+    });
+    if (results.length > 20) {
+        html += `<div class="search-empty">… ещё ${results.length - 20} результатов</div>`;
+    }
+    searchResults.innerHTML = html;
+    searchResults.classList.add('visible');
+
+    // Click handlers on results
+    searchResults.querySelectorAll('.search-result-item').forEach(el => {
+        el.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            focusNodeById(id);
+        });
+    });
+}
+
+searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    if (isolationNode) exitIsolation();
+    if (pathMode) exitPathMode();
+    clearHighlights();
+
+    if (!query) {
+        searchResults.classList.remove('visible');
+        applyMetricFilters();
+        return;
+    }
+
+    const matched = new Set();
+    DATA.nodes.forEach(n => {
+        if (n.title.toLowerCase().includes(query) ||
+            n.path.toLowerCase().includes(query) ||
+            (n.headings || []).some(h => h.text.toLowerCase().includes(query))) {
+            matched.add(n.id);
+        }
+    });
+
+    const visible = new Set(matched);
+    DATA.links.forEach(l => {
+        const srcId = l.source.id !== undefined ? l.source.id : l.source;
+        const tgtId = l.target.id !== undefined ? l.target.id : l.target;
+        if (matched.has(srcId)) visible.add(tgtId);
+        if (matched.has(tgtId)) visible.add(srcId);
+    });
+
+    node.classed('dimmed', n => !visible.has(n.id));
+
+    const visibleLinks = DATA.links.filter(l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        return visible.has(s) && visible.has(t);
+    });
+
+    updateStats(visible.size, visibleLinks.length);
+    buildSearchResults(query, matched);
+});
+
+// Close search results on blur (with delay to allow click)
+searchInput.addEventListener('blur', function() {
+    setTimeout(() => searchResults.classList.remove('visible'), 200);
+});
+// Re-open on focus if has value
+searchInput.addEventListener('focus', function() {
+    if (this.value.trim()) {
+        this.dispatchEvent(new Event('input'));
+    }
+});
+
+function updateStats(nodesCount, edgesCount) {
+    document.getElementById('node-count').textContent = nodesCount;
+    document.getElementById('edge-count').textContent = edgesCount;
+    const ei = document.getElementById('edge-implicit');
+    if (nodesCount === DATA.nodes.length && edgesCount === DATA.links.length && DATA.stats) {
+        ei.textContent = ` (явн:${DATA.stats.explicit_edges}, неявн:${DATA.stats.implicit_edges})`;
+    } else if (nodesCount === DATA.nodes.length && !showImplicit) {
+        ei.textContent = ` (только явные)`;
+    } else {
+        ei.textContent = '';
+    }
+}
+
+// ======================================================================
+// INFO PANEL
+// ======================================================================
+function showInfo(d) {
+    const panel = document.getElementById('info-panel');
+    panel.classList.add('visible');
+    document.getElementById('info-title').textContent = d.title;
+    addInfoStar(d);  // Add bookmark star button to title
+    document.getElementById('info-path').textContent = d.path;
+
+    // Update pin button
+    const pinBtn = document.getElementById('pin-btn');
+    const pinned = d.fx !== null && d.fx !== undefined;
+    pinBtn.classList.toggle('active', pinned);
+    pinBtn.textContent = pinned ? '📌 Закреплён' : '📌 Закрепить';
+    pinBtn.onclick = () => togglePin(d);
+
+    const catName = d.category || 'other';
+    const catColor = colors[catName] || '#999';
+    const catIcon = DATA.icons && DATA.icons[catName] ? DATA.icons[catName] : '📄';
+
+    document.getElementById('info-meta').innerHTML = `
+        <div style="margin-bottom:3px">
+          <span class="legend-dot" style="display:inline-block;background:${catColor}"></span>
+          ${catIcon} ${catName} &middot; 📂 глуб. ${d.depth || 0}
+        </div>
+        <div>📝 <span>${d.word_count || 0}</span> слов &middot; 💻 <span>${(d.code_blocks || []).length}</span> блоков</div>
+        <div>📤 исх. <span>${d.links_out || 0}</span> &middot; 📥 вх. <span>${d.in_degree || 0}</span> &middot; 📊 ст. <span>${d.degree || 0}</span></div>
+    `;
+
+    const hd = document.getElementById('info-headings');
+    if (d.headings && d.headings.length > 0) {
+        hd.innerHTML = `<h4>📑 Структура</h4><ul>${
+            d.headings.filter(h => h.level <= 3).map(h =>
+                `<li style="padding-left:${(h.level - 1) * 10}px">${h.text}</li>`
+            ).join('')
+        }</ul>`;
+        hd.style.display = 'block';
+    } else {
+        hd.style.display = 'none';
+    }
+
+    // Build connected nodes list
+    buildConnectedList(d);
+}
+
+function buildConnectedList(d) {
+    const list = document.getElementById('conn-list');
+    const connected = DATA.links
+        .filter(l => {
+            const s = l.source.id !== undefined ? l.source.id : l.source;
+            const t = l.target.id !== undefined ? l.target.id : l.target;
+            return s === d.id || t === d.id;
+        })
+        .map(l => {
+            const s = l.source.id !== undefined ? l.source.id : l.source;
+            const t = l.target.id !== undefined ? l.target.id : l.target;
+            const otherId = s === d.id ? t : s;
+            const other = DATA.nodes.find(n => n.id === otherId);
+            if (!other) return null;
+            const isExplicit = l.explicit === true;
+            return {
+                id: other.id,
+                title: other.title,
+                path: other.path,
+                category: other.category || 'other',
+                weight: l.weight || 1,
+                explicit: isExplicit
+            };
+        })
+        .filter(x => x !== null)
+        .sort((a, b) => b.weight - a.weight);
+
+    if (connected.length === 0) {
+        list.innerHTML = '<div style="color:var(--text-secondary);font-size:10px">Нет связей</div>';
+        return;
+    }
+
+    let html = '';
+    connected.slice(0, 30).forEach(c => {
+        const catColor = colors[c.category] || '#999';
+        html += `<div class="conn-item" data-id="${c.id}">
+          <span class="conn-dot" style="background:${catColor}"></span>
+          <span class="conn-name">${c.title.length > 30 ? c.title.substring(0, 28) + '…' : c.title}</span>
+          <span class="conn-weight">${c.explicit ? '🔗' : '…'} ${c.weight.toFixed(2)}</span>
+        </div>`;
+    });
+    if (connected.length > 30) {
+        html += `<div style="color:var(--text-secondary);font-size:9px;text-align:center">… ещё ${connected.length - 30}</div>`;
+    }
+    list.innerHTML = html;
+
+    // Click handlers
+    list.querySelectorAll('.conn-item').forEach(el => {
+        el.addEventListener('click', function() {
+            const id = parseInt(this.dataset.id);
+            const target = DATA.nodes.find(n => n.id === id);
+            if (target) showInfo(target);
+        });
+    });
+}
+
+function hideInfo() {
+    document.getElementById('info-panel').classList.remove('visible');
+}
+document.getElementById('info-panel-close').addEventListener('click', hideInfo);
+
+// ======================================================================
+// LEGEND
+// ======================================================================
+function buildLegend() {
+    const legend = document.getElementById('legend');
+    const cats = DATA.categories || {};
+    let html = '<h3>📂 Категории</h3>';
+    for (const [cat, info] of Object.entries(cats)) {
+        html += `<div class="legend-item active" data-category="${cat}">
+          <span class="legend-dot" style="background:${info.color}"></span>
+          ${info.icon} ${cat}
+          <span class="legend-count">${info.count}</span>
+        </div>`;
+    }
+    html += `<div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border)">
+      <div class="legend-item" id="legend-show-all" style="color:var(--accent);font-weight:600">✕ Сбросить фильтр</div>
+    </div>`;
+
+    // Directory groups
+    const dirGroups = DATA.stats && DATA.stats.dir_groups;
+    if (dirGroups) {
+        const dirEntries = Object.entries(dirGroups).sort((a, b) => b[1] - a[1]);
+        if (dirEntries.length > 1) {
+            html += `<div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border)">
+              <h3>📁 Директории</h3>`;
+            const dirColors = ['#e94560', '#0ea5e9', '#22c55e', '#eab308', '#a855f7', '#ec4899', '#14b8a6', '#f97316'];
+            dirEntries.forEach(([dir, count], idx) => {
+                const color = dirColors[idx % dirColors.length];
+                const label = dir === '_root' ? '(корень)' : dir;
+                html += `<div class="legend-item active" data-dir="${dir}">
+                  <span class="legend-dot" style="background:${color}"></span>
+                  ${label}
+                  <span class="legend-count">${count}</span>
+                </div>`;
+            });
+            html += `</div>`;
+        }
+    }
+
+    legend.innerHTML = html;
+
+    legend.querySelectorAll('.legend-item[data-category]').forEach(item => {
+        item.addEventListener('click', function() {
+            const cat = this.dataset.category;
+            filterByCategory(cat);
+            legend.querySelectorAll('.legend-item[data-category]').forEach(el =>
+                el.classList.toggle('active', el === this));
+        });
+    });
+
+    legend.querySelectorAll('.legend-item[data-dir]').forEach(item => {
+        item.addEventListener('click', function() {
+            const dir = this.dataset.dir;
+            this.classList.toggle('active');
+            filterByDirGroups();
+        });
+    });
+
+    document.getElementById('legend-show-all').addEventListener('click', () => {
+        // Also reset bookmark filter
+        if (showBookmarked) toggleBookmarkFilter();
+        filterByCategory(null);
+        legend.querySelectorAll('.legend-item[data-category]').forEach(el => el.classList.add('active'));
+        legend.querySelectorAll('.legend-item[data-dir]').forEach(el => el.classList.add('active'));
+    });
+}
+
+// Tracks active directory filters
+function getActiveDirGroups() {
+    const active = new Set();
+    document.querySelectorAll('.legend-item[data-dir].active').forEach(el => {
+        active.add(el.dataset.dir);
+    });
+    return active;
+}
+
+function filterByDirGroups() {
+    if (isolationNode || pathMode) return;
+    // Check if any category filter is active
+    const activeCat = document.querySelector('.legend-item[data-category]:not(.active)');
+    if (activeCat) {
+        // Category filter is active — re-apply it with new dir constraints
+        const cat = activeCat.dataset.category;
+        filterByCategory(cat);
+        return;
+    }
+    applyMetricFilters();
+}
+
+function filterByCategory(category) {
+    if (isolationNode) exitIsolation();
+    if (pathMode) exitPathMode();
+    clearHighlights();
+
+    if (!category) {
+        applyMetricFilters();
+        return;
+    }
+
+    const visible = new Set();
+    const activeDirs = getActiveDirGroups();
+    const allDirsActive = activeDirs.size === document.querySelectorAll('.legend-item[data-dir]').length;
+
+    DATA.nodes.forEach(n => {
+        if (n.category === category) {
+            if (allDirsActive || activeDirs.has(n.dir_group)) {
+                visible.add(n.id);
+            }
+        }
+    });
+
+    const visibleLinks = DATA.links.filter(l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        return visible.has(s) && visible.has(t);
+    });
+
+    node.classed('dimmed', n => !visible.has(n.id));
+    updateStats(visible.size, visibleLinks.length);
+}
+
+// ======================================================================
+// METRIC FILTERS (#7)
+// ======================================================================
+const filterBtn = document.getElementById('filter-btn');
+const filterPanel = document.getElementById('filter-panel');
+let filterVisible = false;
+
+filterBtn.addEventListener('click', () => {
+    filterVisible = !filterVisible;
+    filterPanel.classList.toggle('visible', filterVisible);
+});
+
+// Implicit edges toggle
+const implicitBtn = document.getElementById('implicit-btn');
+function toggleImplicit() {
+    showImplicit = !showImplicit;
+    implicitBtn.classList.toggle('active', showImplicit);
+    if (showImplicit) {
+        link.classed('hidden', false);
+    } else {
+        link.classed('hidden', l => l.implicit === true);
+    }
+    const visibleEdges = DATA.links.filter(l => showImplicit || !l.implicit).length;
+    updateStats(DATA.nodes.length, visibleEdges);
+}
+implicitBtn.addEventListener('click', toggleImplicit);
+
+function setupFilter(id, key) {
+    const slider = document.getElementById(id);
+    const val = document.getElementById(id + '-val');
+    slider.addEventListener('input', () => {
+        const v = parseInt(slider.value);
+        val.textContent = v;
+        activeFilters[key] = v;
+        applyMetricFilters();
+    });
+}
+
+setupFilter('filter-words', 'words');
+setupFilter('filter-code', 'code');
+setupFilter('filter-degree', 'degree');
+setupFilter('filter-weight', 'minWeight');
+
+// ======================================================================
+// BOOKMARK TOGGLE
+// ======================================================================
+const bookmarkBtn = document.getElementById('bookmark-btn');
+function toggleBookmarkFilter() {
+    showBookmarked = !showBookmarked;
+    bookmarkBtn.classList.toggle('active', showBookmarked);
+    // Update badge
+    if (showBookmarked && bookmarks.size > 0) {
+        bookmarkBtn.textContent = `⭐ ${bookmarks.size}`;
+    } else {
+        bookmarkBtn.textContent = '⭐';
+    }
+    applyMetricFilters();
+}
+bookmarkBtn.addEventListener('click', toggleBookmarkFilter);
+// Initialize bookmark badge
+if (bookmarks.size > 0) {
+    bookmarkBtn.textContent = `⭐ ${bookmarks.size}`;
+}
+
+// Add star to info panel
+function addInfoStar(d) {
+    const titleEl = document.getElementById('info-title');
+    const isStarred = bookmarks.has(d.id);
+    const starBtn = document.createElement('button');
+    starBtn.id = 'info-star-btn';
+    starBtn.textContent = isStarred ? '⭐' : '☆';
+    starBtn.title = isStarred ? 'Убрать из избранного' : 'Добавить в избранное';
+    starBtn.style.cssText = 'background:none;border:none;cursor:pointer;font-size:16px;margin-left:4px;vertical-align:middle;opacity:0.7;transition:opacity 0.15s;';
+    starBtn.onmouseover = () => starBtn.style.opacity = '1';
+    starBtn.onmouseout = () => starBtn.style.opacity = '0.7';
+    starBtn.onclick = (e) => {
+        e.stopPropagation();
+        toggleBookmark(d.id);
+        const nowStarred = bookmarks.has(d.id);
+        starBtn.textContent = nowStarred ? '⭐' : '☆';
+        starBtn.title = nowStarred ? 'Убрать из избранного' : 'Добавить в избранное';
+        updateBookmarkIndicators();
+        // Update badge
+        bookmarkBtn.textContent = bookmarks.size > 0 ? `⭐ ${bookmarks.size}` : '⭐';
+        if (showBookmarked) applyMetricFilters();
+    };
+    // Remove old star btn if exists
+    const old = document.getElementById('info-star-btn');
+    if (old) old.remove();
+    titleEl.appendChild(starBtn);
+}
+
+// ======================================================================
+// FIT TO CONTENT
+// ======================================================================
+document.getElementById('fit-btn').addEventListener('click', () => {
+    svg.transition().duration(500).call(
+        zoom.transform,
+        d3.zoomIdentity.translate(0, 0).scale(1)
+    );
+});
+
+// ======================================================================
+// CSV EXPORT
+// ======================================================================
+function exportCSV() {
+    let csv = 'id,title,path,category,depth,word_count,code_blocks,degree,in_degree,out_degree,links_out,dir_group\n';
+    DATA.nodes.forEach(n => {
+        const title = `"${(n.title || '').replace(/"/g, '""')}"`;
+        const path = `"${(n.path || '').replace(/"/g, '""')}"`;
+        csv += [
+            n.id, title, path, n.category || '', n.depth || 0,
+            n.word_count || 0, (n.code_blocks || []).length,
+            n.degree || 0, n.in_degree || 0, n.out_degree || 0,
+            n.links_out || 0, n.dir_group || ''
+        ].join(',') + '\n';
+    });
+    csv += '\n# EDGES\n';
+    csv += 'source,target,weight,explicit\n';
+    DATA.links.forEach(l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        csv += `${s},${t},${l.weight || 1},${l.explicit || false}\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'prology-graph.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+document.getElementById('export-csv-btn').addEventListener('click', exportCSV);
+
+// ======================================================================
+// QUICK FILTERS
+// ======================================================================
+const qfCode = document.getElementById('qf-code');
+const qfHighDegree = document.getElementById('qf-high-degree');
+const qfReset = document.getElementById('qf-reset');
+
+qfCode.addEventListener('click', function() {
+    this.classList.toggle('active');
+    if (this.classList.contains('active')) {
+        document.getElementById('filter-code').value = 0;
+        document.getElementById('filter-code-val').textContent = '0';
+        activeFilters.code = 0;
+    } else {
+        document.getElementById('filter-code').value = 50;
+        document.getElementById('filter-code-val').textContent = '50';
+        activeFilters.code = 50;
+    }
+    if (searchInput.value.trim()) searchInput.dispatchEvent(new Event('input'));
+    else applyMetricFilters();
+});
+
+qfHighDegree.addEventListener('click', function() {
+    this.classList.toggle('active');
+    // Compute median degree
+    const degrees = DATA.nodes.map(n => n.degree || 0).sort((a,b) => a-b);
+    const median = degrees.length % 2 === 0
+        ? (degrees[degrees.length/2 - 1] + degrees[degrees.length/2]) / 2
+        : degrees[Math.floor(degrees.length/2)];
+    if (this.classList.contains('active')) {
+        const val = Math.round(Math.max(median, DATA.nodes.length > 10 ? 1 : 1));
+        document.getElementById('filter-degree').value = val;
+        document.getElementById('filter-degree-val').textContent = val;
+        activeFilters.degree = val;
+    } else {
+        const maxDeg = Math.max(...degrees, 50);
+        document.getElementById('filter-degree').value = maxDeg;
+        document.getElementById('filter-degree-val').textContent = maxDeg;
+        activeFilters.degree = maxDeg;
+    }
+    if (searchInput.value.trim()) searchInput.dispatchEvent(new Event('input'));
+    else applyMetricFilters();
+});
+
+qfReset.addEventListener('click', function() {
+    // Reset all sliders
+    const maxDeg = Math.max(...DATA.nodes.map(n => n.degree || 0), 50);
+    const maxWc = Math.max(...DATA.nodes.map(n => n.word_count || 0), 1000);
+    const maxCb = Math.max(...DATA.nodes.map(n => (n.code_blocks || []).length), 50);
+
+    document.getElementById('filter-words').value = maxWc;
+    document.getElementById('filter-words-val').textContent = maxWc;
+    document.getElementById('filter-code').value = maxCb;
+    document.getElementById('filter-code-val').textContent = maxCb;
+    document.getElementById('filter-degree').value = maxDeg;
+    document.getElementById('filter-degree-val').textContent = maxDeg;
+    document.getElementById('filter-weight').value = 0;
+    document.getElementById('filter-weight-val').textContent = '0';
+
+    activeFilters.words = maxWc;
+    activeFilters.code = maxCb;
+    activeFilters.degree = maxDeg;
+    activeFilters.minWeight = 0;
+
+    qfCode.classList.remove('active');
+    qfHighDegree.classList.remove('active');
+
+    // Reset bookmark filter
+    if (showBookmarked) toggleBookmarkFilter();
+    bookmarkBtn.textContent = bookmarks.size > 0 ? `⭐ ${bookmarks.size}` : '⭐';
+
+    // Reset dir group filters
+    document.querySelectorAll('.legend-item[data-dir].active').forEach(el => el.classList.add('active'));
+    // Reset category filter
+    filterByCategory(null);
+    document.querySelectorAll('.legend-item[data-category]').forEach(el => el.classList.add('active'));
+
+    if (searchInput.value.trim()) searchInput.dispatchEvent(new Event('input'));
+    else applyMetricFilters();
+});
+
+function applyMetricFilters() {
+    if (isolationNode || pathMode || searchInput.value.trim()) return;
+
+    const maxWords = activeFilters.words;
+    const maxCode = activeFilters.code;
+    const maxDegree = activeFilters.degree;
+    const minWeight = activeFilters.minWeight;
+
+    const allMax = maxWords >= 1000 && maxCode >= 50 && maxDegree >= 50;
+    const weightOn = minWeight > 0;
+    const allDefault = allMax && !weightOn;
+    const bookmarkFilterOn = showBookmarked && bookmarks.size > 0;
+    const activeDirs = getActiveDirGroups();
+    const allDirsActive = activeDirs.size === document.querySelectorAll('.legend-item[data-dir]').length ||
+                          activeDirs.size === 0;
+
+    // Filter links by weight
+    let visibleLinks = DATA.links;
+    if (weightOn) {
+        visibleLinks = visibleLinks.filter(l => {
+            const w = l.weight !== undefined ? l.weight : 1;
+            return w >= minWeight;
+        });
+    }
+
+    if (allDefault && allDirsActive && !bookmarkFilterOn) {
+        node.classed('dimmed', false);
+        // Apply weight filter to links
+        link.classed('dimmed', l => {
+            if (!weightOn) return false;
+            const w = l.weight !== undefined ? l.weight : 1;
+            return w < minWeight;
+        });
+        updateStats(DATA.nodes.length, visibleLinks.length);
+        return;
+    }
+
+    // Build visible nodes from metrics + dir filters
+    const visible = new Set();
+    DATA.nodes.forEach(n => {
+        const passesMetrics = allMax || (
+            (n.word_count || 0) <= maxWords &&
+            (n.code_blocks || []).length <= maxCode &&
+            (n.degree || 0) <= maxDegree
+        );
+        const passesDir = allDirsActive || activeDirs.has(n.dir_group);
+        const passesBookmark = !bookmarkFilterOn || bookmarks.has(n.id);
+        if (passesMetrics && passesDir && passesBookmark) {
+            visible.add(n.id);
+        }
+    });
+
+    // Further filter links by node visibility AND weight
+    visibleLinks = visibleLinks.filter(l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        return visible.has(s) && visible.has(t);
+    });
+
+    node.classed('dimmed', n => !visible.has(n.id));
+    link.classed('dimmed', l => {
+        const s = l.source.id !== undefined ? l.source.id : l.source;
+        const t = l.target.id !== undefined ? l.target.id : l.target;
+        if (!visible.has(s) || !visible.has(t)) return true;
+        const w = l.weight !== undefined ? l.weight : 1;
+        if (weightOn && w < minWeight) return true;
+        return false;
+    });
+    updateStats(visible.size, visibleLinks.length);
+}
+
+// ======================================================================
+// THEME TOGGLE (#11)
+// ======================================================================
+const themeBtn = document.getElementById('theme-btn');
+let darkTheme = localStorage.getItem('prology-graph-theme') !== 'light';
+
+function applyTheme() {
+    document.documentElement.setAttribute('data-theme', darkTheme ? 'dark' : 'light');
+    themeBtn.textContent = darkTheme ? '🌓' : '☀️';
+    localStorage.setItem('prology-graph-theme', darkTheme ? 'dark' : 'light');
+}
+
+themeBtn.addEventListener('click', () => {
+    darkTheme = !darkTheme;
+    applyTheme();
+});
+applyTheme();
+
+// ======================================================================
+// MODE BADGE
+// ======================================================================
+function updateModeBadge(cls, text) {
+    const badge = document.getElementById('mode-badge');
+    const modeText = document.getElementById('mode-text');
+    badge.className = '';
+    modeText.textContent = '';
+    if (cls) {
+        badge.classList.add(cls);
+        badge.textContent = text || '';
+        modeText.textContent = text || '';
+    } else {
+        badge.textContent = '';
+    }
+}
+
+// ======================================================================
+// RESET
+// ======================================================================
+document.getElementById('reset-btn').addEventListener('click', () => {
+    if (isolationNode) exitIsolation();
+    if (pathMode) exitPathMode();
+    pathNodes = null;
+    pathLinks = [];
+    node.classed('path-highlight', false);
+    link.classed('path-highlight', false);
+    searchInput.value = '';
+    DATA.nodes.forEach(n => { n.fx = null; n.fy = null; });
+    simulation.alpha(0.5).restart();
+    svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+    clearHighlights();
+    applyMetricFilters();
+});
+
+// ======================================================================
+// EXPORT PNG
+// ======================================================================
+async function exportPNG() {
+    const canvas = document.createElement('canvas');
+    const svgEl = document.querySelector('svg');
+    const svgData = new XMLSerializer().serializeToString(svgEl);
+    const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+    const url = URL.createObjectURL(svgBlob);
+    const img = new Image();
+    img.onload = function() {
+        canvas.width = svgEl.clientWidth * 2;
+        canvas.height = svgEl.clientHeight * 2;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(2, 2);
+        ctx.fillStyle = darkTheme ? '#1a1a2e' : '#f5f5f5';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(blob => {
+            const link = document.createElement('a');
+            link.download = 'prology-docs-graph.png';
+            link.href = URL.createObjectURL(blob);
+            link.click();
+        }, 'image/png');
+    };
+    img.src = url;
+}
+
+document.getElementById('export-btn').addEventListener('click', exportPNG);
+
+// ======================================================================
+// EXPORT SVG
+// ======================================================================
+function exportSVG() {
+    const svgEl = document.querySelector('svg');
+    const clone = svgEl.cloneNode(true);
+    // Make sure all styles are applied
+    const styles = document.querySelectorAll('style');
+    const styleText = Array.from(styles).map(s => s.textContent).join('\n');
+    const styleElem = document.createElement('style');
+    styleElem.textContent = styleText;
+    clone.insertBefore(styleElem, clone.firstChild);
+
+    const serializer = new XMLSerializer();
+    let source = serializer.serializeToString(clone);
+    // Add namespace
+    if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    source = '<?xml version="1.0" encoding="UTF-8"?>\n' + source;
+
+    const blob = new Blob([source], {type: 'image/svg+xml;charset=utf-8'});
+    const link = document.createElement('a');
+    link.download = 'prology-docs-graph.svg';
+    link.href = URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(blob);
+}
+
+document.getElementById('export-svg-btn').addEventListener('click', exportSVG);
+
+// ======================================================================
+// URL STATE (#10)
+// ======================================================================
+function saveState() {
+    const t = d3.zoomTransform(svg.node());
+    const params = new URLSearchParams();
+    if (t.k !== 1) params.set('z', t.k.toFixed(2));
+    if (t.x !== 0 || t.y !== 0) { params.set('x', t.x.toFixed(0)); params.set('y', t.y.toFixed(0)); }
+    // Save pinned nodes
+    const pinned = DATA.nodes.filter(n => n.fx !== null && n.fx !== undefined).map(n => `${n.id},${n.fx.toFixed(0)},${n.fy.toFixed(0)}`);
+    if (pinned.length > 0 && pinned.length <= 5) params.set('p', pinned.join('|'));
+    const hash = params.toString();
+    if (hash) {
+        history.replaceState(null, '', '#' + hash);
+    } else if (location.hash) {
+        history.replaceState(null, '', ' ');
+    }
+}
+
+function restoreState() {
+    const hash = location.hash.replace('#', '');
+    if (!hash) return;
+    const params = new URLSearchParams(hash);
+    const z = parseFloat(params.get('z')) || 1;
+    const x = parseFloat(params.get('x')) || 0;
+    const y = parseFloat(params.get('y')) || 0;
+    if (z !== 1 || x !== 0 || y !== 0) {
+        svg.call(zoom.transform, d3.zoomIdentity.translate(x, y).scale(z));
+    }
+    // Restore pins
+    const pins = params.get('p');
+    if (pins) {
+        setTimeout(() => {
+            pins.split('|').forEach(p => {
+                const parts = p.split(',');
+                const id = parseInt(parts[0]);
+                const fx = parseFloat(parts[1]);
+                const fy = parseFloat(parts[2]);
+                const n = DATA.nodes.find(node => node.id === id);
+                if (n) {
+                    n.fx = fx;
+                    n.fy = fy;
+                }
+            });
+            simulation.alpha(0.3).restart();
+            updatePinIndicators();
+        }, 100);
+    }
+}
+
+// ======================================================================
+// KEYBOARD
+// ======================================================================
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault();
+        exportPNG();
+    }
+    if (e.key === 'Escape') {
+        hideInfo();
+        if (isolationNode) exitIsolation();
+        if (pathMode) exitPathMode();
+        pathNodes = null;
+        pathLinks = [];
+        node.classed('path-highlight', false);
+        link.classed('path-highlight', false);
+        clearHighlights();
+        applyMetricFilters();
+        searchInput.value = '';
+    }
+    if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        darkTheme = !darkTheme;
+        applyTheme();
+    }
+    if (e.key === 'p' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        clearPins();
+    }
+});
+
+// ======================================================================
+// INIT
+// ======================================================================
+document.getElementById('node-count').textContent = DATA.nodes.length;
+document.getElementById('edge-count').textContent = DATA.links.length;
+
+if (DATA.stats) {
+    const s = DATA.stats;
+    const ei = document.getElementById('edge-implicit');
+    if (s.explicit_edges !== undefined) {
+        ei.textContent = ` (явн:${s.explicit_edges}, неявн:${s.implicit_edges})`;
+    }
+    // Set filter max values from data
+    const maxWords = d3.max(DATA.nodes, d => d.word_count || 0) || 500;
+    const maxCode = d3.max(DATA.nodes, d => (d.code_blocks || []).length) || 30;
+    const maxDegree = d3.max(DATA.nodes, d => d.degree || 0) || 30;
+    document.getElementById('filter-words').max = maxWords;
+    document.getElementById('filter-words').value = maxWords;
+    document.getElementById('filter-words-val').textContent = maxWords;
+    document.getElementById('filter-code').max = maxCode;
+    document.getElementById('filter-code').value = maxCode;
+    document.getElementById('filter-code-val').textContent = maxCode;
+    document.getElementById('filter-degree').max = maxDegree;
+    document.getElementById('filter-degree').value = maxDegree;
+    document.getElementById('filter-degree-val').textContent = maxDegree;
+    // Weight slider: 0-100 (maps to 0.0-1.0)
+    document.getElementById('filter-weight').max = 100;
+}
+
+svg.call(zoom.transform, d3.zoomIdentity.translate(width / 4, height / 4).scale(0.6));
+buildLegend();
+
+// Restore URL state after a brief delay to let render finish
+setTimeout(restoreState, 100);
+</script>
+</body>
+</html>

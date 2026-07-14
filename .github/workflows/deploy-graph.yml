@@ -1,0 +1,74 @@
+name: 📊 Deploy Documentation Graph
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**/*.md'
+      - 'vault/**/*.md'
+      - 'tools/graph_generator.py'
+      - 'tools/templates/graph_template.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install -q networkx markdown beautifulsoup4 jinja2 scikit-learn
+
+      - name: Generate graph from docs/
+        run: |
+          .venv/bin/python tools/graph_generator.py \
+            --docs-dir docs --output docs/graph.html \
+            --no-cache
+
+      - name: Generate graph from vault/
+        run: |
+          .venv/bin/python tools/graph_generator.py \
+            --docs-dir vault --output vault/graph.html \
+            --no-tfidf --no-cache
+
+      - name: Generate JSON export
+        run: |
+          .venv/bin/python tools/graph_generator.py \
+            --docs-dir docs --output docs/graph.json \
+            --format json --no-cache
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

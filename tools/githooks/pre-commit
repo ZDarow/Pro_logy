@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Pre-commit hook: auto-generate documentation graph when .md files change
+set -e
+
+# Определяем корень проекта
+HOOK_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+
+# Проверяем, изменились ли .md файлы
+CHANGED_MD=$(git diff --cached --name-only --diff-filter=ACM | grep '\.md$' | head -20)
+if [ -z "$CHANGED_MD" ]; then
+    exit 0
+fi
+
+echo "📊 PROLOGY: .md files changed, regenerating graph..."
+
+# Выбираем Python
+if [ -f "$HOOK_DIR/tools/.venv/bin/python3" ]; then
+    PYTHON="$HOOK_DIR/tools/.venv/bin/python3"
+else
+    PYTHON="python3"
+fi
+
+# Генерируем граф из docs/
+cd "$HOOK_DIR"
+$PYTHON tools/graph_generator.py --docs-dir docs --output docs/graph.html 2>&1 | sed 's/^/  /'
+
+# Добавляем graph.html в коммит, если он изменился
+if [ -f docs/graph.html ]; then
+    git add docs/graph.html 2>/dev/null || true
+    echo "✅ Graph added to commit"
+fi
+
+echo "📊 Done."

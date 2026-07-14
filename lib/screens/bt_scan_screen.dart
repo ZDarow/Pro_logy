@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import '../providers/bt_provider.dart';
+import '../providers/scan_device.dart';
 
 class BtScanScreen extends StatefulWidget {
   const BtScanScreen({super.key});
@@ -11,63 +11,20 @@ class BtScanScreen extends StatefulWidget {
 }
 
 class _BtScanScreenState extends State<BtScanScreen> {
-  List<ScanResult> devices = [];
-  bool isScanning = false;
   String? errorMessage;
-  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
 
   @override
   void initState() {
     super.initState();
-    FlutterBluePlus.adapterState.listen((state) {
-      if (mounted) setState(() => _adapterState = state);
-    });
-    FlutterBluePlus.scanResults.listen((results) {
-      if (mounted) setState(() => devices = results);
-    });
-    Future.delayed(Duration.zero, () => _startScan());
-  }
-
-  Future<void> _startScan() async {
-    setState(() {
-      devices.clear();
-      isScanning = true;
-      errorMessage = null;
-    });
-
-    try {
-      if (await FlutterBluePlus.isSupported == false) {
-        setState(() {
-          errorMessage = 'BLE не поддерживается';
-          isScanning = false;
-        });
-        return;
-      }
-
-      if (await FlutterBluePlus.adapterState.first == BluetoothAdapterState.off) {
-        await FlutterBluePlus.turnOn();
-      }
-
-      await FlutterBluePlus.startScan(
-        timeout: const Duration(seconds: 15),
-        androidUsesFineLocation: true,
-      );
-
-      await Future.delayed(const Duration(seconds: 16));
-      if (mounted) setState(() => isScanning = false);
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          errorMessage = 'Ошибка сканирования: $e';
-          isScanning = false;
-        });
-      }
+    final bt = context.read<BtProvider>();
+    if (!bt.isScanning) {
+      bt.startScan();
     }
   }
 
-  Future<void> _connect(ScanResult r) async {
+  Future<void> _connect(ScanDevice device) async {
     final bt = context.read<BtProvider>();
-    final ok = await bt.connect(r.device);
+    final ok = await bt.connectFromScanDevice(device);
     if (ok && mounted) {
       Navigator.pop(context, true);
     } else if (mounted) {
@@ -77,20 +34,25 @@ class _BtScanScreenState extends State<BtScanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bt = context.watch<BtProvider>();
+    final isScanning = bt.isScanning;
+    final devices = bt.scanDevices;
+    final adapterOn = bt.isAdapterOn;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('BT Devices'),
         actions: [
-          if (_adapterState != BluetoothAdapterState.on)
+          if (!adapterOn)
             IconButton(
               icon: const Icon(Icons.bluetooth_disabled),
-              onPressed: () => FlutterBluePlus.turnOn(),
+              onPressed: () => bt.startScan(),
             ),
         ],
       ),
       body: Column(
         children: [
-          if (_adapterState != BluetoothAdapterState.on)
+          if (!adapterOn)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
@@ -110,16 +72,14 @@ class _BtScanScreenState extends State<BtScanScreen> {
                 : ListView.builder(
                     itemCount: devices.length,
                     itemBuilder: (context, i) {
-                      final d = devices[i].device;
+                      final d = devices[i];
                       return ListTile(
                         leading: const Icon(Icons.bluetooth),
-                        title: Text(d.platformName.isNotEmpty
-                            ? d.platformName
-                            : 'Unknown'),
-                        subtitle: Text(d.remoteId.str),
+                        title: Text(d.name.isNotEmpty ? d.name : 'Unknown'),
+                        subtitle: Text(d.remoteId),
                         trailing: IconButton(
                           icon: const Icon(Icons.link),
-                          onPressed: () => _connect(devices[i]),
+                          onPressed: () => _connect(d),
                         ),
                       );
                     },
@@ -128,7 +88,7 @@ class _BtScanScreenState extends State<BtScanScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: isScanning ? null : _startScan,
+        onPressed: isScanning ? null : () => bt.startScan(),
         child: Icon(isScanning ? Icons.hourglass_empty : Icons.search),
       ),
     );

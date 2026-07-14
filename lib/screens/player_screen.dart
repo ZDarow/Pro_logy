@@ -11,7 +11,6 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen> {
   bool isPlaying = false;
-  double volume = 50;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +63,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   child: Slider(
                     value: bt.volume.toDouble(),
                     min: 0,
-                    max: 28,
+                    max: 100,
                     onChanged: bt.isConnected
                         ? (v) => bt.volumeSet(v.toInt())
                         : null,
@@ -78,7 +77,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text('Volume: ${bt.volume}/28'),
+              child: Text('Volume: ${bt.volume}/100'),
             ),
             if (!bt.isConnected)
               const Padding(

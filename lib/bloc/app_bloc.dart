@@ -75,7 +75,7 @@ class AppState extends Equatable {
     return AppState(
       currentSource: clearSource ? null : (currentSource ?? this.currentSource),
       isLoading: isLoading ?? this.isLoading,
-      error: error,
+      error: error ?? this.error,
     );
   }
 

@@ -42,6 +42,19 @@ app.*.map.json
 # VS Code (uncomment to include)
 #.vscode/
 
+# Build artifacts
+**/build/
+**/.gradle/
+*.dill
+*.ninja
+*.ninja_deps
+*.ninja_log
+kernel_blob.bin
+
+# Data dirs
+Prology/
+imported_data/
+
 # Untracked dirs (Prology project specific)
 assets/
 ios/
@@ -56,4 +69,13 @@ prology/
 prology.zip
 devtools_options.yaml
 docs/APK_MOD_ANALYSIS_REPORT.md
+docs/toolkit_analysis/apk/*
+docs/graph.html
+docs/graph.json
+docs/graph.graphml
+vault/
+tools/.graph_cache.json
+tools/.venv/
 linux/
+chat-export*.json
+obsidian*.md

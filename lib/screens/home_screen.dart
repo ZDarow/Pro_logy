@@ -7,6 +7,7 @@ import '../providers/command_settings_provider.dart';
 import '../bloc/app_bloc.dart';
 import '../data/constants.dart';
 import '../widgets/now_playing_bar.dart';
+import '../screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<BtProvider>().connect('90:20:71:5E:48:10');
+    });
+  }
+
   void _showBtDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -41,9 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onSourceTap(SourceItem source) {
     final appBloc = context.read<AppBloc>();
-    if (source.screen != null) {
+    if (source.screenBuilder != null) {
       appBloc.add(SelectSource(source.appSource));
-      Navigator.push(context, MaterialPageRoute(builder: (_) => source.screen!));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (ctx) => source.screenBuilder!(ctx)),
+      );
     } else {
       final cmdSettings = context.read<CommandSettingsProvider>();
       final cmd = cmdSettings.getCommand(source.command).codeUnits;
@@ -78,7 +90,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 onPressed: connected
                     ? () => _showBtDialog(context)
-                    : () => Navigator.push(context, MaterialPageRoute(builder: (_) => sources[8].screen!)),
+                    : () {
+                        final btScanIdx = sources.indexWhere((s) => s.name == 'BT Scan');
+                        if (btScanIdx >= 0) {
+                          final builder = sources[btScanIdx].screenBuilder;
+                          if (builder != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: builder),
+                            );
+                          }
+                        }
+                      },
                 tooltip: connected ? 'Подключено. Нажмите для отключения.' : 'Нажмите для сканирования',
               );
             },
@@ -103,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NowPlayingBar(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => settingsScreen),
+              MaterialPageRoute(builder: (_) => SettingsScreen()),
             ),
           ),
           Padding(
@@ -114,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => settingsScreen),
+                    MaterialPageRoute(builder: (_) => SettingsScreen()),
                   );
                 },
                 child: const Text('Settings'),

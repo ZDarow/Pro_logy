@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'data/repositories/bt_repository.dart';
 import 'providers/bt_provider.dart';
 import 'providers/command_settings_provider.dart';
 import 'bloc/app_bloc.dart';
 import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const PrologyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(PrologyApp());
 }
 
 class PrologyApp extends StatelessWidget {
-  const PrologyApp({super.key});
+  PrologyApp({super.key});
+
+  final BtRepository _repository = BtRepository();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => BtProvider()),
+        ChangeNotifierProvider(create: (_) => BtProvider(repository: _repository)),
         ChangeNotifierProvider(
           create: (_) => CommandSettingsProvider()..load(),
         ),

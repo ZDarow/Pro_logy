@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import '../data/repositories/bt_repository.dart';
+import 'scan_device.dart';
 
 class BtProvider extends ChangeNotifier {
   final BtRepository? _repository;
@@ -17,10 +18,76 @@ class BtProvider extends ChangeNotifier {
   bool _demoConnected = false;
   Timer? _demoTimer;
 
+  // --- Сканирование BLE ---
+  final List<ScanDevice> _scanDevices = [];
+  bool _isScanning = false;
+  StreamSubscription? _scanSub;
+  StreamSubscription? _adapterSub;
+  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
+
+  BluetoothAdapterState get adapterStateNow => _adapterState;
+  bool get isAdapterOn => _adapterState == BluetoothAdapterState.on;
+  bool get isScanning => _isScanning;
+  List<ScanDevice> get scanDevices => List.unmodifiable(_scanDevices);
+
+  /// Запустить сканирование BLE
+  Future<void> startScan({Duration? timeout}) async {
+    if (_isScanning) return;
+    if (!isDemo) {
+      if (_adapterState == BluetoothAdapterState.off) {
+        try {
+          await FlutterBluePlus.turnOn();
+        } catch (e) {
+          debugPrint('BtProvider: turnOn error: $e');
+        }
+      }
+      _scanDevices.clear();
+      _isScanning = true;
+      notifyListeners();
+      try {
+        await FlutterBluePlus.startScan(
+          timeout: timeout ?? const Duration(seconds: 15),
+          androidUsesFineLocation: true,
+        );
+      } catch (e) {
+        debugPrint('BtProvider: startScan error: $e');
+        _isScanning = false;
+        notifyListeners();
+      }
+    }
+  }
+
+  /// Остановить сканирование
+  void stopScan() {
+    if (!isDemo) {
+      FlutterBluePlus.stopScan();
+    }
+    _isScanning = false;
+    notifyListeners();
+  }
+
   BtProvider({BtRepository? repository, this.isDemo = false})
       : _repository = repository {
     if (!isDemo && _repository != null) {
       _stateSubscription = _repository.stateStream.listen((_) {
+        notifyListeners();
+      });
+      // Слушаем состояние адаптера
+      _adapterSub = FlutterBluePlus.adapterState.listen((state) {
+        _adapterState = state;
+        notifyListeners();
+      });
+      // Слушаем результаты сканирования
+      _scanSub = FlutterBluePlus.scanResults.listen((results) {
+        _scanDevices.clear();
+        for (final r in results) {
+          final d = r.device;
+          _scanDevices.add(ScanDevice(
+            remoteId: d.remoteId.str,
+            name: d.platformName.isNotEmpty ? d.platformName : d.advName,
+            rssi: r.rssi,
+          ));
+        }
         notifyListeners();
       });
     }
@@ -32,9 +99,9 @@ class BtProvider extends ChangeNotifier {
   void _startDemoSimulation() {
     _demoTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       final rand = Random();
-      _demoVolume = (_demoVolume + (rand.nextBool() ? 1 : -1)).clamp(0, 40);
-      _demoBass = (_demoBass + (rand.nextBool() ? 1 : -1)).clamp(-10, 10);
-      _demoTreble = (_demoTreble + (rand.nextBool() ? 1 : -1)).clamp(-10, 10);
+      _demoVolume = (_demoVolume + (rand.nextBool() ? 5 : -5)).clamp(0, 100);
+      _demoBass = (_demoBass + (rand.nextBool() ? 5 : -5)).clamp(0, 100);
+      _demoTreble = (_demoTreble + (rand.nextBool() ? 5 : -5)).clamp(0, 100);
       notifyListeners();
     });
   }
@@ -81,14 +148,14 @@ class BtProvider extends ChangeNotifier {
         Stream.value(BluetoothConnectionState.disconnected);
   }
 
-  Future<bool> connect(BluetoothDevice device) async {
+  Future<bool> connect(String remoteId) async {
     if (isDemo) {
       _demoConnected = true;
       notifyListeners();
       return true;
     }
     try {
-      final result = await _repository?.connect(device) ?? false;
+      final result = await _repository?.connectToAddress(remoteId) ?? false;
       notifyListeners();
       return result;
     } catch (e) {
@@ -96,6 +163,16 @@ class BtProvider extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  /// Convenience: подключение через BluetoothDevice (из flutter_blue_plus)
+  Future<bool> connectFromDevice(BluetoothDevice device) async {
+    return connect(device.remoteId.str);
+  }
+
+  /// Подключение через ScanDevice (платформо-независимая модель)
+  Future<bool> connectFromScanDevice(ScanDevice device) async {
+    return connect(device.remoteId);
   }
 
   Future<void> disconnect() async {
@@ -125,7 +202,7 @@ class BtProvider extends ChangeNotifier {
 
   Future<bool> volumeUp() async {
     if (isDemo) {
-      _demoVolume = (_demoVolume + 1).clamp(0, 40);
+      _demoVolume = (_demoVolume + 5).clamp(0, 100);
       notifyListeners();
       return true;
     }
@@ -142,7 +219,7 @@ class BtProvider extends ChangeNotifier {
 
   Future<bool> volumeDown() async {
     if (isDemo) {
-      _demoVolume = (_demoVolume - 1).clamp(0, 40);
+      _demoVolume = (_demoVolume - 5).clamp(0, 100);
       notifyListeners();
       return true;
     }
@@ -159,7 +236,7 @@ class BtProvider extends ChangeNotifier {
 
   Future<bool> volumeSet(int value) async {
     if (isDemo) {
-      _demoVolume = value.clamp(0, 40);
+      _demoVolume = value.clamp(0, 100);
       notifyListeners();
       return true;
     }
@@ -192,7 +269,7 @@ class BtProvider extends ChangeNotifier {
 
   Future<bool> setBass(int value) async {
     if (isDemo) {
-      _demoBass = value.clamp(-10, 10);
+      _demoBass = value.clamp(0, 100);
       notifyListeners();
       return true;
     }
@@ -209,7 +286,7 @@ class BtProvider extends ChangeNotifier {
 
   Future<bool> setTreble(int value) async {
     if (isDemo) {
-      _demoTreble = value.clamp(-10, 10);
+      _demoTreble = value.clamp(0, 100);
       notifyListeners();
       return true;
     }
@@ -318,10 +395,7 @@ class BtProvider extends ChangeNotifier {
   Future<bool> setTimeAlignment({int speaker = 0, int delay = 0}) async {
     if (isDemo) return true;
     try {
-      return await _repository?.setTimeAlignment(
-            speaker: speaker,
-            delay: delay,
-          ) ??
+      return await _repository?.setTimeAlignment(speaker, delay) ??
           false;
     } catch (e) {
       debugPrint('Set time alignment error: $e');
@@ -414,6 +488,8 @@ class BtProvider extends ChangeNotifier {
   void dispose() {
     _demoTimer?.cancel();
     _stateSubscription?.cancel();
+    _adapterSub?.cancel();
+    _scanSub?.cancel();
     _repository?.dispose();
     super.dispose();
   }
