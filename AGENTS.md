@@ -21,7 +21,7 @@
 
 ### 1.2 Структура проекта (ключевые пути)
 
-```
+```text
 prology/
 ├── lib/
 │   ├── main.dart                          # Точка входа (MultiProvider + BlocProvider)
@@ -64,7 +64,7 @@ prology/
 
 ### 1.3 Архитектура: Repository → Provider → UI
 
-```
+```text
 BLE-устройство (Prology)
      ↕ GATT (AE01 Write / AF01 Notify)
 BtRepository (lib/data/repositories/bt_repository.dart)
@@ -82,25 +82,30 @@ UI (lib/screens/*.dart)
 ### 1.4 BLE-протокол (кратко)
 
 | Параметр | Значение |
-|----------|----------|
+| ---------- | ---------- |
 | Сервис CMD | `0000AE00-0000-1000-8000-00805f9b34fb` |
 | Характеристика Write | `0000AE01-0000-1000-8000-00805f9b34fb` |
 | Сервис Notify | `0000AF00-0000-1000-8000-00805f9b34fb` |
 | Характеристика Notify | `0000AF02-0000-1000-8000-00805f9b34fb` |
 
 **Формат команды (TX)**:
-```
+
+```text
 [0xF0, 0x00, LEN, 0xA0, 0x10, 0x0E, CMD, DATA..., CS]
 ```
+
 - CS = (sum(LEN..DATA) + 0x10) & 0xFF
 
 **Формат уведомления (RX)**:
-```
+
+```text
 [0xC0, 0x00, LEN, TYPE, DATA..., CS]
 ```
+
 - CS = (sum(LEN..DATA) + 0x40) & 0xFF
 
 **Команды** (TX command bytes, определены как static const в bt_repository.dart):
+
 - `playPause`=0x01, `nextTrack`=0x02, `prevTrack`=0x03
 - `volume`=0x18, `fader`=0x20, `bass`=0x21, `treble`=0x22, `input`=0x24
 - `eqPreset`=0x26, `balance`=0x2a
@@ -108,6 +113,7 @@ UI (lib/screens/*.dart)
 - `radioSeekUp`=0x80, `radioSeekDown`=0x81, `radioSetFreqFm`=0x82, `radioSetFreqAm`=0x83
 
 **Уведомления** (RX notification types):
+
 - 0x90=volume, 0x91=bass+treble, 0x92=balance+fader, 0x93=inputSource
 
 ### 1.5 Точки входа для анализа
@@ -134,7 +140,7 @@ UI (lib/screens/*.dart)
 ### 2.2 Запрещённые паттерны
 
 | Категория | Запрещено | Вместо |
-|-----------|-----------|--------|
+| ----------- | ----------- | -------- |
 | BLE | Прямое обращение UI к `flutter_blue_plus` | Только через `BtRepository` → `BtProvider` |
 | BLE | `setInput('RADIO')` перед каждым preset | Только смена частоты (радио уже активно) |
 | BLE | Отправка команды на каждый pixel слайдера | `Timer` debounce 300ms (уже реализован) |
@@ -239,14 +245,14 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 4.1 P0 — Критические
 
 | # | Задача | Файлы | Описание |
-|---|--------|-------|----------|
+| --- | -------- | ------- | ---------- |
 | 1 | Валидировать Bass/Treble command bytes | `bt_repository.dart:41-42` | `cmdBass=0x21`, `cmdTreble=0x22` — предположительные. Нужно подтвердить через Frida-перехват на реальном устройстве или APK decompile. Возможны другие значения. |
 | 2 | Разрешить несоответствие checksum | `bt_repository.dart:63-64`, `docs/protocol.md` | Документация говорит XOR 0x94, код использует (sum+0x10)/(sum+0x40). Один из источников ошибается. Нужно подтвердить через сниффер BLE-трафика. |
 
 ### 4.2 P1 — Высокий приоритет
 
 | # | Задача | Файлы | Описание |
-|---|--------|-------|----------|
+| --- | -------- | ------- | ---------- |
 | 3 | Реализовать debounce для Bass/Treble/Balance/Fader слайдеров | `audio_settings_screen.dart` | Уже добавлен Timer 300ms в AudioSettingsScreen. Проверить, что он работает на всех слайдерах, включая subwoofer и Time Alignment dialog. |
 | 4 | LEN-поля extended audio settings | `bt_repository.dart:339-365` | `setLoudness(LEN=0x07)`, `setSubwoofer(LEN=0x07)`, `setXOver(LEN=0x06)`, `setTimeAlignment(LEN=0x06)`, `setEqPlus(LEN=0x08)` — не проверены на реальном устройстве. Могут не совпадать с фактическим протоколом. |
 | 5 | CI/CD пайплайн не существует | `.github/workflows/ci.yml` | Файл может отсутствовать. Проверить наличие. Если отсутствует — создать. |
@@ -255,7 +261,7 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 4.3 P2 — Средний приоритет
 
 | # | Задача | Файлы | Описание |
-|---|--------|-------|----------|
+| --- | -------- | ------- | ---------- |
 | 7 | Переработать BtProvider: убрать дублирование try-catch | `bt_provider.dart` | Сейчас 22 метода-прокладки с try-catch. Можно сделать generic `_safeCall<T>()` или генерировать обёртки. |
 | 8 | Добавить `if (!mounted) return;` в setState | `audio_settings_screen.dart:54,58,62,...` | После async-операций нужно проверять mounted. |
 | 9 | Перевести presets на именованные константы | `bt_repository.dart:326` | Массив `eqPresetValues = [0x08, 0x03, ...]` — магические числа. Должны быть `static const` с именами. |
@@ -266,7 +272,7 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 4.4 P3 — Низкий приоритет
 
 | # | Задача | Файлы | Описание |
-|---|--------|-------|----------|
+| --- | -------- | ------- | ---------- |
 | 13 | Устаревшие версии зависимостей | `pubspec.yaml` | `flutter_blue_plus` ^1.36.8 → ^2.3.10 (major behind). 27 пакетов с новыми версиями. Обновить с осторожностью — breaking changes. |
 | 14 | Parking Sensor экран | `lib/screens/` | Не реализован вообще. Нужен UI и BLE-команды. |
 | 15 | Remote Control (IR кнопки) | `lib/screens/` | Не реализован. Нужны протокольные байты. |
@@ -277,7 +283,7 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 4.5 P4 — Идеи / Исследования
 
 | # | Задача | Файлы | Описание |
-|---|--------|-------|----------|
+| --- | -------- | ------- | ---------- |
 | 19 | Reverse-engineer extended audio bytes из APK | `apk/libapp.so` | Анализ libapp.so бинарника для точных протокольных байт Loudness/Subwoofer/XOver/TimeAlignment/EQPlus. |
 | 20 | Frida-скрипты для перехвата BLE | `tools/frida/` | Написать Frida-хуки для трассировки всех BLE-команд на реальном устройстве. |
 | 21 | Автоматическая реконнект | `bt_repository.dart` | Добавить auto-reconnect при обрыве связи с таймаутом и exponential backoff. |
@@ -290,7 +296,7 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 5.1 «Красная зона» — НЕ ТРОГАТЬ
 
 | Компонент | Причина | Альтернатива |
-|-----------|---------|--------------|
+| ----------- | --------- | -------------- |
 | `RxDart` | Не используется. Не добавлять. | Использовать только dart:async Stream |
 | `json_serializable` | Нет моделей JSON. Не добавлять. | Ручные fromJson/toJson если нужно |
 | `freezed` | Нет sealed-классов данных. Не добавлять. | Использовать enum/sealed class из коробки Dart |
@@ -304,7 +310,7 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 5.2 «Жёлтая зона» — Осторожно
 
 | Компонент | Риск | Рекомендация |
-|-----------|------|--------------|
+| ----------- | ------ | -------------- |
 | `flutter_blue_plus` upgrade (1.36.8→2.x) | **Breaking changes**: API переписан (scan, connect, characteristic access) | Сначала протестировать upgrade на отдельной ветке. Написать интеграционные тесты ДО миграции. |
 | `provider` → `riverpod` | Архитектурная смена всего управления состоянием | Только если ТЗ явно требует. Затрагивает все 12 экранов + провайдеры. |
 | `dart:io` | Недоступен на Web платформе | `dart:io` уже используется в `path_provider`, но flutter_blue_plus не работает на Web. Не добавлять новых зависимостей от dart:io. |
@@ -324,7 +330,7 @@ flutter run -d <device_id>         # запуск на конкретном ус
 ### 5.4 Метрики качества
 
 | Метрика | Текущее | Цель | Проверка |
-|---------|---------|------|----------|
+| --------- | --------- | ------ | ---------- |
 | Анализатор | 0 issues | 0 issues | `flutter analyze` |
 | Unit-тесты | 14 | 20+ | `flutter test` |
 | Widget-тесты | 2 | 10+ | `flutter test` |
