@@ -5,11 +5,13 @@
 ## Executive Summary
 
 Successfully completed all 3 stages of the Prology mobile app development plan:
+
 1. **Stage 1**: Stabilization & Testing (✅ Complete)
-2. **Stage 2**: Missing Features Implementation (✅ Complete)  
+2. **Stage 2**: Missing Features Implementation (✅ Complete)
 3. **Stage 3**: Infrastructure & Release Prep (✅ Complete)
 
-### Recent Updates (2026-05-08):
+### Recent Updates (2026-05-08)
+
 - ✅ **flutter_bloc** upgraded 8→9 (commit deb28df)
 - ✅ **Playback controls**: play/pause, next/prev track (commit 2685936, 891331f)
 - ✅ **Radio controls**: seek up/down, set frequency (commit 891331f)
@@ -23,6 +25,7 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 ## Stage 1: Stabilization & Testing
 
 ### Code Quality Fixes
+
 - ✅ Removed dead code (`services/bt_service.dart`)
 - ✅ Fixed `StreamController` leak (added `dispose()` method)
 - ✅ Prevented duplicate notification subscriptions on reconnect
@@ -32,6 +35,7 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 - ✅ `BtProvider` now subscribes to `stateStream` and calls `notifyListeners()`
 
 ### Testing
+
 - ✅ Created `test/bt_repository_test.dart` with 16 unit tests:
   - Initial state is disconnected
   - parseNotification updates volume
@@ -53,8 +57,9 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 ## Stage 2: Missing Features Implementation
 
 ### New Input Sources Added
+
 - ✅ GPS (code 0x07) - `AppSource.gps`
-- ✅ SXM (code 0x08) - `AppSource.sxm`  
+- ✅ SXM (code 0x08) - `AppSource.sxm`
 - ✅ AV IN (code 0x09) - `AppSource.avIn`
 - ✅ Updated `setInput()` in `BtRepository` with all 8 sources
 - ✅ Updated `AppSourceExtension` in `app_bloc.dart`
@@ -63,6 +68,7 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 - ✅ SXM screen already existed (`sxm_screen.dart`)
 
 ### Extended Audio Settings (Placeholder Methods)
+
 - ✅ Added to `BtRepository`:
   - `setLoudness(bool, {level, freq})`
   - `setSubwoofer({level, freq, phase})`
@@ -75,6 +81,7 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 ## Stage 3: Infrastructure & Release Prep
 
 ### Documentation Created
+
 - ✅ `README.md` - Updated with new features, structure, testing info
 - ✅ `CHANGELOG.md` - Complete changelog of all work done
 - ✅ `docs/protocol.md` - Full BLE protocol documentation:
@@ -88,10 +95,12 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 - ✅ `AGENTS.md` - Instructions for future OpenCode sessions
 
 ### CI/CD Setup
+
 - ✅ `.github/workflows/ci.yml` - Automated analyze + test on push/PR
 - ✅ Uses `subosito/flutter-action@v2` with Flutter 3.29.0
 
 ### VS Code Configuration
+
 - ✅ `.vscode/extensions.json` - Recommended extensions (Dart, Flutter, YAML)
 - ✅ `.vscode/settings.json` - Flutter SDK path, formatter settings
 - ✅ `.vscode/launch.json` - Debug/Profile/Release configurations
@@ -100,7 +109,8 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 
 ## APK Analysis Results
 
-### Reverse-Engineered from `PROLOGY-140-5.0.55.apk`:
+### Reverse-Engineered from `PROLOGY-140-5.0.55.apk`
+
 - ✅ **Protocol verified**: XOR 0x94 checksum, packet structure matches
 - ✅ **Services**: AE00 (CMD), AF00 (Notify)
 - ✅ **Characteristics**: AE01 (Write), AF01 (Notify) - **NOW IMPLEMENTED**
@@ -112,13 +122,15 @@ Successfully completed all 3 stages of the Prology mobile app development plan:
 ## Current Project State
 
 ### Code Quality
+
 - ✅ **Analyzer**: 0 issues
 - ✅ **Tests**: 8/8 passed
 - ✅ **Architecture**: Clean separation (Repository → Provider → UI)
 - ✅ **State Management**: `AppBloc` (source selection), `BtProvider` (Bluetooth), `CommandSettingsProvider` (settings)
 
 ### File Structure
-```
+
+```text
 lib/
 ├── main.dart                     # Entry point
 ├── bloc/
@@ -172,6 +184,7 @@ docs/
 ✅ **All 3 stages completed successfully!**
 
 The Prology app now:
+
 - Has stable BLE connectivity with notification support (AF01)
 - Supports all 8 input sources from the original APK
 - Has placeholder methods for extended audio settings
